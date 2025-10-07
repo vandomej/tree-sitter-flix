@@ -1,4 +1,5 @@
 {
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "flix",
   "rules": {
     "program": {
@@ -3067,7 +3068,7 @@
               },
               {
                 "type": "PATTERN",
-                "value": "u{[0-9a-fA-F]+}"
+                "value": "u\\{[0-9a-fA-F]+\\}"
               }
             ]
           }
@@ -3172,6 +3173,6 @@
     "_expression",
     "_literal",
     "_declaration"
-  ]
+  ],
+  "reserved": {}
 }
-

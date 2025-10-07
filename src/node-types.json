@@ -971,6 +971,7 @@
   {
     "type": "program",
     "named": true,
+    "root": true,
     "fields": {},
     "children": {
       "multiple": true,
@@ -1582,10 +1583,6 @@
   },
   {
     "type": "@",
-    "named": false
-  },
-  {
-    "type": "Array#",
     "named": false
   },
   {
