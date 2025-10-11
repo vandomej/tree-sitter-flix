@@ -1,0 +1,12 @@
+{
+  "overrides": [
+    {
+      "files": ["*grammar*.js"],
+      "options": {
+        "printWidth": 45,
+        "bracketSpacing": true,
+        "semi": true
+      }
+    }
+  ]
+}
