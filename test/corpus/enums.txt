@@ -45,3 +45,24 @@ enum MyEnum[a] {
         (constructor_parameters
           (polymorphic_identifier))))))
 
+=====
+enum constructors
+=====
+
+def main(): Result[String, Int32] = Ok(123)
+
+---
+
+(program
+  (function_declaration
+    (identifier)
+    (parameters)
+    (type
+      (identifier)
+      (type_arguments
+        (type_primitive)
+        (type_primitive)))
+    (call_expression
+      (identifier)
+      (arguments
+        (integer)))))

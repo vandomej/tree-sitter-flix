@@ -14,6 +14,10 @@
       {
         "type": "module_declaration",
         "named": true
+      },
+      {
+        "type": "type_alias_declaration",
+        "named": true
       }
     ]
   },
@@ -35,6 +39,10 @@
       },
       {
         "type": "block",
+        "named": true
+      },
+      {
+        "type": "call_expression",
         "named": true
       },
       {
@@ -165,6 +173,21 @@
     }
   },
   {
+    "type": "arguments",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "assign",
     "named": true,
     "fields": {},
@@ -221,6 +244,32 @@
     "type": "boolean",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "call_expression",
+    "named": true,
+    "fields": {
+      "arguments": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "arguments",
+            "named": true
+          }
+        ]
+      },
+      "function": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "case",
@@ -1136,6 +1185,41 @@
     }
   },
   {
+    "type": "type_alias_declaration",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "polymorphic_identifier",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_function",
+          "named": true
+        },
+        {
+          "type": "type_primitive",
+          "named": true
+        },
+        {
+          "type": "type_record",
+          "named": true
+        },
+        {
+          "type": "type_tuple",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "type_arguments",
     "named": true,
     "fields": {},
@@ -1835,6 +1919,10 @@
   },
   {
     "type": "true",
+    "named": false
+  },
+  {
+    "type": "type alias",
     "named": false
   },
   {
