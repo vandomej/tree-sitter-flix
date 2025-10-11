@@ -908,6 +908,10 @@
                 {
                   "type": "SYMBOL",
                   "name": "_uppercase_name"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "field"
                 }
               ]
             }
@@ -1289,6 +1293,37 @@
           "type": "SYMBOL",
           "name": "_expression"
         },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_match_scoped"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_match_lambda"
+            }
+          ]
+        }
+      ]
+    },
+    "_match_lambda": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "->"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_expression"
+        }
+      ]
+    },
+    "_match_scoped": {
+      "type": "SEQ",
+      "members": [
         {
           "type": "STRING",
           "value": "{"

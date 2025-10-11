@@ -417,3 +417,38 @@ def main(): Int32 = match a {
         (boolean))
       (case
         (boolean)))))
+
+=====
+match lambdas
+=====
+def main(): Listi[Int32] = List.map(match (x, y) -> x + y, (1, 1) :: (2, 2) :: Nil)
+---
+(program
+  (function_declaration
+    (identifier)
+    (parameters)
+    (type
+      (identifier)
+      (type_arguments
+        (type_primitive)))
+    (call_expression
+      (field
+        (identifier)
+        (identifier))
+      (arguments
+        (match
+          (tuple
+            (identifier)
+            (identifier))
+          (binary
+            (identifier)
+            (identifier)))
+        (binary
+          (binary
+            (tuple
+              (integer)
+              (integer))
+            (tuple
+              (integer)
+              (integer)))
+          (nil))))))

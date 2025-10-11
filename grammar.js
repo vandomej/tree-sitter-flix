@@ -250,6 +250,7 @@ module.exports = grammar({
             choice(
               $._lowercase_name,
               $._uppercase_name,
+              $.field,
             ),
           ),
           field("arguments", $.arguments),
@@ -324,6 +325,15 @@ module.exports = grammar({
       seq(
         "match",
         $._expression,
+        choice(
+          $._match_scoped,
+          $._match_lambda,
+        ),
+      ),
+    _match_lambda: ($) =>
+      seq("->", $._expression),
+    _match_scoped: ($) =>
+      seq(
         "{",
         repeat(alias($.match_case, $.case)),
         "}",
