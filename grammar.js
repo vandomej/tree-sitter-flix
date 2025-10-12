@@ -37,6 +37,17 @@ const one_or_more = (item) =>
 const zero_or_more = (item) =>
   zero_or_more_by(item, ",");
 
+
+const one_or_more_optionally_by = (item, sep) =>
+  seq(repeat(seq(item, optional(sep))), item);
+const zero_or_more_optionally_by = (item, sep) =>
+  optional(one_or_more_optionally_by(item, sep));
+// Lists of items optionally separated by ","
+const one_or_more_optionally = (item) =>
+  one_or_more_optionally_by(item, ",");
+const zero_or_more_optionally = (item) =>
+  zero_or_more_optionally_by(item, ","); 
+
 module.exports = grammar({
   name: "flix",
 
@@ -108,6 +119,15 @@ module.exports = grammar({
             $.type_parameters,
           ),
         ),
+        optional(
+          field(
+            "traits",
+            seq(
+              "with",
+              one_or_more(alias($.uppercase_name, $.trait)),
+            ),
+          ),
+        ),
         field(
           "constructors",
           $.constructors,
@@ -117,7 +137,7 @@ module.exports = grammar({
     constructors: ($) =>
       seq(
         "{",
-        zero_or_more($.constructor),
+        one_or_more_optionally($.constructor),
         "}",
       ),
     constructor: ($) =>
@@ -704,7 +724,7 @@ module.exports = grammar({
       ),
     trait_declaration: $ =>
       seq(
-        alias(optional("sealed"), $.modifier),
+        optional($.modifiers),
         "trait",
         field("trait", $.type),
         "{",

@@ -66,3 +66,35 @@ def main(): Result[String, Int32] = Ok(123)
       (identifier)
       (arguments
         (integer)))))
+
+=====
+enum trait derivation
+=====
+
+enum Shape with Eq, Order {
+    case Circle(Int32)
+    case Square(Int32)
+    case Rectangle(Int32, Int32)
+}
+
+---
+
+(program
+  (enum_declaration
+    (identifier)
+    (trait)
+    (trait)
+    (constructors
+      (constructor
+        (identifier)
+        (constructor_parameters
+          (type_primitive)))
+      (constructor
+        (identifier)
+        (constructor_parameters
+          (type_primitive)))
+      (constructor
+        (identifier)
+        (constructor_parameters
+          (type_primitive)
+          (type_primitive))))))

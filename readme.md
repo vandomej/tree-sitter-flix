@@ -12,7 +12,7 @@ Note that this is not an LSP, so it wont provide features like go-to-definition,
 - [x] infix functions
 - [x] `<+>` function compositions
 - [x] enums
-- [ ] type classes (remember derivations on enums)
+- [x] type classes (remember derivations on enums)
 - [x] modules
 - [x] regions, ref and deref
 - [x] expression: match

@@ -338,7 +338,8 @@ sealed trait Animal[a] {
 
 (program
   (trait_declaration
-    (sealed)
+    (modifiers
+      (modifier))
     (type
       (identifier)
       (type_arguments

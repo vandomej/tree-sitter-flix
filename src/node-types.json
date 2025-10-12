@@ -427,7 +427,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "constructor",
@@ -506,6 +506,24 @@
           {
             "type": "identifier",
             "named": true
+          }
+        ]
+      },
+      "traits": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "trait",
+            "named": true
+          },
+          {
+            "type": "with",
+            "named": false
           }
         ]
       },
@@ -1290,7 +1308,7 @@
       "required": false,
       "types": [
         {
-          "type": "sealed",
+          "type": "modifiers",
           "named": true
         }
       ]
@@ -2112,7 +2130,7 @@
     "named": false
   },
   {
-    "type": "sealed",
+    "type": "trait",
     "named": true
   },
   {
