@@ -325,3 +325,30 @@ instance Equatable[Option[t]] with Equatable[t] {
               (identifier))))
         (case
           (boolean))))))
+
+=====
+sealed traits
+=====
+
+sealed trait Animal[a] {
+    pub def isMammal(x: a): Bool
+}
+
+---
+
+(program
+  (trait_declaration
+    (sealed)
+    (type
+      (identifier)
+      (type_arguments
+        (polymorphic_identifier)))
+    (function_definition
+      (modifiers
+        (modifier))
+      (identifier)
+      (parameters
+        (parameter
+          (identifier)
+          (polymorphic_identifier)))
+      (type_primitive))))

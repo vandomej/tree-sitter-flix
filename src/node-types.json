@@ -1284,6 +1284,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "sealed",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -2100,6 +2110,10 @@
   {
     "type": "sealed",
     "named": false
+  },
+  {
+    "type": "sealed",
+    "named": true
   },
   {
     "type": "trait",

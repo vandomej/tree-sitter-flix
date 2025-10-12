@@ -704,6 +704,7 @@ module.exports = grammar({
       ),
     trait_declaration: $ =>
       seq(
+        alias(optional("sealed"), $.modifier),
         "trait",
         field("trait", $.type),
         "{",
