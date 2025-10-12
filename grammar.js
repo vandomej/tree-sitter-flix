@@ -24,6 +24,7 @@ const PREC = {
   cons: 3,
   append: 2,
   assign: 1,
+  effects: 1,
   pattern_constructor: -1,
 };
 
@@ -174,39 +175,17 @@ module.exports = grammar({
     //////// FUNCTIONS //////////
     function_declaration: ($) =>
       seq(
-        optional($.annotations),
-        optional($.modifiers),
-        "def",
-        field("name", $._lowercase_name),
-        optional(
-          field(
-            "type_parameters",
-            $.type_parameters,
-          ),
-        ),
-        field("parameters", $.parameters),
-        optional(
-          seq(
-            ":",
-            field("return_type", $._type),
-          ),
-        ),
-        optional(
-          seq(
-            "\\",
-            field("effects", $._effects),
-          ),
-        ),
+        $._function_definition,
         "=",
         field("body", $._stmt),
       ),
-
-    function_definition: ($) =>
+    function_definition : $ => $._function_definition,
+    _function_definition: ($) =>
       seq(
         optional($.annotations),
         optional($.modifiers),
         "def",
-        field("name", $._lowercase_name),
+        field("name", choice($._lowercase_name, $._operator_name)),
         optional(
           field(
             "type_parameters",
@@ -241,18 +220,52 @@ module.exports = grammar({
         field("type", $._type),
       ),
 
-    _effects: ($) =>
+    /////// EFFECTS ///////
+    _effects: $ =>
       choice($.effects, $._effect),
-    effects: ($) =>
-      seq("{", zero_or_more($._effect), "}"),
-    _effect: ($) =>
+    effects: $ =>
+      prec(
+        PREC.effects,
+        choice(
+          seq("{", zero_or_more($._effect), "}"),
+          $._effect_group,
+        ),
+      ),
+    _effect: $ =>
       choice(
         alias($.uppercase_name, $.effect),
         alias(
           $.lowercase_name,
           $.polymorphic_effect,
         ),
+        $._effect_unary,
+        alias($._effect_binary, $.binary),
+        $._effect_group,
       ),
+    _effect_unary: $ =>
+      prec(
+        PREC.unary,
+        seq(
+          "~",
+          $._effect,
+        ),
+      ),
+    _effect_binary: $ =>
+      prec.left(
+        seq(
+          $._effect,
+          alias(choice("+", "-", "&"), $.operator),
+          $._effect,
+        ),
+      ),
+    _effect_group: $ =>
+      seq(
+        "(",
+        $._effect,
+        ")",
+      ),
+    _effect_binary_operators: $ => /[\+\-&]/,
+    
 
     /////// TYPE PARAMETERS ///////
     type_parameters: ($) =>
@@ -319,6 +332,7 @@ module.exports = grammar({
               $._lowercase_name,
               $._uppercase_name,
               $.field,
+              $.group
             ),
           ),
           field("arguments", $.arguments),
@@ -710,9 +724,9 @@ module.exports = grammar({
       prec.left(
         PREC.type_function,
         seq(
-          $._type,
+          field("parameters", $._type),
           "->",
-          $._type,
+          field("return_type", $._type),
           optional(
             seq(
               "\\",
@@ -927,8 +941,10 @@ module.exports = grammar({
       alias($.lowercase_name, $.identifier),
     _name: ($) =>
       alias($.name, $.identifier),
+    _operator_name: $ =>
+      alias($.operator_name, $.identifier),
     operator_name: ($) =>
-      /[\+\-\*<>=!&|\^\$]{2,}/,
+      /[\+\-\*<>=!&|\^\$][\+\-\*<>=!&|\^\$]+/,
     // TODO: Not sure how to support greek and math names
   },
 });

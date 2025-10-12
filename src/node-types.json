@@ -223,7 +223,19 @@
           "named": true
         },
         {
+          "type": "effect",
+          "named": true
+        },
+        {
           "type": "infix_function",
+          "named": true
+        },
+        {
+          "type": "operator",
+          "named": true
+        },
+        {
+          "type": "polymorphic_effect",
           "named": true
         },
         {
@@ -273,6 +285,10 @@
         "types": [
           {
             "type": "field",
+            "named": true
+          },
+          {
+            "type": "group",
             "named": true
           },
           {
@@ -475,6 +491,10 @@
       "required": false,
       "types": [
         {
+          "type": "binary",
+          "named": true
+        },
+        {
           "type": "effect",
           "named": true
         },
@@ -675,9 +695,21 @@
         ]
       },
       "effects": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "binary",
+            "named": true
+          },
           {
             "type": "effect",
             "named": true
@@ -689,6 +721,10 @@
           {
             "type": "polymorphic_effect",
             "named": true
+          },
+          {
+            "type": "~",
+            "named": false
           }
         ]
       },
@@ -773,9 +809,21 @@
     "named": true,
     "fields": {
       "effects": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "binary",
+            "named": true
+          },
           {
             "type": "effect",
             "named": true
@@ -787,6 +835,10 @@
           {
             "type": "polymorphic_effect",
             "named": true
+          },
+          {
+            "type": "~",
+            "named": false
           }
         ]
       },
@@ -1467,9 +1519,21 @@
     "named": true,
     "fields": {
       "effects": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "binary",
+            "named": true
+          },
           {
             "type": "effect",
             "named": true
@@ -1481,39 +1545,73 @@
           {
             "type": "polymorphic_effect",
             "named": true
+          },
+          {
+            "type": "~",
+            "named": false
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "polymorphic_identifier",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_function",
+            "named": true
+          },
+          {
+            "type": "type_primitive",
+            "named": true
+          },
+          {
+            "type": "type_record",
+            "named": true
+          },
+          {
+            "type": "type_tuple",
+            "named": true
+          }
+        ]
+      },
+      "return_type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "polymorphic_identifier",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_function",
+            "named": true
+          },
+          {
+            "type": "type_primitive",
+            "named": true
+          },
+          {
+            "type": "type_record",
+            "named": true
+          },
+          {
+            "type": "type_tuple",
+            "named": true
           }
         ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "polymorphic_identifier",
-          "named": true
-        },
-        {
-          "type": "type",
-          "named": true
-        },
-        {
-          "type": "type_function",
-          "named": true
-        },
-        {
-          "type": "type_primitive",
-          "named": true
-        },
-        {
-          "type": "type_record",
-          "named": true
-        },
-        {
-          "type": "type_tuple",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -2094,6 +2192,10 @@
     "named": false
   },
   {
+    "type": "operator",
+    "named": true
+  },
+  {
     "type": "or",
     "named": false
   },
@@ -2175,6 +2277,10 @@
   },
   {
     "type": "}",
+    "named": false
+  },
+  {
+    "type": "~",
     "named": false
   },
   {

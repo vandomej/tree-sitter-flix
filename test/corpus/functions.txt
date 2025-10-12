@@ -169,3 +169,52 @@ def my_function[t: Type](v: t) = ()
         (identifier)
         (polymorphic_identifier)))
     (unit)))
+
+=====
+user defined operator function
+=====
+
+def ->>(f: a -> b \ ef1, g: b -> c \ ef2): a -> c \ ((ef1 + ef2 + (ef1 + ef2))) = x -> g(f(x))
+
+---
+
+(program
+  (function_declaration
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (type_function
+          (polymorphic_identifier)
+          (polymorphic_identifier)
+          (polymorphic_effect)))
+      (parameter
+        (identifier)
+        (type_function
+          (polymorphic_identifier)
+          (polymorphic_identifier)
+          (polymorphic_effect))))
+    (type_function
+      (polymorphic_identifier)
+      (polymorphic_identifier))
+    (effects
+      (binary
+        (binary
+          (polymorphic_effect)
+          (operator)
+          (polymorphic_effect))
+        (operator)
+        (binary
+          (polymorphic_effect)
+          (operator)
+          (polymorphic_effect))))
+    (binary
+      (identifier)
+      (user_operator)
+      (call_expression
+        (identifier)
+        (arguments
+          (call_expression
+            (identifier)
+            (arguments
+              (identifier))))))))

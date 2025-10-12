@@ -452,3 +452,25 @@ def main(): Listi[Int32] = List.map(match (x, y) -> x + y, (1, 1) :: (2, 2) :: N
               (integer)
               (integer)))
           (nil))))))
+
+=====
+operator call expression
+=====
+
+def main(): String = (foo >> bar)(1)
+
+---
+
+(program
+  (function_declaration
+    (identifier)
+    (parameters)
+    (type_primitive)
+    (call_expression
+      (group
+        (binary
+          (identifier)
+          (user_operator)
+          (identifier)))
+      (arguments
+        (integer)))))
