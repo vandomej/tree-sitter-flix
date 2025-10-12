@@ -223,3 +223,32 @@ type alias M[k, v] = Map[k, Result[String, v]]
           (type_arguments
             (type_primitive)
             (polymorphic_identifier)))))))
+
+=====
+trait declaration
+=====
+
+trait Equatable[t] {
+    pub def equals(x: t, y: t): Bool
+}
+
+---
+
+(program
+  (trait_declaration
+    (type
+      (identifier)
+      (type_arguments
+        (polymorphic_identifier)))
+    (function_definition
+      (modifiers
+        (modifier))
+      name: (identifier)
+      parameters: (parameters
+        (parameter
+          name: (identifier)
+          type: (polymorphic_identifier))
+        (parameter
+          name: (identifier)
+          type: (polymorphic_identifier)))
+      return_type: (type_primitive))))

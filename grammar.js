@@ -62,6 +62,7 @@ module.exports = grammar({
         $.enum_declaration,
         $.module_declaration,
         $.type_alias_declaration,
+        $.trait_declaration,
       ),
 
     //////// MODULES ////////////
@@ -160,6 +161,34 @@ module.exports = grammar({
         "=",
         field("body", $._stmt),
       ),
+
+    function_definition: ($) =>
+      seq(
+        optional($.annotations),
+        optional($.modifiers),
+        "def",
+        field("name", $._lowercase_name),
+        optional(
+          field(
+            "type_parameters",
+            $.type_parameters,
+          ),
+        ),
+        field("parameters", $.parameters),
+        optional(
+          seq(
+            ":",
+            field("return_type", $._type),
+          ),
+        ),
+        optional(
+          seq(
+            "\\",
+            field("effects", $._effects),
+          ),
+        ),
+      ),
+
     parameters: ($) =>
       seq(
         "(",
@@ -645,7 +674,7 @@ module.exports = grammar({
           ),
         ),
       ),
-    type_record: ($) =>
+    type_record: $ =>
       seq(
         "{",
         zero_or_more($.type_record_item),
@@ -654,14 +683,22 @@ module.exports = grammar({
         ),
         "}",
       ),
-    type_record_item: ($) =>
+    type_record_item: $ =>
       seq($._lowercase_name, "=", $._type),
-    type_alias_declaration: ($) =>
+    type_alias_declaration: $ =>
       seq(
         token("type alias"),
         $._type,
         "=",
         $._type,
+      ),
+    trait_declaration: $ =>
+      seq(
+        "trait",
+        $.type,
+        "{",
+        one_or_more($.function_definition),
+        "}",
       ),
 
     /////// COMMENTS ////////////

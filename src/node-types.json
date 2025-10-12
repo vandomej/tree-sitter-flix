@@ -16,6 +16,10 @@
         "named": true
       },
       {
+        "type": "trait_declaration",
+        "named": true
+      },
+      {
         "type": "type_alias_declaration",
         "named": true
       }
@@ -743,6 +747,104 @@
     }
   },
   {
+    "type": "function_definition",
+    "named": true,
+    "fields": {
+      "effects": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "effect",
+            "named": true
+          },
+          {
+            "type": "effects",
+            "named": true
+          },
+          {
+            "type": "polymorphic_effect",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "parameters",
+            "named": true
+          }
+        ]
+      },
+      "return_type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "polymorphic_identifier",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_function",
+            "named": true
+          },
+          {
+            "type": "type_primitive",
+            "named": true
+          },
+          {
+            "type": "type_record",
+            "named": true
+          },
+          {
+            "type": "type_tuple",
+            "named": true
+          }
+        ]
+      },
+      "type_parameters": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "type_parameters",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "annotations",
+          "named": true
+        },
+        {
+          "type": "modifiers",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "gets",
     "named": true,
     "fields": {},
@@ -1145,6 +1247,25 @@
       "types": [
         {
           "type": "escape_sequence",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "trait_declaration",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "function_definition",
+          "named": true
+        },
+        {
+          "type": "type",
           "named": true
         }
       ]
@@ -1919,6 +2040,10 @@
   },
   {
     "type": "sealed",
+    "named": false
+  },
+  {
+    "type": "trait",
     "named": false
   },
   {
