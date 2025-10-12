@@ -37,16 +37,26 @@ const one_or_more = (item) =>
 const zero_or_more = (item) =>
   zero_or_more_by(item, ",");
 
-
-const one_or_more_optionally_by = (item, sep) =>
-  seq(repeat(seq(item, optional(sep))), item);
-const zero_or_more_optionally_by = (item, sep) =>
-  optional(one_or_more_optionally_by(item, sep));
+const one_or_more_optionally_by = (
+  item,
+  sep,
+) =>
+  seq(
+    repeat(seq(item, optional(sep))),
+    item,
+  );
+const zero_or_more_optionally_by = (
+  item,
+  sep,
+) =>
+  optional(
+    one_or_more_optionally_by(item, sep),
+  );
 // Lists of items optionally separated by ","
 const one_or_more_optionally = (item) =>
   one_or_more_optionally_by(item, ",");
 const zero_or_more_optionally = (item) =>
-  zero_or_more_optionally_by(item, ","); 
+  zero_or_more_optionally_by(item, ",");
 
 module.exports = grammar({
   name: "flix",
@@ -124,7 +134,12 @@ module.exports = grammar({
             "traits",
             seq(
               "with",
-              one_or_more(alias($.uppercase_name, $.trait)),
+              one_or_more(
+                alias(
+                  $.uppercase_name,
+                  $.trait,
+                ),
+              ),
             ),
           ),
         ),
@@ -137,7 +152,9 @@ module.exports = grammar({
     constructors: ($) =>
       seq(
         "{",
-        one_or_more_optionally($.constructor),
+        one_or_more_optionally(
+          $.constructor,
+        ),
         "}",
       ),
     constructor: ($) =>
@@ -396,12 +413,12 @@ module.exports = grammar({
         "=>",
         field("expression", $._expression),
       ),
-    _pattern_cons: $ =>
+    _pattern_cons: ($) =>
       seq(
         $._pattern,
         optional(seq("::", $._pattern)),
       ),
-    _pattern: $ =>
+    _pattern: ($) =>
       choice(
         "_",
         $._literal,
@@ -414,7 +431,7 @@ module.exports = grammar({
         alias($._pattern_tuple, $.tuple),
       ),
     pattern_constructor: ($) =>
-       prec(
+      prec(
         PREC.pattern_constructor,
         seq(
           choice(
@@ -704,7 +721,7 @@ module.exports = grammar({
           ),
         ),
       ),
-    type_record: $ =>
+    type_record: ($) =>
       seq(
         "{",
         zero_or_more($.type_record_item),
@@ -713,35 +730,42 @@ module.exports = grammar({
         ),
         "}",
       ),
-    type_record_item: $ =>
+    type_record_item: ($) =>
       seq($._lowercase_name, "=", $._type),
-    type_alias_declaration: $ =>
+    type_alias_declaration: ($) =>
       seq(
         token("type alias"),
         $._type,
         "=",
         $._type,
       ),
-    trait_declaration: $ =>
+    trait_declaration: ($) =>
       seq(
         optional($.modifiers),
         "trait",
         field("trait", $.type),
         "{",
-        field("body", one_or_more($.function_definition)),
+        field(
+          "body",
+          one_or_more($.function_definition),
+        ),
         "}",
       ),
-    trait_implementation: $ =>
+    trait_implementation: ($) =>
       seq(
         "instance",
         field("type", $.type),
         "with",
         field("trait", $.type),
         "{",
-        field("body", one_or_more($.function_declaration)),
+        field(
+          "body",
+          one_or_more(
+            $.function_declaration,
+          ),
+        ),
         "}",
       ),
-    
 
     /////// COMMENTS ////////////
     // TODO: Doc and block comments
