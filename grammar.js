@@ -24,6 +24,7 @@ const PREC = {
   cons: 3,
   append: 2,
   assign: 1,
+  pattern_constructor: -1,
 };
 
 const one_or_more_by = (item, sep) =>
@@ -63,6 +64,7 @@ module.exports = grammar({
         $.module_declaration,
         $.type_alias_declaration,
         $.trait_declaration,
+        $.trait_implementation,
       ),
 
     //////// MODULES ////////////
@@ -374,16 +376,17 @@ module.exports = grammar({
         "=>",
         field("expression", $._expression),
       ),
-    _pattern_cons: ($) =>
+    _pattern_cons: $ =>
       seq(
         $._pattern,
         optional(seq("::", $._pattern)),
       ),
-    _pattern: ($) =>
+    _pattern: $ =>
       choice(
         "_",
         $._literal,
         $._lowercase_name,
+        $._uppercase_name,
         alias(
           $.pattern_constructor,
           $.constructor,
@@ -391,9 +394,16 @@ module.exports = grammar({
         alias($._pattern_tuple, $.tuple),
       ),
     pattern_constructor: ($) =>
-      seq(
-        $.field,
-        optional($._pattern_tuple),
+       prec(
+        PREC.pattern_constructor,
+        seq(
+          choice(
+            $._lowercase_name,
+            $._uppercase_name,
+            $.field,
+          ),
+          optional($._pattern_tuple),
+        ),
       ),
     _pattern_tuple: ($) =>
       seq(
@@ -695,11 +705,22 @@ module.exports = grammar({
     trait_declaration: $ =>
       seq(
         "trait",
-        $.type,
+        field("trait", $.type),
         "{",
-        one_or_more($.function_definition),
+        field("body", one_or_more($.function_definition)),
         "}",
       ),
+    trait_implementation: $ =>
+      seq(
+        "instance",
+        field("type", $.type),
+        "with",
+        field("trait", $.type),
+        "{",
+        field("body", one_or_more($.function_declaration)),
+        "}",
+      ),
+    
 
     /////// COMMENTS ////////////
     // TODO: Doc and block comments

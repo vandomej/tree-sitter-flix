@@ -243,12 +243,85 @@ trait Equatable[t] {
     (function_definition
       (modifiers
         (modifier))
-      name: (identifier)
-      parameters: (parameters
+      (identifier)
+      (parameters
         (parameter
-          name: (identifier)
-          type: (polymorphic_identifier))
+          (identifier)
+          (polymorphic_identifier))
         (parameter
-          name: (identifier)
-          type: (polymorphic_identifier)))
-      return_type: (type_primitive))))
+          (identifier)
+          (polymorphic_identifier)))
+      (type_primitive))))
+
+=====
+trait instance
+=====
+
+instance Equatable[Option[t]] with Equatable[t] {
+    pub def equals(x: Option[t], y: Option[t]): Bool = 
+        match (x, y) {
+            case (None, None)         => true
+            case (Some(v1), Some(v2)) => Equatable.equals(v1, v2)
+            case _                    => false
+        }
+}
+
+---
+
+(program
+  (trait_implementation
+    (type
+      (identifier)
+      (type_arguments
+        (type
+          (identifier)
+          (type_arguments
+            (polymorphic_identifier)))))
+    (type
+      (identifier)
+      (type_arguments
+        (polymorphic_identifier)))
+    (function_declaration
+      (modifiers
+        (modifier))
+      (identifier)
+      (parameters
+        (parameter
+          (identifier)
+          (type
+            (identifier)
+            (type_arguments
+              (polymorphic_identifier))))
+        (parameter
+          (identifier)
+          (type
+            (identifier)
+            (type_arguments
+              (polymorphic_identifier)))))
+      (type_primitive)
+      (match
+        (tuple
+          (identifier)
+          (identifier))
+        (case
+          (tuple
+            (identifier)
+            (identifier))
+          (boolean))
+        (case
+          (tuple
+            (constructor
+              (identifier)
+              (identifier))
+            (constructor
+              (identifier)
+              (identifier)))
+          (call_expression
+            (field
+              (identifier)
+              (identifier))
+            (arguments
+              (identifier)
+              (identifier))))
+        (case
+          (boolean))))))

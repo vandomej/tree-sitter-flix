@@ -20,6 +20,10 @@
         "named": true
       },
       {
+        "type": "trait_implementation",
+        "named": true
+      },
+      {
         "type": "type_alias_declaration",
         "named": true
       }
@@ -1255,20 +1259,71 @@
   {
     "type": "trait_declaration",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "function_definition",
-          "named": true
-        },
-        {
-          "type": "type",
-          "named": true
-        }
-      ]
+    "fields": {
+      "body": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "function_definition",
+            "named": true
+          }
+        ]
+      },
+      "trait": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "type",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "trait_implementation",
+    "named": true,
+    "fields": {
+      "body": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "function_declaration",
+            "named": true
+          }
+        ]
+      },
+      "trait": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "type",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "type",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1971,6 +2026,10 @@
     "named": false
   },
   {
+    "type": "instance",
+    "named": false
+  },
+  {
     "type": "integer",
     "named": true
   },
@@ -2061,6 +2120,10 @@
   {
     "type": "user_operator",
     "named": true
+  },
+  {
+    "type": "with",
+    "named": false
   },
   {
     "type": "yield",
