@@ -960,7 +960,7 @@
           "name": "effect",
           "content": {
             "type": "SYMBOL",
-            "name": "uppercase_name"
+            "name": "_uppercase_name"
           }
         },
         {
@@ -1128,6 +1128,10 @@
               "value": "resume"
             }
           ]
+        },
+        {
+          "type": "STRING",
+          "value": "_"
         }
       ]
     },
@@ -1385,6 +1389,10 @@
                 {
                   "type": "SYMBOL",
                   "name": "group"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "call_expression"
                 }
               ]
             }
@@ -3262,6 +3270,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "none"
+        },
+        {
+          "type": "SYMBOL",
           "name": "unit"
         },
         {
@@ -3309,6 +3321,10 @@
     "nil": {
       "type": "PATTERN",
       "value": "Nil"
+    },
+    "none": {
+      "type": "PATTERN",
+      "value": "None"
     },
     "unit": {
       "type": "PREC",

@@ -305,8 +305,8 @@ instance Equatable[Option[t]] with Equatable[t] {
           (identifier))
         (case
           (tuple
-            (identifier)
-            (identifier))
+            (none)
+            (none))
           (boolean))
         (case
           (tuple

@@ -55,7 +55,7 @@ def main(): Unit \ IO =
               (integer)
               (integer)))))
       (effect_handler
-        (uppercase_name)
+        (identifier)
         (function_declaration
           (identifier)
           (parameters
@@ -65,3 +65,56 @@ def main(): Unit \ IO =
             (identifier)
             (arguments
               (string))))))))
+=====
+chained effect handlers
+=====
+
+def main(): Unit \ IO = 
+    run {
+        greeting()
+    } with handler Ask {
+        def ask(_, resume) = resume("Bond, James Bond")
+    } with handler Say {
+        def say(s, resume) = { println(s); resume() }
+    }
+
+---
+
+(program
+	(function_declaration
+	    (identifier)
+	    (parameters)
+	    (type_primitive)
+	    (effect)
+	    (effect_block
+	      (call_expression
+	        (identifier)
+	        (arguments))
+	      (effect_handler
+	        (identifier)
+	        (function_declaration
+	          (identifier)
+	          (parameters
+	            (parameter)
+	            (parameter))
+	          (call_expression
+	            (identifier)
+	            (arguments
+	              (string)))))
+	      (effect_handler
+	        (identifier)
+	        (function_declaration
+	          (identifier)
+	          (parameters
+	            (parameter
+	              (identifier))
+	            (parameter))
+	          (block
+	            (call_expression
+	              (identifier)
+	              (arguments
+	                (identifier)))
+	            (call_expression
+	              (identifier)
+	              (arguments))))))))
+

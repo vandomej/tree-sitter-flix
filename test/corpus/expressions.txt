@@ -419,10 +419,13 @@ def main(): Int32 = match a {
         (boolean)))))
 
 =====
-match lambdas
+match lambda
 =====
+
 def main(): Listi[Int32] = List.map(match (x, y) -> x + y, (1, 1) :: (2, 2) :: Nil)
+
 ---
+
 (program
   (function_declaration
     (identifier)
@@ -474,3 +477,100 @@ def main(): String = (foo >> bar)(1)
           (identifier)))
       (arguments
         (integer)))))
+
+=====
+return type none
+=====
+
+def handleExc(f: a -> b \ ef): a -> Option[b] \ ef - Exc = 
+    x -> run {
+        Some(f(x))
+    } with handler Exc {
+        def raise(_, _) = None
+    }
+
+---
+
+(program
+  (function_declaration
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (type_function
+          (polymorphic_identifier)
+          (polymorphic_identifier)
+          (polymorphic_effect))))
+    (type_function
+      (polymorphic_identifier)
+      (type
+        (identifier)
+        (type_arguments
+          (polymorphic_identifier))))
+    (binary
+      (polymorphic_effect)
+      (operator)
+      (effect))
+    (binary
+      (lambda
+        (polymorphic_identifier)
+        (effect_block
+          (call_expression
+            (identifier)
+            (arguments
+              (call_expression
+                (identifier)
+                (arguments
+                  (identifier)))))
+          (effect_handler
+            (identifier)
+            (function_declaration
+              (identifier)
+              (parameters
+                (parameter)
+                (parameter))
+              (none))))))))
+
+=====
+chained call expression
+=====
+
+def main(): Unit \ IO = {
+    handleAmb(handleExc(drunkFlip))() |> println;
+
+    handleExc(handleAmb(drunkFlip))() |> println
+}
+
+---
+
+(program
+  (function_declaration
+    (identifier)
+    (parameters)
+    (type_primitive)
+    (effect)
+    (block
+      (binary
+        (call_expression
+          (call_expression
+            (identifier)
+            (arguments
+              (call_expression
+                (identifier)
+                (arguments
+                  (identifier)))))
+          (arguments))
+        (user_operator)
+        (identifier))
+      (binary
+        (call_expression
+          (call_expression
+            (identifier)
+            (arguments
+              (call_expression
+                (identifier)
+                (arguments
+                  (identifier)))))
+          (arguments))
+        (user_operator)
+        (identifier)))))

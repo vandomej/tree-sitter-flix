@@ -152,6 +152,10 @@
         "named": true
       },
       {
+        "type": "none",
+        "named": true
+      },
+      {
         "type": "record",
         "named": true
       },
@@ -291,6 +295,10 @@
         "multiple": false,
         "required": true,
         "types": [
+          {
+            "type": "call_expression",
+            "named": true
+          },
           {
             "type": "field",
             "named": true
@@ -548,7 +556,7 @@
         "required": true,
         "types": [
           {
-            "type": "uppercase_name",
+            "type": "identifier",
             "named": true
           }
         ]
@@ -2285,6 +2293,10 @@
     "named": true
   },
   {
+    "type": "none",
+    "named": true
+  },
+  {
     "type": "not",
     "named": false
   },
@@ -2342,11 +2354,11 @@
   },
   {
     "type": "trait",
-    "named": true
+    "named": false
   },
   {
     "type": "trait",
-    "named": false
+    "named": true
   },
   {
     "type": "true",
@@ -2355,10 +2367,6 @@
   {
     "type": "type alias",
     "named": false
-  },
-  {
-    "type": "uppercase_name",
-    "named": true
   },
   {
     "type": "use",

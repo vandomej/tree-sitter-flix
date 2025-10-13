@@ -293,7 +293,7 @@ module.exports = grammar({
     effect_handler: ($) =>
       seq(
         token("with handler"),
-        field("effect", $.uppercase_name),
+        field("effect", $._uppercase_name),
         "{",
         repeat1(
           alias(
@@ -342,6 +342,7 @@ module.exports = grammar({
       choice(
         $._lowercase_name,
         seq(optional("_"), "resume"),
+        "_",
       ),
 
     /////// TYPE PARAMETERS ///////
@@ -411,6 +412,7 @@ module.exports = grammar({
               $._uppercase_name,
               $.field,
               $.group,
+              $.call_expression,
             ),
           ),
           field("arguments", $.arguments),
@@ -871,6 +873,7 @@ module.exports = grammar({
     _literal: ($) =>
       choice(
         $.nil,
+        $.none,
         $.unit,
         $.integer,
         $.float,
@@ -884,6 +887,7 @@ module.exports = grammar({
         $.record,
       ),
     nil: ($) => /Nil/,
+    none: ($) => /None/,
     unit: ($) => prec(100, seq("(", ")")),
     integer: ($) =>
       /\d+(i8|i16|i32|i64|ii)?/,
