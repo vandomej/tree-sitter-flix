@@ -1,0 +1,67 @@
+=====
+effect definition
+=====
+
+eff DivByZero {
+  def divByZero(): Void
+}
+
+---
+
+(program
+  (effect_declaration
+    (identifier)
+    (function_definition
+      (identifier)
+      (parameters)
+      (type_primitive))))
+
+=====
+effect handler
+=====
+
+
+def main(): Unit \ IO = 
+    run {
+        println(divide(3, 2));
+        println(divide(3, 0))
+    } with handler DivByZero {
+        def divByZero(_resume) = println("Oops: Division by Zero!")
+    }
+
+---
+
+(program
+  (function_declaration
+    (identifier)
+    (parameters)
+    (type_primitive)
+    (effect)
+    (effect_block
+      (call_expression
+        (identifier)
+        (arguments
+          (call_expression
+            (identifier)
+            (arguments
+              (integer)
+              (integer)))))
+      (call_expression
+        (identifier)
+        (arguments
+          (call_expression
+            (identifier)
+            (arguments
+              (integer)
+              (integer)))))
+      (effect_handler
+        (uppercase_name)
+        (function_declaration
+          (identifier)
+          (parameters
+            (parameter
+              (identifier)))
+          (call_expression
+            (identifier)
+            (arguments
+              (string))))))))

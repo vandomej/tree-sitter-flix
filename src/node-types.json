@@ -4,6 +4,10 @@
     "named": true,
     "subtypes": [
       {
+        "type": "effect_declaration",
+        "named": true
+      },
+      {
         "type": "enum_declaration",
         "named": true
       },
@@ -55,6 +59,10 @@
       },
       {
         "type": "deref",
+        "named": true
+      },
+      {
+        "type": "effect_block",
         "named": true
       },
       {
@@ -477,6 +485,81 @@
       "types": [
         {
           "type": "_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "effect_block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "_expression",
+          "named": true
+        },
+        {
+          "type": "effect_handler",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "effect_declaration",
+    "named": true,
+    "fields": {
+      "body": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "function_definition",
+            "named": true
+          }
+        ]
+      },
+      "effect": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "effect_handler",
+    "named": true,
+    "fields": {
+      "effect": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "uppercase_name",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "function_declaration",
           "named": true
         }
       ]
@@ -1142,7 +1225,7 @@
     "fields": {
       "name": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "identifier",
@@ -1152,7 +1235,7 @@
       },
       "type": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "polymorphic_identifier",
@@ -1180,6 +1263,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -2056,6 +2149,10 @@
     "named": false
   },
   {
+    "type": "Void",
+    "named": false
+  },
+  {
     "type": "[",
     "named": false
   },
@@ -2101,6 +2198,10 @@
   },
   {
     "type": "deref",
+    "named": false
+  },
+  {
+    "type": "eff",
     "named": false
   },
   {
@@ -2228,6 +2329,14 @@
     "named": false
   },
   {
+    "type": "resume",
+    "named": false
+  },
+  {
+    "type": "run",
+    "named": false
+  },
+  {
     "type": "sealed",
     "named": false
   },
@@ -2248,6 +2357,10 @@
     "named": false
   },
   {
+    "type": "uppercase_name",
+    "named": true
+  },
+  {
     "type": "use",
     "named": false
   },
@@ -2257,6 +2370,10 @@
   },
   {
     "type": "with",
+    "named": false
+  },
+  {
+    "type": "with handler",
     "named": false
   },
   {
