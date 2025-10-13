@@ -208,9 +208,8 @@ def ->>(f: a -> b \ ef1, g: b -> c \ ef2): a -> c \ ((ef1 + ef2 + (ef1 + ef2))) 
           (polymorphic_effect)
           (operator)
           (polymorphic_effect))))
-    (binary
-      (identifier)
-      (user_operator)
+    (lambda
+      (polymorphic_identifier)
       (call_expression
         (identifier)
         (arguments

@@ -1359,6 +1359,10 @@
         {
           "type": "SYMBOL",
           "name": "effect_block"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "lambda"
         }
       ]
     },
@@ -1453,6 +1457,49 @@
           "value": ")"
         }
       ]
+    },
+    "lambda": {
+      "type": "PREC",
+      "value": -2,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "parameters",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "tuple"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "lowercase_name"
+                  },
+                  "named": true,
+                  "value": "polymorphic_identifier"
+                }
+              ]
+            }
+          },
+          {
+            "type": "STRING",
+            "value": "->"
+          },
+          {
+            "type": "FIELD",
+            "name": "body",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_expression"
+            }
+          }
+        ]
+      }
     },
     "for_applicative": {
       "type": "SEQ",

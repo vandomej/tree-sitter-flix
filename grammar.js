@@ -26,6 +26,7 @@ const PREC = {
   assign: 1,
   effects: 1,
   pattern_constructor: -1,
+  lambda: -2,
 };
 
 const one_or_more_by = (item, sep) =>
@@ -400,6 +401,7 @@ module.exports = grammar({
         $.call_expression,
         $.tuple,
         $.effect_block,
+        $.lambda,
       ),
     call_expression: ($) =>
       prec(
@@ -423,6 +425,21 @@ module.exports = grammar({
         "(",
         zero_or_more($._expression),
         ")",
+      ),
+    lambda: ($) =>
+      prec(
+        PREC.lambda,
+        seq(
+          field(
+            "parameters",
+            choice(
+              $.tuple,
+              alias($.lowercase_name, $.polymorphic_identifier),
+            ),
+          ),
+          "->",
+          field("body", $._expression),
+        ),
       ),
 
     ///////// CONTROL STRUCTURES /////////////

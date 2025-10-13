@@ -94,6 +94,10 @@
         "named": true
       },
       {
+        "type": "lambda",
+        "named": true
+      },
+      {
         "type": "let",
         "named": true
       },
@@ -1073,6 +1077,36 @@
     "type": "kind",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "lambda",
+    "named": true,
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_expression",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "polymorphic_identifier",
+            "named": true
+          },
+          {
+            "type": "tuple",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "let",
@@ -2354,11 +2388,11 @@
   },
   {
     "type": "trait",
-    "named": false
+    "named": true
   },
   {
     "type": "trait",
-    "named": true
+    "named": false
   },
   {
     "type": "true",

@@ -511,26 +511,25 @@ def handleExc(f: a -> b \ ef): a -> Option[b] \ ef - Exc =
       (polymorphic_effect)
       (operator)
       (effect))
-    (binary
-      (lambda
-        (polymorphic_identifier)
-        (effect_block
-          (call_expression
-            (identifier)
-            (arguments
-              (call_expression
-                (identifier)
-                (arguments
-                  (identifier)))))
-          (effect_handler
-            (identifier)
-            (function_declaration
+    (lambda
+      (polymorphic_identifier)
+      (effect_block
+        (call_expression
+          (identifier)
+          (arguments
+            (call_expression
               (identifier)
-              (parameters
-                (parameter)
-                (parameter))
-              (none))))))))
-
+              (arguments
+                (identifier)))))
+        (effect_handler
+          (identifier)
+          (function_declaration
+            (identifier)
+            (parameters
+              (parameter)
+              (parameter))
+            (none)))))))
+            
 =====
 chained call expression
 =====
