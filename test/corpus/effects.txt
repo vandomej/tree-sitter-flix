@@ -36,7 +36,8 @@ def main(): Unit \ IO =
     (identifier)
     (parameters)
     (type_primitive)
-    (effect)
+    (effects
+	  (effect))
     (effect_block
       (call_expression
         (identifier)
@@ -65,6 +66,7 @@ def main(): Unit \ IO =
             (identifier)
             (arguments
               (string))))))))
+
 =====
 chained effect handlers
 =====
@@ -85,7 +87,8 @@ def main(): Unit \ IO =
 	    (identifier)
 	    (parameters)
 	    (type_primitive)
-	    (effect)
+	    (effects
+		  (effect))
 	    (effect_block
 	      (call_expression
 	        (identifier)
@@ -118,3 +121,229 @@ def main(): Unit \ IO =
 	              (identifier)
 	              (arguments))))))))
 
+=====
+weird effect signature 1
+=====
+
+def effectsWeird(f: Unit -> a \ ef1, g: a -> b \ ef2): b \ {{ef1 + ef2}, (IO + (~ef1 - ~ef2))} =
+    println("IO usage");
+    g(f())
+	
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters
+      (parameter
+        name: (identifier)
+        type: (type_function
+          parameters: (type_primitive)
+          return_type: (polymorphic_identifier)
+          effects: (effects
+            (polymorphic_effect))))
+      (parameter
+        name: (identifier)
+        type: (type_function
+          parameters: (polymorphic_identifier)
+          return_type: (polymorphic_identifier)
+          effects: (effects
+            (polymorphic_effect)))))
+    return_type: (polymorphic_identifier)
+    effects: (effects
+      (group_effect
+        (group_effect
+          (binary_effect
+            (polymorphic_effect)
+            (operator)
+            (polymorphic_effect)))
+        (group_effect
+          (binary_effect
+            (effect)
+            (operator)
+            (group_effect
+              (binary_effect
+                (unary_effect
+                  (polymorphic_effect))
+                (operator)
+                (unary_effect
+                  (polymorphic_effect))))))))
+    body: (call_expression
+      function: (identifier)
+      arguments: (arguments
+        (string)))
+    body: (call_expression
+      function: (identifier)
+      arguments: (arguments
+        (call_expression
+          function: (identifier)
+          arguments: (arguments))))))
+		
+=====
+weird effect signature 2
+=====
+
+def effectsWeird2(f: Unit -> a \ ef1, g: a -> b \ ef2): b \ {{ef1 + ef2}, {IO, (~ef1 - ~ef2)}} =
+    println("IO usage");
+    g(f())
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters
+      (parameter
+        name: (identifier)
+        type: (type_function
+          parameters: (type_primitive)
+          return_type: (polymorphic_identifier)
+          effects: (effects
+            (polymorphic_effect))))
+      (parameter
+        name: (identifier)
+        type: (type_function
+          parameters: (polymorphic_identifier)
+          return_type: (polymorphic_identifier)
+          effects: (effects
+            (polymorphic_effect)))))
+    return_type: (polymorphic_identifier)
+    effects: (effects
+      (group_effect
+        (group_effect
+          (binary_effect
+            (polymorphic_effect)
+            (operator)
+            (polymorphic_effect)))
+        (group_effect
+          (effect)
+          (group_effect
+            (binary_effect
+              (unary_effect
+                (polymorphic_effect))
+              (operator)
+              (unary_effect
+                (polymorphic_effect)))))))
+    body: (call_expression
+      function: (identifier)
+      arguments: (arguments
+        (string)))
+    body: (call_expression
+      function: (identifier)
+      arguments: (arguments
+        (call_expression
+          function: (identifier)
+          arguments: (arguments))))))
+
+=====
+weird effect signature 3
+=====
+
+def effectsWeird3(f: Unit -> a \ ef1, g: a -> b \ ef2): b \ ef1 + ef2 =
+    g(f())
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters
+      (parameter
+        name: (identifier)
+        type: (type_function
+          parameters: (type_primitive)
+          return_type: (polymorphic_identifier)
+          effects: (effects
+            (polymorphic_effect))))
+      (parameter
+        name: (identifier)
+        type: (type_function
+          parameters: (polymorphic_identifier)
+          return_type: (polymorphic_identifier)
+          effects: (effects
+            (polymorphic_effect)))))
+    return_type: (polymorphic_identifier)
+    effects: (effects
+      (binary_effect
+        (polymorphic_effect)
+        (operator)
+        (polymorphic_effect)))
+    body: (call_expression
+      function: (identifier)
+      arguments: (arguments
+        (call_expression
+          function: (identifier)
+          arguments: (arguments))))))
+
+=====
+pre-defined effect handler
+=====
+
+def main(): Unit \ IO =
+    run {
+        let timestamp = Clock.currentTime(TimeUnit.Milliseconds);
+        println("${timestamp} ms since the epoc")
+    } with Clock.runWithIO
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type_primitive)
+    effects: (effects
+      (effect))
+    body: (effect_block
+      (let
+        (identifier)
+        (call_expression
+          function: (field
+            (identifier)
+            (identifier))
+          arguments: (arguments
+            (field
+              (identifier)
+              (identifier)))))
+      (call_expression
+        function: (identifier)
+        arguments: (arguments
+          (string)))
+      (effect_handler
+        (field
+          (identifier)
+          (identifier))))))
+
+=====
+user-defined effect handler
+====
+
+def main(): Unit \ IO =
+    run {
+        let result = Amb.flip();
+        println("You flipped: ${result}")
+    } with runWithIO
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type_primitive)
+    effects: (effects
+      (effect))
+    body: (effect_block
+      (let
+        (identifier)
+        (call_expression
+          function: (field
+            (identifier)
+            (identifier))
+          arguments: (arguments)))
+      (call_expression
+        function: (identifier)
+        arguments: (arguments
+          (string)))
+      (effect_handler
+        (identifier)))))

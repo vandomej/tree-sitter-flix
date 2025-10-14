@@ -78,7 +78,8 @@ def main() \ IO = false
   (function_declaration
     (identifier)
     (parameters)
-    (effect)
+    (effects
+      (effect))
     (boolean)))
 
 =====
@@ -94,13 +95,14 @@ def main() \ {IO, Read, Write} = false
     (identifier)
     (parameters)
     (effects
-      (effect)
-      (effect)
-      (effect))
+      (group_effect
+        (effect)
+        (effect)
+        (effect)))
     (boolean)))
 
 =====
-polymorfic effect
+polymorphic effect
 =====
 
 def main() \ {IO, Read, ef} = false
@@ -112,9 +114,10 @@ def main() \ {IO, Read, ef} = false
     (identifier)
     (parameters)
     (effects
-      (effect)
-      (effect)
-      (polymorphic_effect))
+      (group_effect
+        (effect)
+        (effect)
+        (polymorphic_effect)))
     (boolean)))
 
 =====
@@ -187,27 +190,32 @@ def ->>(f: a -> b \ ef1, g: b -> c \ ef2): a -> c \ ((ef1 + ef2 + (ef1 + ef2))) 
         (type_function
           (polymorphic_identifier)
           (polymorphic_identifier)
-          (polymorphic_effect)))
+          (effects
+                (polymorphic_effect))))
       (parameter
         (identifier)
         (type_function
           (polymorphic_identifier)
           (polymorphic_identifier)
-          (polymorphic_effect))))
+          (effects
+                (polymorphic_effect)))))
     (type_function
       (polymorphic_identifier)
       (polymorphic_identifier))
     (effects
-      (binary
-        (binary
-          (polymorphic_effect)
-          (operator)
-          (polymorphic_effect))
-        (operator)
-        (binary
-          (polymorphic_effect)
-          (operator)
-          (polymorphic_effect))))
+      (group_effect
+        (group_effect
+          (binary_effect
+            (binary_effect
+              (polymorphic_effect)
+              (operator)
+              (polymorphic_effect))
+            (operator)
+            (group_effect
+              (binary_effect
+                (polymorphic_effect)
+                (operator)
+                (polymorphic_effect)))))))
     (lambda
       (polymorphic_identifier)
       (call_expression

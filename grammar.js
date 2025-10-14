@@ -211,7 +211,7 @@ module.exports = grammar({
         optional(
           seq(
             "\\",
-            field("effects", $._effects),
+            field("effects", $.effects),
           ),
         ),
       ),
@@ -230,19 +230,10 @@ module.exports = grammar({
       ),
 
     /////// EFFECTS ///////
-    _effects: ($) =>
-      choice($.effects, $._effect),
     effects: ($) =>
       prec(
         PREC.effects,
-        choice(
-          seq(
-            "{",
-            zero_or_more($._effect),
-            "}",
-          ),
-          $._effect_group,
-        ),
+        one_or_more($._effect),
       ),
     _effect: ($) =>
       choice(
@@ -251,13 +242,13 @@ module.exports = grammar({
           $.lowercase_name,
           $.polymorphic_effect,
         ),
-        $._effect_unary,
-        alias($._effect_binary, $.binary),
-        $._effect_group,
+        $.group_effect,
+        $.binary_effect,
+        $.unary_effect,
       ),
-    _effect_unary: ($) =>
+    unary_effect: ($) =>
       prec(PREC.unary, seq("~", $._effect)),
-    _effect_binary: ($) =>
+    binary_effect: ($) =>
       prec.left(
         seq(
           $._effect,
@@ -268,10 +259,11 @@ module.exports = grammar({
           $._effect,
         ),
       ),
-    _effect_group: ($) =>
-      seq("(", $._effect, ")"),
-    _effect_binary_operators: ($) =>
-      /[\+\-&]/,
+    group_effect: ($) =>
+      choice(
+        seq("{", one_or_more($._effect), "}"),
+        seq("(", $._effect, ")"),
+      ),
     effect_declaration: ($) =>
       seq(
         "eff",
@@ -293,16 +285,27 @@ module.exports = grammar({
       ),
     effect_handler: ($) =>
       seq(
-        token("with handler"),
-        field("effect", $._uppercase_name),
-        "{",
-        repeat1(
-          alias(
-            $._effect_function,
-            $.function_declaration,
+        "with",
+        choice(
+          seq(
+            "handler",
+            field("effect", $._uppercase_name),
+            "{",
+            repeat1(
+              alias(
+                $._effect_function,
+                $.function_declaration,
+              ),
+            ),
+            "}",
+          ),
+          seq(
+            choice(
+              $.field,
+              $._lowercase_name
+            ),
           ),
         ),
-        "}",
       ),
     _effect_function: ($) =>
       seq(
@@ -828,7 +831,7 @@ module.exports = grammar({
           optional(
             seq(
               "\\",
-              field("effects", $._effects),
+              field("effects", $.effects),
             ),
           ),
         ),

@@ -47,6 +47,9 @@
 //        def say(s, resume) = { println(s); resume() }
 //    }
 
+
+
+
 //eff Amb {
 //    def flip(): Bool
 //}
@@ -79,10 +82,50 @@
 //    }
 //
 //
-def main(): Unit \ IO = {
-    // Prints: Some(heads) :: Some(tails) :: None :: Nil
-    handleAmb(handleExc(drunkFlip))() |> println;
+//def main(): Unit \ IO = {
+//    // Prints: Some(heads) :: Some(tails) :: None :: Nil
+//    handleAmb(handleExc(drunkFlip))() |> println;
+//
+//    // Prints: None
+//    handleExc(handleAmb(drunkFlip))() |> println
+//}
 
-    // Prints: None
-    handleExc(handleAmb(drunkFlip))() |> println
-}
+
+
+
+
+//eff Amb {
+//    def flip(): Bool
+//}
+
+//def runWithIO(f: Unit -> a \ ef): a \ (ef - {Amb} + IO) =
+//def runWithIO(f: Unit -> a \ ef): a \ {ef - (Amb) + IO} =
+//def runWithIO(f: Unit -> a \ ef): a \ {{ef - (Amb) + IO}} =
+//    run {
+//        f()    
+//    } with handler Amb {
+//        def flip(resume) = resume(true)
+//    }
+//
+def main(): Unit \ IO =
+    run {
+        let result = Amb.flip();
+        println("You flipped: ${result}")
+    } with runWithIO
+
+//def effectsWeird(f: Unit -> a \ ef1, g: a -> b \ ef2): b \ {{ef1 + ef2}, (IO + (~ef1 - ~ef2))} =
+//    println("IO usage");
+//    g(f())
+//
+//def effectsWeird2(f: Unit -> a \ ef1, g: a -> b \ ef2): b \ {{ef1 + ef2}, {IO, (~ef1 - ~ef2)}} =
+//    println("IO usage");
+//    g(f())
+//
+//def effectsWeird3(f: Unit -> a \ ef1, g: a -> b \ ef2): b \ ef1 + ef2 =
+//    g(f())
+    
+def main(): Unit \ IO =
+    run {
+        let timestamp = Clock.currentTime(TimeUnit.Milliseconds);
+        println("${timestamp} ms since the epoc")
+    } with Clock.runWithIO

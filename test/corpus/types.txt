@@ -108,7 +108,8 @@ def main(a: Int32 -> Unit \ Pure): Bool -> Bool = false
         (type_function
           (type_primitive)
           (type_primitive)
-          (effect))))
+          (effects
+            (effect)))))
     (type_function
       (type_primitive)
       (type_primitive))
@@ -131,9 +132,11 @@ def main(a: Int32 -> Unit \ ef): Bool \ ef = false
         (type_function
           (type_primitive)
           (type_primitive)
-          (polymorphic_effect))))
+          (effects
+            (polymorphic_effect)))))
     (type_primitive)
-    (polymorphic_effect)
+    (effects
+      (polymorphic_effect))
     (boolean)))
 
 =====

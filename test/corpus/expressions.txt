@@ -500,17 +500,19 @@ def handleExc(f: a -> b \ ef): a -> Option[b] \ ef - Exc =
         (type_function
           (polymorphic_identifier)
           (polymorphic_identifier)
-          (polymorphic_effect))))
+          (effects
+            (polymorphic_effect)))))
     (type_function
       (polymorphic_identifier)
       (type
         (identifier)
         (type_arguments
           (polymorphic_identifier))))
-    (binary
-      (polymorphic_effect)
-      (operator)
-      (effect))
+    (effects
+          (binary_effect
+            (polymorphic_effect)
+            (operator)
+            (effect)))
     (lambda
       (polymorphic_identifier)
       (effect_block
@@ -547,7 +549,8 @@ def main(): Unit \ IO = {
     (identifier)
     (parameters)
     (type_primitive)
-    (effect)
+    (effects
+      (effect))
     (block
       (binary
         (call_expression
