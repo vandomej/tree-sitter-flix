@@ -107,11 +107,11 @@
 //        def flip(resume) = resume(true)
 //    }
 //
-def main(): Unit \ IO =
-    run {
-        let result = Amb.flip();
-        println("You flipped: ${result}")
-    } with runWithIO
+//def main(): Unit \ IO =
+//    run {
+//        let result = Amb.flip();
+//        println("You flipped: ${result}")
+//    } with runWithIO
 
 //def effectsWeird(f: Unit -> a \ ef1, g: a -> b \ ef2): b \ {{ef1 + ef2}, (IO + (~ef1 - ~ef2))} =
 //    println("IO usage");
@@ -124,8 +124,56 @@ def main(): Unit \ IO =
 //def effectsWeird3(f: Unit -> a \ ef1, g: a -> b \ ef2): b \ ef1 + ef2 =
 //    g(f())
     
-def main(): Unit \ IO =
-    run {
-        let timestamp = Clock.currentTime(TimeUnit.Milliseconds);
-        println("${timestamp} ms since the epoc")
-    } with Clock.runWithIO
+//def main(): Unit \ IO =
+//    run {
+//        let timestamp = Clock.currentTime(TimeUnit.Milliseconds);
+//        println("${timestamp} ms since the epoc")
+//    } with Clock.runWithIO
+
+
+
+
+
+
+import java.lang.System
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.{Random => JRandom}
+
+def getSecretNumber(): Int32 \ {NonDet, IO} = 
+    let rnd = new JRandom();
+    rnd.nextInt()
+
+def readGuess(): Result[String, String] \ IO = 
+    let reader = new BufferedReader(new InputStreamReader(System.in));
+    let line = reader.readLine();
+    if (Object.isNull(line)) 
+        Result.Err("no input")
+    else 
+        Result.Ok(line)
+
+def readAndParseGuess(): Result[String, Int32] \ IO = 
+    forM(g <- readGuess(); 
+         n <- Int32.parse(10, g)
+    ) yield n
+
+def gameLoop(secret: Int32): Unit \ IO = {
+    println("Enter a guess:");
+    match readAndParseGuess() {
+        case Result.Ok(g) => 
+            if (secret == g) {
+                println("Correct!")
+            } else {
+                println("Incorrect!");
+                gameLoop(secret)
+            }
+        case Result.Err(_) => 
+            println("Not a number? Goodbye.");
+            println("The secret was: ${secret}")
+    }
+}
+
+def main(): Unit \ {NonDet, IO} = 
+    let secret = getSecretNumber();
+    gameLoop(secret)
+

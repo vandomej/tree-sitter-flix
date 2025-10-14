@@ -42,3 +42,68 @@ use Math.{sum, add};
       (use_set
         (identifier)
         (identifier)))))
+
+=====
+java imports
+=====
+
+import java.lang.System
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.{Random => JRandom}
+
+---
+
+(program
+  (use
+    (use_path
+      (use_path
+        (identifier)
+        (identifier))
+      (identifier)))
+  (use
+    (use_path
+      (use_path
+        (identifier)
+        (identifier))
+      (identifier)))
+  (use
+    (use_path
+      (use_path
+        (identifier)
+        (identifier))
+      (identifier)))
+  (use
+    (use_path
+      (use_path
+        (identifier)
+        (identifier))
+      (use_set
+        (module_rename
+          (identifier)
+          (identifier))))))
+
+=====
+module renames
+=====
+
+use A.B.Color.{Red => R, Green, Blue => B}
+
+---
+
+(program
+  (use
+    (use_path
+      (use_path
+        (use_path
+          (identifier)
+          (identifier))
+        (identifier))
+      (use_set
+        (module_rename
+          (identifier)
+          (identifier))
+        (identifier)
+        (module_rename
+          (identifier)
+          (identifier))))))

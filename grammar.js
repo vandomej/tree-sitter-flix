@@ -106,7 +106,7 @@ module.exports = grammar({
       ),
     module_body: ($) =>
       seq("{", repeat($._declaration), "}"),
-    use: ($) => seq("use", $.use_path),
+    use: ($) => seq(choice("use", "import"), $.use_path),
     use_path: ($) =>
       prec(
         PREC.field,
@@ -117,7 +117,22 @@ module.exports = grammar({
         ),
       ),
     use_set: ($) =>
-      seq("{", zero_or_more($._name), "}"),
+      seq(
+        "{",
+        zero_or_more(
+          choice(
+            $._name,
+            $.module_rename,
+          ),
+        ),
+        "}",
+      ),
+    module_rename: ($) =>
+      seq(
+        $._name,
+        "=>",
+        $._name,
+      ),
 
     //////// ENUMS //////////////
     enum_declaration: ($) =>
@@ -261,7 +276,11 @@ module.exports = grammar({
       ),
     group_effect: ($) =>
       choice(
-        seq("{", one_or_more($._effect), "}"),
+        seq(
+          "{",
+          one_or_more($._effect),
+          "}",
+        ),
         seq("(", $._effect, ")"),
       ),
     effect_declaration: ($) =>
@@ -289,7 +308,10 @@ module.exports = grammar({
         choice(
           seq(
             "handler",
-            field("effect", $._uppercase_name),
+            field(
+              "effect",
+              $._uppercase_name,
+            ),
             "{",
             repeat1(
               alias(
@@ -302,7 +324,7 @@ module.exports = grammar({
           seq(
             choice(
               $.field,
-              $._lowercase_name
+              $._lowercase_name,
             ),
           ),
         ),
@@ -437,7 +459,10 @@ module.exports = grammar({
             "parameters",
             choice(
               $.tuple,
-              alias($.lowercase_name, $.polymorphic_identifier),
+              alias(
+                $.lowercase_name,
+                $.polymorphic_identifier,
+              ),
             ),
           ),
           "->",
