@@ -1418,6 +1418,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "object_constructor"
+        },
+        {
+          "type": "SYMBOL",
           "name": "tuple"
         },
         {
@@ -1475,6 +1479,44 @@
           }
         ]
       }
+    },
+    "object_constructor": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "new"
+        },
+        {
+          "type": "FIELD",
+          "name": "class",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_lowercase_name"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_uppercase_name"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "field"
+              }
+            ]
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "arguments",
+          "content": {
+            "type": "SYMBOL",
+            "name": "arguments"
+          }
+        }
+      ]
     },
     "arguments": {
       "type": "SEQ",
@@ -1962,7 +2004,7 @@
           "name": "expression",
           "content": {
             "type": "SYMBOL",
-            "name": "_expression"
+            "name": "_stmt"
           }
         }
       ]

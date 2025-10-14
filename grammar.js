@@ -106,7 +106,11 @@ module.exports = grammar({
       ),
     module_body: ($) =>
       seq("{", repeat($._declaration), "}"),
-    use: ($) => seq(choice("use", "import"), $.use_path),
+    use: ($) =>
+      seq(
+        choice("use", "import"),
+        $.use_path,
+      ),
     use_path: ($) =>
       prec(
         PREC.field,
@@ -120,19 +124,12 @@ module.exports = grammar({
       seq(
         "{",
         zero_or_more(
-          choice(
-            $._name,
-            $.module_rename,
-          ),
+          choice($._name, $.module_rename),
         ),
         "}",
       ),
     module_rename: ($) =>
-      seq(
-        $._name,
-        "=>",
-        $._name,
-      ),
+      seq($._name, "=>", $._name),
 
     //////// ENUMS //////////////
     enum_declaration: ($) =>
@@ -424,6 +421,7 @@ module.exports = grammar({
         $.binary,
         $.group,
         $.call_expression,
+        $.object_constructor,
         $.tuple,
         $.effect_block,
         $.lambda,
@@ -444,6 +442,19 @@ module.exports = grammar({
           ),
           field("arguments", $.arguments),
         ),
+      ),
+    object_constructor: ($) =>
+      seq(
+        "new",
+        field(
+          "class",
+          choice(
+            $._lowercase_name,
+            $._uppercase_name,
+            $.field,
+          ),
+        ),
+        field("arguments", $.arguments),
       ),
     arguments: ($) =>
       seq(
@@ -550,7 +561,7 @@ module.exports = grammar({
         "case",
         field("pattern", $._pattern_cons),
         "=>",
-        field("expression", $._expression),
+        field("expression", $._stmt),
       ),
     _pattern_cons: ($) =>
       seq(

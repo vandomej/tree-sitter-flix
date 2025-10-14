@@ -106,6 +106,10 @@
         "named": true
       },
       {
+        "type": "object_constructor",
+        "named": true
+      },
+      {
         "type": "ref",
         "named": true
       },
@@ -347,9 +351,13 @@
     "named": true,
     "fields": {
       "expression": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
+          {
+            "type": ";",
+            "named": false
+          },
           {
             "type": "_expression",
             "named": true
@@ -1296,6 +1304,36 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "object_constructor",
+    "named": true,
+    "fields": {
+      "arguments": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "arguments",
+            "named": true
+          }
+        ]
+      },
+      "class": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "field",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -2376,6 +2414,10 @@
   },
   {
     "type": "mod",
+    "named": false
+  },
+  {
+    "type": "new",
     "named": false
   },
   {
