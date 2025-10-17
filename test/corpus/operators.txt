@@ -11,8 +11,9 @@ def main(): Bool = not false
     (identifier)
     (parameters)
     (type_primitive)
-    (unary
-      (boolean))))
+    (expressions
+      (unary
+        (boolean)))))
 
 =====
 unary minus
@@ -27,8 +28,9 @@ def main(): Int32 = -1
     (identifier)
     (parameters)
     (type_primitive)
-    (unary
-      (integer))))
+    (expressions
+      (unary
+        (integer)))))
 
 =====
 and
@@ -43,9 +45,11 @@ def main(): Bool = true and false
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (boolean)
-      (boolean))))
+    (expressions
+      (binary
+        (boolean)
+        (operator_identifier)
+        (boolean)))))
 
 =====
 or
@@ -60,9 +64,11 @@ def main(): Bool = true or false
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (boolean)
-      (boolean))))
+    (expressions
+      (binary
+        (boolean)
+        (operator_identifier)
+        (boolean)))))
 
 =====
 bitwise or
@@ -77,9 +83,11 @@ def main(): Bool = 1 ||| 2
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (integer)
-      (integer))))
+    (expressions
+      (binary
+        (integer)
+        (operator_identifier)
+        (integer)))))
 
 =====
 bitwise xor
@@ -94,9 +102,11 @@ def main(): Int32 = 1 ^^^ 2
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (integer)
-      (integer))))
+    (expressions
+      (binary
+        (integer)
+        (operator_identifier)
+        (integer)))))
 
 =====
 bitwise and
@@ -111,9 +121,11 @@ def main(): Int32 = 1 &&& 2
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (integer)
-      (integer))))
+    (expressions
+      (binary
+        (integer)
+        (operator_identifier)
+        (integer)))))
 
 =====
 equality
@@ -128,9 +140,11 @@ def main(): Bool = 1 != 2
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (integer)
-      (integer))))
+    (expressions
+      (binary
+        (integer)
+        (operator_identifier)
+        (integer)))))
 
 =====
 comparison
@@ -145,9 +159,11 @@ def main(): Bool = 1 <= 2
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (integer)
-      (integer))))
+    (expressions
+      (binary
+        (integer)
+        (operator_identifier)
+        (integer)))))
 
 =====
 bitwise shift
@@ -162,9 +178,11 @@ def main(): Bool = 1 <<< 2
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (integer)
-      (integer))))
+    (expressions
+      (binary
+        (integer)
+        (operator_identifier)
+        (integer)))))
 
 =====
 multiply
@@ -179,9 +197,11 @@ def main(): Int32 = 1 * 2
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (integer)
-      (integer))))
+    (expressions
+      (binary
+        (integer)
+        (operator_identifier)
+        (integer)))))
 
 =====
 plus
@@ -196,9 +216,11 @@ def main(): Int32 = 1 + 2
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (integer)
-      (integer))))
+    (expressions
+      (binary
+        (integer)
+        (operator_identifier)
+        (integer)))))
 
 =====
 modulu
@@ -213,9 +235,11 @@ def main(): Int32 = 1 mod 2
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (integer)
-      (integer))))
+    (expressions
+      (binary
+        (integer)
+        (operator_identifier)
+        (integer)))))
 
 =====
 remainder
@@ -230,9 +254,11 @@ def main(): Int32 = 1 rem 2
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (integer)
-      (integer))))
+    (expressions
+      (binary
+        (integer)
+        (operator_identifier)
+        (integer)))))
 
 =====
 power
@@ -247,9 +273,11 @@ def main(): Int32 = 1 ** 2
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (integer)
-      (integer))))
+    (expressions
+      (binary
+        (integer)
+        (operator_identifier)
+        (integer)))))
 
 =====
 unary precedence
@@ -264,10 +292,12 @@ def main(): Bool = not true and false
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (unary
-        (boolean))
-      (boolean))))
+    (expressions
+      (binary
+        (unary
+          (boolean))
+        (operator_identifier)
+        (boolean)))))
 
 =====
 binary precedence
@@ -282,11 +312,14 @@ def main(): Int32 = 1 + 2 * true
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (integer)
+    (expressions
       (binary
         (integer)
-        (boolean)))))
+        (operator_identifier)
+        (binary
+          (integer)
+          (operator_identifier)
+          (boolean))))))
 
 =====
 user defined operator
@@ -301,10 +334,11 @@ def main(): Int32 = true |> false
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (boolean)
-      (user_operator)
-      (boolean))))
+    (expressions
+      (binary
+        (boolean)
+        (user_operator)
+        (boolean)))))
 
 =====
 composition
@@ -319,9 +353,11 @@ def main(): Int32 = true <+> false
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (boolean)
-      (boolean))))
+    (expressions
+      (binary
+        (boolean)
+        (operator_identifier)
+        (boolean)))))
 
 =====
 infix function
@@ -336,11 +372,12 @@ def main(): Int32 = true `my_func` false
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (boolean)
-      (infix_function
-       (identifier))
-      (boolean))))
+    (expressions
+      (binary
+        (boolean)
+        (infix_function
+          (identifier))
+        (boolean)))))
 
 =====
 cons
@@ -358,11 +395,14 @@ def main(): List[Int32] = 1 :: 2 :: Nil
       (identifier)
       (type_arguments
         (type_primitive)))
-    (binary
+    (expressions
       (binary
-        (integer)
-        (integer))
-      (nil))))
+        (binary
+          (integer)
+          (operator_identifier)
+          (integer))
+        (operator_identifier)
+        (nil)))))
 
 =====
 append
@@ -380,13 +420,14 @@ def main(): List[Int32] = 1 :: Nil ::: 2 :: Nil
       (identifier)
       (type_arguments
         (type_primitive)))
-    (binary
+    (expressions
       (binary
-        (integer)
-        (nil))
-      (binary
-        (integer)
-        (nil))
-    )))
-
-
+        (binary
+          (integer)
+          (operator_identifier)
+          (nil))
+        (operator_identifier)
+        (binary
+          (integer)
+          (operator_identifier)
+          (nil))))))

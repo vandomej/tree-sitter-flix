@@ -23,11 +23,12 @@ def main(): (Unit, Bool, String, Char, Int8, Int16, Int32, Int64, Float32, Float
       (type_primitive)
       (type_primitive)
       (type_primitive))
-    (boolean)))
+    (expressions
+      (boolean))))
 
 ====
 identifiers
-=====
+====
 
 def main(): MyEnum = false
 
@@ -39,11 +40,12 @@ def main(): MyEnum = false
     (parameters)
     (type
       (identifier))
-    (boolean)))
+    (expressions
+      (boolean))))
 
 ====
 type argument
-=====
+====
 
 def main(): MyEnum[Int32] = false
 
@@ -53,15 +55,16 @@ def main(): MyEnum[Int32] = false
   (function_declaration
     (identifier)
     (parameters)
-    (type 
+    (type
       (identifier)
       (type_arguments
         (type_primitive)))
-    (boolean)))
+    (expressions
+      (boolean))))
 
 ====
 polymorphic
-=====
+====
 
 def main(): a = false
 
@@ -72,7 +75,8 @@ def main(): a = false
     (identifier)
     (parameters)
     (polymorphic_identifier)
-    (boolean)))
+    (expressions
+      (boolean))))
 
 =====
 function
@@ -89,7 +93,8 @@ def main(): Bool -> Bool = false
     (type_function
       (type_primitive)
       (type_primitive))
-    (boolean)))
+    (expressions
+      (boolean))))
 
 =====
 function with effect
@@ -109,11 +114,12 @@ def main(a: Int32 -> Unit \ Pure): Bool -> Bool = false
           (type_primitive)
           (type_primitive)
           (effects
-            (effect)))))
+            (identifier)))))
     (type_function
       (type_primitive)
       (type_primitive))
-    (boolean)))
+    (expressions
+      (boolean))))
 
 =====
 function with polymorphic effect
@@ -133,11 +139,12 @@ def main(a: Int32 -> Unit \ ef): Bool \ ef = false
           (type_primitive)
           (type_primitive)
           (effects
-            (polymorphic_effect)))))
+            (polymorphic_identifier)))))
     (type_primitive)
     (effects
-      (polymorphic_effect))
-    (boolean)))
+      (polymorphic_identifier))
+    (expressions
+      (boolean))))
 
 =====
 closed record
@@ -158,7 +165,8 @@ def main(): { b = Int32, c = Int32 } = false
       (type_record_item
         (identifier)
         (type_primitive)))
-    (boolean)))
+    (expressions
+      (boolean))))
 
 =====
 row polymorphism
@@ -182,7 +190,8 @@ def main(a: { b = Int32, c = Int32 | r }) = false
             (identifier)
             (type_primitive))
           (identifier))))
-    (boolean)))
+    (expressions
+      (boolean))))
 
 =====
 regions
@@ -191,6 +200,7 @@ regions
 def main(r: Region[Int32]) = false
 
 ---
+
 (program
   (function_declaration
     (identifier)
@@ -200,7 +210,8 @@ def main(r: Region[Int32]) = false
         (type_primitive
           (type_arguments
             (type_primitive)))))
-    (boolean)))
+    (expressions
+      (boolean))))
 
 =====
 type aliases
@@ -238,23 +249,24 @@ trait Equatable[t] {
 ---
 
 (program
-  (trait_declaration
+  (trait_definition
     (type
       (identifier)
       (type_arguments
         (polymorphic_identifier)))
-    (function_definition
-      (modifiers
-        (modifier))
-      (identifier)
-      (parameters
-        (parameter
-          (identifier)
-          (polymorphic_identifier))
-        (parameter
-          (identifier)
-          (polymorphic_identifier)))
-      (type_primitive))))
+    (template_body
+      (function_definition
+        (modifiers
+          (modifier))
+        (identifier)
+        (parameters
+          (parameter
+            (identifier)
+            (polymorphic_identifier))
+          (parameter
+            (identifier)
+            (polymorphic_identifier)))
+        (type_primitive)))))
 
 =====
 trait instance
@@ -284,50 +296,55 @@ instance Equatable[Option[t]] with Equatable[t] {
       (identifier)
       (type_arguments
         (polymorphic_identifier)))
-    (function_declaration
-      (modifiers
-        (modifier))
-      (identifier)
-      (parameters
-        (parameter
-          (identifier)
-          (type
+    (template_body
+      (function_declaration
+        (modifiers
+          (modifier))
+        (identifier)
+        (parameters
+          (parameter
             (identifier)
-            (type_arguments
-              (polymorphic_identifier))))
-        (parameter
-          (identifier)
-          (type
+            (type
+              (identifier)
+              (type_arguments
+                (polymorphic_identifier))))
+          (parameter
             (identifier)
-            (type_arguments
-              (polymorphic_identifier)))))
-      (type_primitive)
-      (match
-        (tuple
-          (identifier)
-          (identifier))
-        (case
-          (tuple
-            (none)
-            (none))
-          (boolean))
-        (case
-          (tuple
-            (constructor
+            (type
+              (identifier)
+              (type_arguments
+                (polymorphic_identifier)))))
+        (type_primitive)
+        (expressions
+          (match
+            (tuple
               (identifier)
               (identifier))
-            (constructor
-              (identifier)
-              (identifier)))
-          (call_expression
-            (field
-              (identifier)
-              (identifier))
-            (arguments
-              (identifier)
-              (identifier))))
-        (case
-          (boolean))))))
+            (case
+              (tuple
+                (none)
+                (none))
+              (expressions
+                (boolean)))
+            (case
+              (tuple
+                (constructor
+                  (identifier)
+                  (identifier))
+                (constructor
+                  (identifier)
+                  (identifier)))
+              (expressions
+                (call_expression
+                  (field
+                    (identifier)
+                    (identifier))
+                  (arguments
+                    (identifier)
+                    (identifier)))))
+            (case
+              (expressions
+                (boolean)))))))))
 
 =====
 sealed traits
@@ -340,19 +357,20 @@ sealed trait Animal[a] {
 ---
 
 (program
-  (trait_declaration
+  (trait_definition
     (modifiers
       (modifier))
-    (type
+    trait: (type
       (identifier)
       (type_arguments
         (polymorphic_identifier)))
-    (function_definition
-      (modifiers
-        (modifier))
-      (identifier)
-      (parameters
-        (parameter
-          (identifier)
-          (polymorphic_identifier)))
-      (type_primitive))))
+    body: (template_body
+      (function_definition
+        (modifiers
+          (modifier))
+        name: (identifier)
+        parameters: (parameters
+          (parameter
+            name: (identifier)
+            type: (polymorphic_identifier)))
+        return_type: (type_primitive)))))

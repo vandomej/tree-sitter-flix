@@ -9,12 +9,13 @@ eff DivByZero {
 ---
 
 (program
-  (effect_declaration
+  (effect_definition
     (identifier)
-    (function_definition
-      (identifier)
-      (parameters)
-      (type_primitive))))
+    (template_body
+      (function_definition
+        (identifier)
+        (parameters)
+        (type_primitive)))))
 
 =====
 effect handler
@@ -37,35 +38,39 @@ def main(): Unit \ IO =
     (parameters)
     (type_primitive)
     (effects
-	  (effect))
-    (effect_block
-      (call_expression
-        (identifier)
-        (arguments
+      (identifier))
+    (expressions
+      (effect_block
+        (block
           (call_expression
             (identifier)
             (arguments
-              (integer)
-              (integer)))))
-      (call_expression
-        (identifier)
-        (arguments
+              (call_expression
+                (identifier)
+                (arguments
+                  (integer)
+                  (integer)))))
           (call_expression
             (identifier)
             (arguments
-              (integer)
-              (integer)))))
-      (effect_handler
-        (identifier)
-        (function_declaration
+              (call_expression
+                (identifier)
+                (arguments
+                  (integer)
+                  (integer))))))
+        (effect_handler
           (identifier)
-          (parameters
-            (parameter
-              (identifier)))
-          (call_expression
-            (identifier)
-            (arguments
-              (string))))))))
+          (handler_body
+            (function_declaration
+              (identifier)
+              (parameters
+                (parameter
+                  (identifier)))
+              (expressions
+                (call_expression
+                  (identifier)
+                  (arguments
+                    (string)))))))))))
 
 =====
 chained effect handlers
@@ -83,43 +88,49 @@ def main(): Unit \ IO =
 ---
 
 (program
-	(function_declaration
-	    (identifier)
-	    (parameters)
-	    (type_primitive)
-	    (effects
-		  (effect))
-	    (effect_block
-	      (call_expression
-	        (identifier)
-	        (arguments))
-	      (effect_handler
-	        (identifier)
-	        (function_declaration
-	          (identifier)
-	          (parameters
-	            (parameter)
-	            (parameter))
-	          (call_expression
-	            (identifier)
-	            (arguments
-	              (string)))))
-	      (effect_handler
-	        (identifier)
-	        (function_declaration
-	          (identifier)
-	          (parameters
-	            (parameter
-	              (identifier))
-	            (parameter))
-	          (block
-	            (call_expression
-	              (identifier)
-	              (arguments
-	                (identifier)))
-	            (call_expression
-	              (identifier)
-	              (arguments))))))))
+  (function_declaration
+    (identifier)
+    (parameters)
+    (type_primitive)
+    (effects
+      (identifier))
+    (expressions
+      (effect_block
+        (block
+          (call_expression
+            (identifier)
+            (arguments)))
+        (effect_handler
+          (identifier)
+          (handler_body
+            (function_declaration
+              (identifier)
+              (parameters
+                (parameter)
+                (parameter))
+              (expressions
+                (call_expression
+                  (identifier)
+                  (arguments
+                    (string)))))))
+        (effect_handler
+          (identifier)
+          (handler_body
+            (function_declaration
+              (identifier)
+              (parameters
+                (parameter
+                  (identifier))
+                (parameter))
+              (expressions
+                (block
+                  (call_expression
+                    (identifier)
+                    (arguments
+                      (identifier)))
+                  (call_expression
+                    (identifier)
+                    (arguments)))))))))))
 
 =====
 weird effect signature 1
@@ -141,44 +152,45 @@ def effectsWeird(f: Unit -> a \ ef1, g: a -> b \ ef2): b \ {{ef1 + ef2}, (IO + (
           parameters: (type_primitive)
           return_type: (polymorphic_identifier)
           effects: (effects
-            (polymorphic_effect))))
+            (polymorphic_identifier))))
       (parameter
         name: (identifier)
         type: (type_function
           parameters: (polymorphic_identifier)
           return_type: (polymorphic_identifier)
           effects: (effects
-            (polymorphic_effect)))))
+            (polymorphic_identifier)))))
     return_type: (polymorphic_identifier)
     effects: (effects
-      (group_effect
-        (group_effect
+      (effect_group
+        (effect_group
           (binary_effect
-            (polymorphic_effect)
+            (polymorphic_identifier)
             (operator)
-            (polymorphic_effect)))
-        (group_effect
+            (polymorphic_identifier)))
+        (effect_group
           (binary_effect
-            (effect)
+            (identifier)
             (operator)
-            (group_effect
+            (effect_group
               (binary_effect
                 (unary_effect
-                  (polymorphic_effect))
+                  (polymorphic_identifier))
                 (operator)
                 (unary_effect
-                  (polymorphic_effect))))))))
-    body: (call_expression
-      function: (identifier)
-      arguments: (arguments
-        (string)))
-    body: (call_expression
-      function: (identifier)
-      arguments: (arguments
-        (call_expression
-          function: (identifier)
-          arguments: (arguments))))))
-		
+                  (polymorphic_identifier))))))))
+    body: (expressions
+      (call_expression
+        function: (identifier)
+        arguments: (arguments
+          (string)))
+      (call_expression
+        function: (identifier)
+        arguments: (arguments
+          (call_expression
+            function: (identifier)
+            arguments: (arguments)))))))
+
 =====
 weird effect signature 2
 =====
@@ -199,41 +211,42 @@ def effectsWeird2(f: Unit -> a \ ef1, g: a -> b \ ef2): b \ {{ef1 + ef2}, {IO, (
           parameters: (type_primitive)
           return_type: (polymorphic_identifier)
           effects: (effects
-            (polymorphic_effect))))
+            (polymorphic_identifier))))
       (parameter
         name: (identifier)
         type: (type_function
           parameters: (polymorphic_identifier)
           return_type: (polymorphic_identifier)
           effects: (effects
-            (polymorphic_effect)))))
+            (polymorphic_identifier)))))
     return_type: (polymorphic_identifier)
     effects: (effects
-      (group_effect
-        (group_effect
+      (effect_group
+        (effect_group
           (binary_effect
-            (polymorphic_effect)
+            (polymorphic_identifier)
             (operator)
-            (polymorphic_effect)))
-        (group_effect
-          (effect)
-          (group_effect
+            (polymorphic_identifier)))
+        (effect_group
+          (identifier)
+          (effect_group
             (binary_effect
               (unary_effect
-                (polymorphic_effect))
+                (polymorphic_identifier))
               (operator)
               (unary_effect
-                (polymorphic_effect)))))))
-    body: (call_expression
-      function: (identifier)
-      arguments: (arguments
-        (string)))
-    body: (call_expression
-      function: (identifier)
-      arguments: (arguments
-        (call_expression
-          function: (identifier)
-          arguments: (arguments))))))
+                (polymorphic_identifier)))))))
+    body: (expressions
+      (call_expression
+        function: (identifier)
+        arguments: (arguments
+          (string)))
+      (call_expression
+        function: (identifier)
+        arguments: (arguments
+          (call_expression
+            function: (identifier)
+            arguments: (arguments)))))))
 
 =====
 weird effect signature 3
@@ -254,26 +267,27 @@ def effectsWeird3(f: Unit -> a \ ef1, g: a -> b \ ef2): b \ ef1 + ef2 =
           parameters: (type_primitive)
           return_type: (polymorphic_identifier)
           effects: (effects
-            (polymorphic_effect))))
+            (polymorphic_identifier))))
       (parameter
         name: (identifier)
         type: (type_function
           parameters: (polymorphic_identifier)
           return_type: (polymorphic_identifier)
           effects: (effects
-            (polymorphic_effect)))))
+            (polymorphic_identifier)))))
     return_type: (polymorphic_identifier)
     effects: (effects
       (binary_effect
-        (polymorphic_effect)
+        (polymorphic_identifier)
         (operator)
-        (polymorphic_effect)))
-    body: (call_expression
-      function: (identifier)
-      arguments: (arguments
-        (call_expression
-          function: (identifier)
-          arguments: (arguments))))))
+        (polymorphic_identifier)))
+    body: (expressions
+      (call_expression
+        function: (identifier)
+        arguments: (arguments
+          (call_expression
+            function: (identifier)
+            arguments: (arguments)))))))
 
 =====
 pre-defined effect handler
@@ -293,30 +307,32 @@ def main(): Unit \ IO =
     parameters: (parameters)
     return_type: (type_primitive)
     effects: (effects
-      (effect))
-    body: (effect_block
-      (let
-        (identifier)
-        (call_expression
-          function: (field
+      (identifier))
+    body: (expressions
+      (effect_block
+        (block
+          (let
             (identifier)
-            (identifier))
-          arguments: (arguments
-            (field
-              (identifier)
-              (identifier)))))
-      (call_expression
-        function: (identifier)
-        arguments: (arguments
-          (string)))
-      (effect_handler
-        (field
-          (identifier)
-          (identifier))))))
+            (call_expression
+              function: (field
+                (identifier)
+                (identifier))
+              arguments: (arguments
+                (field
+                  (identifier)
+                  (identifier)))))
+          (call_expression
+            function: (identifier)
+            arguments: (arguments
+              (string))))
+        (effect_handler
+          effect: (field
+            (identifier)
+            (identifier)))))))
 
 =====
 user-defined effect handler
-====
+=====
 
 def main(): Unit \ IO =
     run {
@@ -332,18 +348,20 @@ def main(): Unit \ IO =
     parameters: (parameters)
     return_type: (type_primitive)
     effects: (effects
-      (effect))
-    body: (effect_block
-      (let
-        (identifier)
-        (call_expression
-          function: (field
+      (identifier))
+    body: (expressions
+      (effect_block
+        (block
+          (let
             (identifier)
-            (identifier))
-          arguments: (arguments)))
-      (call_expression
-        function: (identifier)
-        arguments: (arguments
-          (string)))
-      (effect_handler
-        (identifier)))))
+            (call_expression
+              function: (field
+                (identifier)
+                (identifier))
+              arguments: (arguments)))
+          (call_expression
+            function: (identifier)
+            arguments: (arguments
+              (string))))
+        (effect_handler
+          effect: (identifier))))))

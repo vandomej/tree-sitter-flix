@@ -83,12 +83,12 @@ module.exports = grammar({
     _declaration: ($) =>
       choice(
         $.function_declaration,
-        $.enum_declaration,
+        $.enum_definition,
         $.module_declaration,
         $.type_alias_declaration,
-        $.trait_declaration,
+        $.trait_definition,
         $.trait_implementation,
-        $.effect_declaration,
+        $.effect_definition,
       ),
 
     //////// MODULES ////////////
@@ -96,15 +96,9 @@ module.exports = grammar({
       seq(
         "mod",
         field("name", $._uppercase_name),
-        field(
-          "body",
-          alias(
-            $.module_body,
-            $.declarations,
-          ),
-        ),
+        field("body", $.declarations),
       ),
-    module_body: ($) =>
+    declarations: ($) =>
       seq("{", repeat($._declaration), "}"),
     use: ($) =>
       seq(
@@ -132,7 +126,7 @@ module.exports = grammar({
       seq($._name, "=>", $._name),
 
     //////// ENUMS //////////////
-    enum_declaration: ($) =>
+    enum_definition: ($) =>
       seq(
         optional($.annotations),
         optional($.modifiers),
@@ -145,25 +139,20 @@ module.exports = grammar({
           ),
         ),
         optional(
-          field(
-            "traits",
-            seq(
-              "with",
-              one_or_more(
-                alias(
-                  $.uppercase_name,
-                  $.trait,
-                ),
-              ),
-            ),
-          ),
+          field("traits", $.with_clause),
         ),
         field(
           "constructors",
           $.constructors,
         ),
       ),
-
+    with_clause: ($) =>
+      seq(
+        "with",
+        one_or_more(
+          alias($.uppercase_name, $.trait),
+        ),
+      ),
     constructors: ($) =>
       seq(
         "{",
@@ -191,7 +180,7 @@ module.exports = grammar({
       seq(
         $._function_definition,
         "=",
-        field("body", $._stmt),
+        field("body", $.expressions),
       ),
     function_definition: ($) =>
       $._function_definition,
@@ -227,7 +216,6 @@ module.exports = grammar({
           ),
         ),
       ),
-
     parameters: ($) =>
       seq(
         "(",
@@ -240,6 +228,38 @@ module.exports = grammar({
         ":",
         field("type", $._type),
       ),
+    _typeless_parameters: ($) =>
+      alias(
+        $._typeless_parameters_inner,
+        $.parameters,
+      ),
+    _typeless_parameters_inner: ($) =>
+      seq(
+          "(",
+          zero_or_more($._typeless_parameter),
+          ")",
+        ),
+    _typeless_parameter: ($) =>
+      alias(
+        $._typeless_parameter_inner,
+        $.parameter,
+      ),
+    _typeless_parameter_inner: ($) =>
+      choice(
+        $._name,
+        "_"
+      ),
+    arguments: ($) =>
+        seq(
+          "(",
+          zero_or_more(
+            choice(
+              $._expression,
+              "_"
+            ),
+          ),
+          ")",
+        ),
 
     /////// EFFECTS ///////
     effects: ($) =>
@@ -249,12 +269,15 @@ module.exports = grammar({
       ),
     _effect: ($) =>
       choice(
-        alias($.uppercase_name, $.effect),
+        alias(
+          $.uppercase_name,
+          $.identifier,
+        ),
         alias(
           $.lowercase_name,
-          $.polymorphic_effect,
+          $.polymorphic_identifier,
         ),
-        $.group_effect,
+        $.effect_group,
         $.binary_effect,
         $.unary_effect,
       ),
@@ -271,7 +294,7 @@ module.exports = grammar({
           $._effect,
         ),
       ),
-    group_effect: ($) =>
+    effect_group: ($) =>
       choice(
         seq(
           "{",
@@ -280,23 +303,28 @@ module.exports = grammar({
         ),
         seq("(", $._effect, ")"),
       ),
-    effect_declaration: ($) =>
+    effect_definition: ($) =>
       seq(
         "eff",
         field("effect", $._uppercase_name),
-        "{",
         field(
           "body",
-          one_or_more($.function_definition),
+          alias(
+            $._effect_template_body,
+            $.template_body,
+          ),
         ),
+      ),
+    _effect_template_body: ($) =>
+      seq(
+        "{",
+        repeat($.function_definition),
         "}",
       ),
     effect_block: ($) =>
       seq(
         "run",
-        "{",
-        $._stmt,
-        "}",
+        $.block,
         repeat1($.effect_handler),
       ),
     effect_handler: ($) =>
@@ -309,16 +337,10 @@ module.exports = grammar({
               "effect",
               $._uppercase_name,
             ),
-            "{",
-            repeat1(
-              alias(
-                $._effect_function,
-                $.function_declaration,
-              ),
-            ),
-            "}",
+            field("body", $.handler_body),
           ),
-          seq(
+          field(
+            "effect",
             choice(
               $.field,
               $._lowercase_name,
@@ -326,13 +348,24 @@ module.exports = grammar({
           ),
         ),
       ),
-    _effect_function: ($) =>
+    handler_body: ($) =>
       seq(
-        $._effect_function_definition,
-        "=",
-        field("body", $._stmt),
+        "{",
+        repeat1(
+          alias(
+            $._handler_function,
+            $.function_declaration,
+          ),
+        ),
+        "}",
       ),
-    _effect_function_definition: ($) =>
+    _handler_function: ($) =>
+      seq(
+        $._handler_function_definition,
+        "=",
+        field("body", $.expressions),
+      ),
+    _handler_function_definition: ($) =>
       seq(
         "def",
         field(
@@ -345,23 +378,23 @@ module.exports = grammar({
         field(
           "parameters",
           alias(
-            $.implementation_parameters,
+            $._handler_parameters,
             $.parameters,
           ),
         ),
       ),
-    implementation_parameters: ($) =>
+    _handler_parameters: ($) =>
       seq(
         "(",
         zero_or_more(
           alias(
-            $.implementation_parameter,
+            $._handler_parameter,
             $.parameter,
           ),
         ),
         ")",
       ),
-    implementation_parameter: ($) =>
+    _handler_parameter: ($) =>
       choice(
         $._lowercase_name,
         seq(optional("_"), "resume"),
@@ -401,6 +434,8 @@ module.exports = grammar({
         optional(seq($._stmt, ";")),
         $._expression,
       ),
+    block: ($) => seq("{", $._stmt, "}"),
+    expressions: ($) => prec(1, $._stmt),
     _expression: ($) =>
       choice(
         $._literal,
@@ -447,7 +482,7 @@ module.exports = grammar({
       seq(
         "new",
         field(
-          "class",
+          "type",
           choice(
             $._lowercase_name,
             $._uppercase_name,
@@ -456,12 +491,6 @@ module.exports = grammar({
         ),
         field("arguments", $.arguments),
       ),
-    arguments: ($) =>
-      seq(
-        "(",
-        zero_or_more($._expression),
-        ")",
-      ),
     lambda: ($) =>
       prec(
         PREC.lambda,
@@ -469,7 +498,7 @@ module.exports = grammar({
           field(
             "parameters",
             choice(
-              $.tuple,
+              $._typeless_parameters,
               alias(
                 $.lowercase_name,
                 $.polymorphic_identifier,
@@ -477,7 +506,7 @@ module.exports = grammar({
             ),
           ),
           "->",
-          field("body", $._expression),
+          field("body", $.expressions),
         ),
       ),
 
@@ -561,7 +590,7 @@ module.exports = grammar({
         "case",
         field("pattern", $._pattern_cons),
         "=>",
-        field("expression", $._stmt),
+        field("expressions", $.expressions),
       ),
     _pattern_cons: ($) =>
       seq(
@@ -606,7 +635,6 @@ module.exports = grammar({
         one_or_more($._expression),
         ")",
       ),
-    block: ($) => seq("{", $._stmt, "}"),
     field: ($) =>
       prec(
         PREC.field,
@@ -645,9 +673,7 @@ module.exports = grammar({
       seq(
         "region",
         field("name", $._lowercase_name),
-        "{",
-        field("body", $._stmt),
-        "}",
+        field("body", $.block),
       ),
     let: ($) =>
       seq(
@@ -686,7 +712,10 @@ module.exports = grammar({
           PREC.composition,
           seq(
             $._expression,
-            "<+>",
+            alias(
+              "<+>",
+              $.operator_identifier,
+            ),
             $._expression,
           ),
         ),
@@ -702,7 +731,10 @@ module.exports = grammar({
           PREC.or,
           seq(
             $._expression,
-            "or",
+            alias(
+              "or",
+              $.operator_identifier,
+            ),
             $._expression,
           ),
         ),
@@ -710,7 +742,10 @@ module.exports = grammar({
           PREC.and,
           seq(
             $._expression,
-            "and",
+            alias(
+              "and",
+              $.operator_identifier,
+            ),
             $._expression,
           ),
         ),
@@ -718,7 +753,10 @@ module.exports = grammar({
           PREC.bitwise_or,
           seq(
             $._expression,
-            "|||",
+            alias(
+              "|||",
+              $.operator_identifier,
+            ),
             $._expression,
           ),
         ),
@@ -726,7 +764,10 @@ module.exports = grammar({
           PREC.bitwise_xor,
           seq(
             $._expression,
-            "^^^",
+            alias(
+              "^^^",
+              $.operator_identifier,
+            ),
             $._expression,
           ),
         ),
@@ -734,7 +775,10 @@ module.exports = grammar({
           PREC.bitwise_and,
           seq(
             $._expression,
-            "&&&",
+            alias(
+              "&&&",
+              $.operator_identifier,
+            ),
             $._expression,
           ),
         ),
@@ -742,7 +786,10 @@ module.exports = grammar({
           PREC.equality,
           seq(
             $._expression,
-            choice("==", "!=", "<=>"),
+            alias(
+              choice("==", "!=", "<=>"),
+              $.operator_identifier,
+            ),
             $._expression,
           ),
         ),
@@ -750,7 +797,10 @@ module.exports = grammar({
           PREC.comparison,
           seq(
             $._expression,
-            choice("<=", ">=", "<", ">"),
+            alias(
+              choice("<=", ">=", "<", ">"),
+              $.operator_identifier,
+            ),
             $._expression,
           ),
         ),
@@ -758,7 +808,10 @@ module.exports = grammar({
           PREC.bitwise_shift,
           seq(
             $._expression,
-            choice(">>>", "<<<"),
+            alias(
+              choice(">>>", "<<<"),
+              $.operator_identifier,
+            ),
             $._expression,
           ),
         ),
@@ -766,12 +819,15 @@ module.exports = grammar({
           PREC.multiply,
           seq(
             $._expression,
-            choice(
-              "**",
-              "*",
-              "/",
-              "mod",
-              "rem",
+            alias(
+              choice(
+                "**",
+                "*",
+                "/",
+                "mod",
+                "rem",
+              ),
+              $.operator_identifier,
             ),
             $._expression,
           ),
@@ -780,7 +836,10 @@ module.exports = grammar({
           PREC.add,
           seq(
             $._expression,
-            choice("+", "-"),
+            alias(
+              choice("+", "-"),
+              $.operator_identifier,
+            ),
             $._expression,
           ),
         ),
@@ -788,7 +847,10 @@ module.exports = grammar({
           PREC.cons,
           seq(
             $._expression,
-            "::",
+            alias(
+              "::",
+              $.operator_identifier,
+            ),
             $._expression,
           ),
         ),
@@ -796,7 +858,10 @@ module.exports = grammar({
           PREC.append,
           seq(
             $._expression,
-            ":::",
+            alias(
+              ":::",
+              $.operator_identifier,
+            ),
             $._expression,
           ),
         ),
@@ -890,16 +955,22 @@ module.exports = grammar({
         "=",
         $._type,
       ),
-    trait_declaration: ($) =>
+
+    /////// TRAITS //////////
+    trait_definition: ($) =>
       seq(
         optional($.modifiers),
         "trait",
         field("trait", $.type),
-        "{",
         field(
           "body",
-          one_or_more($.function_definition),
+          alias($._trait_definition_body, $.template_body),
         ),
+      ),
+    _trait_definition_body: ($) =>
+      seq(
+        "{",
+        repeat1($.function_definition),
         "}",
       ),
     trait_implementation: ($) =>
@@ -908,13 +979,15 @@ module.exports = grammar({
         field("type", $.type),
         "with",
         field("trait", $.type),
-        "{",
         field(
           "body",
-          one_or_more(
-            $.function_declaration,
-          ),
+          alias($._trait_implementation_body, $.template_body),
         ),
+      ),
+    _trait_implementation_body: ($) =>
+      seq(
+        "{",
+        repeat1($.function_declaration),
         "}",
       ),
 

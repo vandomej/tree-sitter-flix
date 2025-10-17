@@ -10,7 +10,7 @@ enum MyEnum {
 ---
 
 (program
-  (enum_declaration
+  (enum_definition
     (identifier)
     (constructors
       (constructor
@@ -32,10 +32,10 @@ enum MyEnum[a] {
 ---
 
 (program
-  (enum_declaration
+  (enum_definition
     (identifier)
     (type_parameters
-      (type_parameter 
+      (type_parameter
         (identifier)))
     (constructors
       (constructor
@@ -62,10 +62,11 @@ def main(): Result[String, Int32] = Ok(123)
       (type_arguments
         (type_primitive)
         (type_primitive)))
-    (call_expression
-      (identifier)
-      (arguments
-        (integer)))))
+    (expressions
+      (call_expression
+        (identifier)
+        (arguments
+          (integer))))))
 
 =====
 enum trait derivation
@@ -80,10 +81,11 @@ enum Shape with Eq, Order {
 ---
 
 (program
-  (enum_declaration
+  (enum_definition
     (identifier)
-    (trait)
-    (trait)
+    (with_clause
+      (trait)
+      (trait))
     (constructors
       (constructor
         (identifier)

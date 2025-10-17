@@ -11,7 +11,8 @@ def main(): Unit = ()
     (identifier)
     (parameters)
     (type_primitive)
-    (unit)))
+    (expressions
+      (unit))))
 
 =====
 boolean
@@ -26,7 +27,8 @@ def main(): Bool = false
     (identifier)
     (parameters)
     (type_primitive)
-    (boolean)))
+    (expressions
+      (boolean))))
 
 =====
 integer
@@ -41,7 +43,8 @@ def main(): Int32 = 123
     (identifier)
     (parameters)
     (type_primitive)
-    (integer)))
+    (expressions
+      (integer))))
 
 =====
 float
@@ -56,7 +59,8 @@ def main(): Float32 = 123.123
     (identifier)
     (parameters)
     (type_primitive)
-    (float)))
+    (expressions
+      (float))))
 
 =====
 string
@@ -71,7 +75,8 @@ def main(): String = "hi there"
     (identifier)
     (parameters)
     (type_primitive)
-    (string)))
+    (expressions
+      (string))))
 
 =====
 char
@@ -86,7 +91,8 @@ def main(): Char = 'a'
     (identifier)
     (parameters)
     (type_primitive)
-    (char)))
+    (expressions
+      (char))))
 
 =====
 list
@@ -104,9 +110,10 @@ def main(): List[Int32] = List#{1, 2}
       (identifier)
       (type_arguments
         (type_primitive)))
-    (list
-      (integer)
-      (integer))))
+    (expressions
+      (list
+        (integer)
+        (integer)))))
 
 =====
 vector
@@ -124,9 +131,10 @@ def main(): Vector[Int32] = Vector#{1, 2}
       (identifier)
       (type_arguments
         (type_primitive)))
-    (vector
-      (integer)
-      (integer))))
+    (expressions
+      (vector
+        (integer)
+        (integer)))))
 
 =====
 set
@@ -144,9 +152,10 @@ def main(): Set[Int32] = Set#{1, 2}
       (identifier)
       (type_arguments
         (type_primitive)))
-    (set
-      (integer)
-      (integer))))
+    (expressions
+      (set
+        (integer)
+        (integer)))))
 
 =====
 map
@@ -165,13 +174,14 @@ def main(): Map[String, Int32] = Map#{"a" => 1, "b" => 2}
       (type_arguments
         (type_primitive)
         (type_primitive)))
-    (map
-      (map_item
-        (string)
-        (integer))
-      (map_item
-        (string)
-        (integer)))))
+    (expressions
+      (map
+        (map_item
+          (string)
+          (integer))
+        (map_item
+          (string)
+          (integer))))))
 
 =====
 record
@@ -186,16 +196,17 @@ def main(): Unit = { a = 1, b = 2}
     (identifier)
     (parameters)
     (type_primitive)
-    (record
-      (record_item
-        (identifier)
-        (integer))
-      (record_item
-        (identifier)
-        (integer)))))
+    (expressions
+      (record
+        (record_item
+          (identifier)
+          (integer))
+        (record_item
+          (identifier)
+          (integer))))))
 
 =====
-record extension 
+record extension
 =====
 
 def main(): Unit = { +a = 1 | r}
@@ -207,11 +218,12 @@ def main(): Unit = { +a = 1 | r}
     (identifier)
     (parameters)
     (type_primitive)
-    (record
-      (record_item
-        (identifier)
-        (integer))
-      (identifier))))
+    (expressions
+      (record
+        (record_item
+          (identifier)
+          (integer))
+        (identifier)))))
 
 =====
 record spread
@@ -226,11 +238,12 @@ def main(): Unit = { a = 1 | r}
     (identifier)
     (parameters)
     (type_primitive)
-    (record
-      (record_item
-        (identifier)
-        (integer))
-      (identifier))))
+    (expressions
+      (record
+        (record_item
+          (identifier)
+          (integer))
+        (identifier)))))
 
 =====
 record restriction
@@ -245,7 +258,8 @@ def main(): Unit = { -a | r}
     (identifier)
     (parameters)
     (type_primitive)
-    (record
-      (record_item
-        (identifier))
-      (identifier))))
+    (expressions
+      (record
+        (record_item
+          (identifier))
+        (identifier)))))

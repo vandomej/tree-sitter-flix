@@ -11,7 +11,8 @@ def main(): Bool = false
     (identifier)
     (parameters)
     (type_primitive)
-    (boolean)))
+    (expressions
+      (boolean))))
 
 =====
 parameter
@@ -29,7 +30,8 @@ def main(a: Int32): Bool = false
         (identifier)
         (type_primitive)))
     (type_primitive)
-    (boolean)))
+    (expressions
+      (boolean))))
 
 =====
 parameters
@@ -50,7 +52,8 @@ def main(a: Int32, b: Int32): Bool = false
         (identifier)
         (type_primitive)))
     (type_primitive)
-    (boolean)))
+    (expressions
+      (boolean))))
 
 =====
 unit return shorthand
@@ -64,7 +67,8 @@ def main() = false
   (function_declaration
     (identifier)
     (parameters)
-    (boolean)))
+    (expressions
+      (boolean))))
 
 =====
 effect
@@ -79,8 +83,9 @@ def main() \ IO = false
     (identifier)
     (parameters)
     (effects
-      (effect))
-    (boolean)))
+      (identifier))
+    (expressions
+      (boolean))))
 
 =====
 effects
@@ -95,11 +100,12 @@ def main() \ {IO, Read, Write} = false
     (identifier)
     (parameters)
     (effects
-      (group_effect
-        (effect)
-        (effect)
-        (effect)))
-    (boolean)))
+      (effect_group
+        (identifier)
+        (identifier)
+        (identifier)))
+    (expressions
+      (boolean))))
 
 =====
 polymorphic effect
@@ -114,11 +120,12 @@ def main() \ {IO, Read, ef} = false
     (identifier)
     (parameters)
     (effects
-      (group_effect
-        (effect)
-        (effect)
-        (polymorphic_effect)))
-    (boolean)))
+      (effect_group
+        (identifier)
+        (identifier)
+        (polymorphic_identifier)))
+    (expressions
+      (boolean))))
 
 =====
 annotation
@@ -134,7 +141,8 @@ def main() = ()
       (annotation))
     (identifier)
     (parameters)
-    (unit)))
+    (expressions
+      (unit))))
 
 =====
 annotations
@@ -151,7 +159,8 @@ def main() = ()
       (annotation))
     (identifier)
     (parameters)
-    (unit)))
+    (expressions
+      (unit))))
 
 =====
 type params
@@ -171,7 +180,8 @@ def my_function[t: Type](v: t) = ()
       (parameter
         (identifier)
         (polymorphic_identifier)))
-    (unit)))
+    (expressions
+      (unit))))
 
 =====
 user defined operator function
@@ -191,37 +201,39 @@ def ->>(f: a -> b \ ef1, g: b -> c \ ef2): a -> c \ ((ef1 + ef2 + (ef1 + ef2))) 
           (polymorphic_identifier)
           (polymorphic_identifier)
           (effects
-                (polymorphic_effect))))
+            (polymorphic_identifier))))
       (parameter
         (identifier)
         (type_function
           (polymorphic_identifier)
           (polymorphic_identifier)
           (effects
-                (polymorphic_effect)))))
+            (polymorphic_identifier)))))
     (type_function
       (polymorphic_identifier)
       (polymorphic_identifier))
     (effects
-      (group_effect
-        (group_effect
+      (effect_group
+        (effect_group
           (binary_effect
             (binary_effect
-              (polymorphic_effect)
+              (polymorphic_identifier)
               (operator)
-              (polymorphic_effect))
+              (polymorphic_identifier))
             (operator)
-            (group_effect
+            (effect_group
               (binary_effect
-                (polymorphic_effect)
+                (polymorphic_identifier)
                 (operator)
-                (polymorphic_effect)))))))
-    (lambda
-      (polymorphic_identifier)
-      (call_expression
-        (identifier)
-        (arguments
+                (polymorphic_identifier)))))))
+    (expressions
+      (lambda
+        (polymorphic_identifier)
+        (expressions
           (call_expression
             (identifier)
             (arguments
-              (identifier))))))))
+              (call_expression
+                (identifier)
+                (arguments
+                  (identifier))))))))))

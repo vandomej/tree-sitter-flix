@@ -4,11 +4,11 @@
     "named": true,
     "subtypes": [
       {
-        "type": "effect_declaration",
+        "type": "effect_definition",
         "named": true
       },
       {
-        "type": "enum_declaration",
+        "type": "enum_definition",
         "named": true
       },
       {
@@ -20,7 +20,7 @@
         "named": true
       },
       {
-        "type": "trait_declaration",
+        "type": "trait_definition",
         "named": true
       },
       {
@@ -247,6 +247,10 @@
           "named": true
         },
         {
+          "type": "operator_identifier",
+          "named": true
+        },
+        {
           "type": "user_operator",
           "named": true
         }
@@ -266,11 +270,11 @@
           "named": true
         },
         {
-          "type": "effect",
+          "type": "effect_group",
           "named": true
         },
         {
-          "type": "group_effect",
+          "type": "identifier",
           "named": true
         },
         {
@@ -278,7 +282,7 @@
           "named": true
         },
         {
-          "type": "polymorphic_effect",
+          "type": "polymorphic_identifier",
           "named": true
         },
         {
@@ -350,16 +354,12 @@
     "type": "case",
     "named": true,
     "fields": {
-      "expression": {
-        "multiple": true,
+      "expressions": {
+        "multiple": false,
         "required": true,
         "types": [
           {
-            "type": ";",
-            "named": false
-          },
-          {
-            "type": "_expression",
+            "type": "expressions",
             "named": true
           }
         ]
@@ -542,7 +542,7 @@
       "required": true,
       "types": [
         {
-          "type": "_expression",
+          "type": "block",
           "named": true
         },
         {
@@ -553,19 +553,15 @@
     }
   },
   {
-    "type": "effect_declaration",
+    "type": "effect_definition",
     "named": true,
     "fields": {
       "body": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
           {
-            "type": ",",
-            "named": false
-          },
-          {
-            "type": "function_definition",
+            "type": "template_body",
             "named": true
           }
         ]
@@ -583,37 +579,64 @@
     }
   },
   {
+    "type": "effect_group",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "binary_effect",
+          "named": true
+        },
+        {
+          "type": "effect_group",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "polymorphic_identifier",
+          "named": true
+        },
+        {
+          "type": "unary_effect",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "effect_handler",
     "named": true,
     "fields": {
-      "effect": {
+      "body": {
         "multiple": false,
         "required": false,
         "types": [
+          {
+            "type": "handler_body",
+            "named": true
+          }
+        ]
+      },
+      "effect": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "field",
+            "named": true
+          },
           {
             "type": "identifier",
             "named": true
           }
         ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "field",
-          "named": true
-        },
-        {
-          "type": "function_declaration",
-          "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -629,15 +652,15 @@
           "named": true
         },
         {
-          "type": "effect",
+          "type": "effect_group",
           "named": true
         },
         {
-          "type": "group_effect",
+          "type": "identifier",
           "named": true
         },
         {
-          "type": "polymorphic_effect",
+          "type": "polymorphic_identifier",
           "named": true
         },
         {
@@ -648,7 +671,7 @@
     }
   },
   {
-    "type": "enum_declaration",
+    "type": "enum_definition",
     "named": true,
     "fields": {
       "constructors": {
@@ -672,20 +695,12 @@
         ]
       },
       "traits": {
-        "multiple": true,
+        "multiple": false,
         "required": false,
         "types": [
           {
-            "type": ",",
-            "named": false
-          },
-          {
-            "type": "trait",
+            "type": "with_clause",
             "named": true
-          },
-          {
-            "type": "with",
-            "named": false
           }
         ]
       },
@@ -710,6 +725,21 @@
         },
         {
           "type": "modifiers",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "expressions",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "_expression",
           "named": true
         }
       ]
@@ -823,15 +853,11 @@
     "named": true,
     "fields": {
       "body": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
           {
-            "type": ";",
-            "named": false
-          },
-          {
-            "type": "_expression",
+            "type": "expressions",
             "named": true
           }
         ]
@@ -1043,7 +1069,7 @@
     }
   },
   {
-    "type": "group_effect",
+    "type": "handler_body",
     "named": true,
     "fields": {},
     "children": {
@@ -1051,23 +1077,7 @@
       "required": true,
       "types": [
         {
-          "type": "binary_effect",
-          "named": true
-        },
-        {
-          "type": "effect",
-          "named": true
-        },
-        {
-          "type": "group_effect",
-          "named": true
-        },
-        {
-          "type": "polymorphic_effect",
-          "named": true
-        },
-        {
-          "type": "unary_effect",
+          "type": "function_declaration",
           "named": true
         }
       ]
@@ -1117,7 +1127,7 @@
         "required": true,
         "types": [
           {
-            "type": "_expression",
+            "type": "expressions",
             "named": true
           }
         ]
@@ -1127,11 +1137,11 @@
         "required": true,
         "types": [
           {
-            "type": "polymorphic_identifier",
+            "type": "parameters",
             "named": true
           },
           {
-            "type": "tuple",
+            "type": "polymorphic_identifier",
             "named": true
           }
         ]
@@ -1320,7 +1330,7 @@
           }
         ]
       },
-      "class": {
+      "type": {
         "multiple": false,
         "required": true,
         "types": [
@@ -1481,15 +1491,11 @@
     "named": true,
     "fields": {
       "body": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
           {
-            "type": ";",
-            "named": false
-          },
-          {
-            "type": "_expression",
+            "type": "block",
             "named": true
           }
         ]
@@ -1537,19 +1543,34 @@
     }
   },
   {
-    "type": "trait_declaration",
+    "type": "template_body",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "function_declaration",
+          "named": true
+        },
+        {
+          "type": "function_definition",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "trait_definition",
     "named": true,
     "fields": {
       "body": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
           {
-            "type": ",",
-            "named": false
-          },
-          {
-            "type": "function_definition",
+            "type": "template_body",
             "named": true
           }
         ]
@@ -1581,15 +1602,11 @@
     "named": true,
     "fields": {
       "body": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
           {
-            "type": ",",
-            "named": false
-          },
-          {
-            "type": "function_declaration",
+            "type": "template_body",
             "named": true
           }
         ]
@@ -1977,15 +1994,15 @@
           "named": true
         },
         {
-          "type": "effect",
+          "type": "effect_group",
           "named": true
         },
         {
-          "type": "group_effect",
+          "type": "identifier",
           "named": true
         },
         {
-          "type": "polymorphic_effect",
+          "type": "polymorphic_identifier",
           "named": true
         },
         {
@@ -2073,15 +2090,22 @@
     }
   },
   {
-    "type": "!=",
-    "named": false
+    "type": "with_clause",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "trait",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "\"",
-    "named": false
-  },
-  {
-    "type": "&&&",
     "named": false
   },
   {
@@ -2090,14 +2114,6 @@
   },
   {
     "type": ")",
-    "named": false
-  },
-  {
-    "type": "*",
-    "named": false
-  },
-  {
-    "type": "**",
     "named": false
   },
   {
@@ -2121,19 +2137,11 @@
     "named": false
   },
   {
-    "type": "/",
-    "named": false
-  },
-  {
     "type": ":",
     "named": false
   },
   {
     "type": "::",
-    "named": false
-  },
-  {
-    "type": ":::",
     "named": false
   },
   {
@@ -2145,27 +2153,7 @@
     "named": false
   },
   {
-    "type": "<",
-    "named": false
-  },
-  {
-    "type": "<+>",
-    "named": false
-  },
-  {
     "type": "<-",
-    "named": false
-  },
-  {
-    "type": "<<<",
-    "named": false
-  },
-  {
-    "type": "<=",
-    "named": false
-  },
-  {
-    "type": "<=>",
     "named": false
   },
   {
@@ -2173,23 +2161,7 @@
     "named": false
   },
   {
-    "type": "==",
-    "named": false
-  },
-  {
     "type": "=>",
-    "named": false
-  },
-  {
-    "type": ">",
-    "named": false
-  },
-  {
-    "type": ">=",
-    "named": false
-  },
-  {
-    "type": ">>>",
     "named": false
   },
   {
@@ -2293,19 +2265,11 @@
     "named": false
   },
   {
-    "type": "^^^",
-    "named": false
-  },
-  {
     "type": "_",
     "named": false
   },
   {
     "type": "`",
-    "named": false
-  },
-  {
-    "type": "and",
     "named": false
   },
   {
@@ -2331,10 +2295,6 @@
   {
     "type": "eff",
     "named": false
-  },
-  {
-    "type": "effect",
-    "named": true
   },
   {
     "type": "else",
@@ -2441,16 +2401,12 @@
     "named": true
   },
   {
-    "type": "or",
-    "named": false
+    "type": "operator_identifier",
+    "named": true
   },
   {
     "type": "override",
     "named": false
-  },
-  {
-    "type": "polymorphic_effect",
-    "named": true
   },
   {
     "type": "polymorphic_identifier",
@@ -2466,10 +2422,6 @@
   },
   {
     "type": "region",
-    "named": false
-  },
-  {
-    "type": "rem",
     "named": false
   },
   {
@@ -2522,10 +2474,6 @@
   },
   {
     "type": "|",
-    "named": false
-  },
-  {
-    "type": "|||",
     "named": false
   },
   {

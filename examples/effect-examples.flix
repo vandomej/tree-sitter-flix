@@ -133,47 +133,62 @@
 
 
 
-
-
 import java.lang.System
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.{Random => JRandom}
 
-def getSecretNumber(): Int32 \ {NonDet, IO} = 
-    let rnd = new JRandom();
-    rnd.nextInt()
+eff Guess {
+    def readGuess(): Result[String, String]
+}
 
-def readGuess(): Result[String, String] \ IO = 
-    let reader = new BufferedReader(new InputStreamReader(System.in));
-    let line = reader.readLine();
-    if (Object.isNull(line)) 
-        Result.Err("no input")
-    else 
-        Result.Ok(line)
+eff Secret {
+    def getSecret(): Int32
+}
 
-def readAndParseGuess(): Result[String, Int32] \ IO = 
-    forM(g <- readGuess(); 
+eff Terminal {
+    def println(s: String): Unit    
+}
+
+def readAndParseGuess(): Result[String, Int32] \ {Guess} = 
+    forM(g <- Guess.readGuess(); 
          n <- Int32.parse(10, g)
     ) yield n
 
-def gameLoop(secret: Int32): Unit \ IO = {
-    println("Enter a guess:");
+def gameLoop(secret: Int32): Unit \ {Guess, Terminal} = {
+    Terminal.println("Enter a guess:");
     match readAndParseGuess() {
         case Result.Ok(g) => 
             if (secret == g) {
-                println("Correct!")
+                Terminal.println("Correct!")
             } else {
-                println("Incorrect!");
+                Terminal.println("Incorrect!");
                 gameLoop(secret)
             }
         case Result.Err(_) => 
-            println("Not a number? Goodbye.");
-            println("The secret was: ${secret}")
+            Terminal.println("Not a number? Goodbye.");
+            Terminal.println("The secret was: ${secret}")
     }
 }
 
 def main(): Unit \ {NonDet, IO} = 
-    let secret = getSecretNumber();
-    gameLoop(secret)
+    run {
+        let secret = Secret.getSecret();
+        gameLoop(secret)
+    } with handler Secret {
+        def getSecret(_, resume) = 
+            let rnd = new JRandom();
+            resume(rnd.nextInt())
+    } with handler Guess {
+        def readGuess(_, resume) = 
+            let reader = new BufferedReader(new InputStreamReader(System.in));
+            let line = reader.readLine();
+            if (Object.isNull(line)) 
+                resume(Result.Err("no input"))
+            else 
+                resume(Result.Ok(line))
+    } with handler Terminal {
+        def println(s, resume) = { println(s); resume() }
+    }
+
 

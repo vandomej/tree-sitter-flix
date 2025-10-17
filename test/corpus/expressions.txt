@@ -11,9 +11,10 @@ def main(): Int32 = Math.x
     (identifier)
     (parameters)
     (type_primitive)
-    (field
-      (identifier)
-      (identifier))))
+    (expressions
+      (field
+        (identifier)
+        (identifier)))))
 
 =====
 statements
@@ -28,57 +29,66 @@ def main(): Int32 = 1 + 2; 1
     (identifier)
     (parameters)
     (type_primitive)
-    (binary
-      (integer)
-      (integer))
-    (integer)))
+    (expressions
+      (binary
+        (integer)
+        (operator_identifier)
+        (integer))
+      (integer))))
 
 =====
 let
 =====
 def main(): Int32 = let a = 1
 ---
+
 (program
   (function_declaration
     (identifier)
     (parameters)
     (type_primitive)
-    (let
-      (identifier)
-      (integer))))
+    (expressions
+      (let
+        (identifier)
+        (integer)))))
 
 =====
 let with type
 =====
 def main(): Int32 = let a: Int32 = 1
 ---
+
 (program
   (function_declaration
     (identifier)
     (parameters)
     (type_primitive)
-    (let
-      (identifier)
-      (type_primitive)
-      (integer))))
+    (expressions
+      (let
+        (identifier)
+        (type_primitive)
+        (integer)))))
 
 =====
-let match 
+let match
 =====
 def main(): Int32 = let (x, y) = (1, 2)
 ---
+
 (program
   (function_declaration
     (identifier)
     (parameters)
     (type_primitive)
-    (let
-      (tuple
-        (identifier)
-        (identifier))
-      (tuple
-        (integer)
-        (integer)))))
+    (expressions
+      (let
+        (tuple
+          (identifier)
+          (identifier))
+        (tuple
+          (integer)
+          (integer))))))
+
 =====
 region
 =====
@@ -88,16 +98,19 @@ def main() =
     1
   }
 ---
+
 (program
   (function_declaration
     (identifier)
     (parameters)
-    (region
-      (identifier)
-      (let
+    (expressions
+      (region
         (identifier)
-        (integer))
-      (integer))))
+        (block
+          (let
+            (identifier)
+            (integer))
+          (integer))))))
 
 =====
 ref
@@ -105,93 +118,107 @@ ref
 def main() = 
   ref 0 @ rc
 ---
+
 (program
   (function_declaration
     (identifier)
     (parameters)
-    (ref
-      (integer)
-      (identifier))))
+    (expressions
+      (ref
+        (integer)
+        (identifier)))))
 
 =====
 deref
 =====
 def main() = deref a
 ---
+
 (program
   (function_declaration
     (identifier)
     (parameters)
-    (deref
-      (identifier))))
+    (expressions
+      (deref
+        (identifier)))))
 
 =====
 assign
 =====
 def main() = a := 1
 ---
+
 (program
   (function_declaration
     (identifier)
     (parameters)
-    (assign
-      (identifier)
-      (integer))))
+    (expressions
+      (assign
+        (identifier)
+        (integer)))))
 
 =====
 if
 =====
 def main() = if (true) 1 else 2
 ---
+
 (program
   (function_declaration
     (identifier)
     (parameters)
-    (if
-      (boolean)
-      (integer)
-      (integer))))
+    (expressions
+      (if
+        (boolean)
+        (integer)
+        (integer)))))
 
 =====
 foreach
 =====
 def main() = foreach(item <- items) item
 ---
+
 (program
-    (function_declaration
-      (identifier)
-      (parameters)
+  (function_declaration
+    (identifier)
+    (parameters)
+    (expressions
       (foreach
         (gets
           (identifier)
           (identifier))
-        (identifier))))
+        (identifier)))))
 
 =====
 foreach with block
 =====
 def main() = foreach(item <- items) {item}
 ---
+
 (program
-    (function_declaration
-      (identifier)
-      (parameters)
+  (function_declaration
+    (identifier)
+    (parameters)
+    (expressions
       (foreach
         (gets
           (identifier)
           (identifier))
-        (block 
-          (identifier)))))
+        (block
+          (identifier))))))
 
 =====
 foreach multiple
 =====
 def main() = foreach(item <- items; other <- others) item
 ---
+
 (program
-    (function_declaration
-      (identifier)
-      (parameters)
+  (function_declaration
+    (identifier)
+    (parameters)
+    (expressions
       (foreach
         (gets
           (identifier)
@@ -199,17 +226,19 @@ def main() = foreach(item <- items; other <- others) item
         (gets
           (identifier)
           (identifier))
-        (identifier))))
+        (identifier)))))
 
 =====
 foreach multiple with filter
 =====
 def main() = foreach(item <- items; if item > 10; other <- others) item
 ---
+
 (program
-    (function_declaration
-      (identifier)
-      (parameters)
+  (function_declaration
+    (identifier)
+    (parameters)
+    (expressions
       (foreach
         (gets
           (identifier)
@@ -217,21 +246,24 @@ def main() = foreach(item <- items; if item > 10; other <- others) item
         (filter
           (binary
             (identifier)
+            (operator_identifier)
             (integer)))
         (gets
           (identifier)
           (identifier))
-        (identifier))))
+        (identifier)))))
 
 =====
 foreach yield
 =====
 def main() = foreach(item <- items; if item > 10; other <- others) yield (item, other)
 ---
+
 (program
-    (function_declaration
-      (identifier)
-      (parameters)
+  (function_declaration
+    (identifier)
+    (parameters)
+    (expressions
       (foreach
         (gets
           (identifier)
@@ -239,23 +271,26 @@ def main() = foreach(item <- items; if item > 10; other <- others) yield (item, 
         (filter
           (binary
             (identifier)
+            (operator_identifier)
             (integer)))
         (gets
           (identifier)
           (identifier))
         (tuple
           (identifier)
-          (identifier)))))
+          (identifier))))))
 
 =====
 for monadic
 =====
 def main() = forM(item <- items; if item > 10; other <- others) yield (item, other)
 ---
+
 (program
-    (function_declaration
-      (identifier)
-      (parameters)
+  (function_declaration
+    (identifier)
+    (parameters)
+    (expressions
       (for_monadic
         (gets
           (identifier)
@@ -263,22 +298,26 @@ def main() = forM(item <- items; if item > 10; other <- others) yield (item, oth
         (filter
           (binary
             (identifier)
+            (operator_identifier)
             (integer)))
         (gets
           (identifier)
           (identifier))
         (tuple
           (identifier)
-          (identifier)))))
+          (identifier))))))
+
 =====
 for applicative
 =====
 def main() = forA(item <- items; if item > 10; other <- others) yield (item, other)
 ---
+
 (program
-    (function_declaration
-      (identifier)
-      (parameters)
+  (function_declaration
+    (identifier)
+    (parameters)
+    (expressions
       (for_applicative
         (gets
           (identifier)
@@ -286,27 +325,31 @@ def main() = forA(item <- items; if item > 10; other <- others) yield (item, oth
         (filter
           (binary
             (identifier)
+            (operator_identifier)
             (integer)))
         (gets
           (identifier)
           (identifier))
         (tuple
           (identifier)
-          (identifier)))))
+          (identifier))))))
+
 =====
 block
 =====
 def main(): Int32 = let a = { 1 }
 ---
+
 (program
   (function_declaration
     (identifier)
     (parameters)
     (type_primitive)
-    (let
-      (identifier)
-      (block
-        (integer)))))
+    (expressions
+      (let
+        (identifier)
+        (block
+          (integer))))))
 
 =====
 match
@@ -316,18 +359,22 @@ def main(): Int32 = match a {
   case _ => false
 }
 ---
+
 (program
   (function_declaration
     (identifier)
     (parameters)
     (type_primitive)
-    (match
-      (identifier)
-      (case
-        (integer)
-        (boolean))
-      (case
-        (boolean)))))
+    (expressions
+      (match
+        (identifier)
+        (case
+          (integer)
+          (expressions
+            (boolean)))
+        (case
+          (expressions
+            (boolean)))))))
 
 =====
 multiple statement case
@@ -360,32 +407,49 @@ def gameLoop(secret: Int32): Unit \ IO = {
         type: (type_primitive)))
     return_type: (type_primitive)
     effects: (effects
-      (effect))
-    body: (block
-      (call_expression
-        function: (identifier)
-        arguments: (arguments
-          (string)))
-      (match
+      (identifier))
+    body: (expressions
+      (block
         (call_expression
           function: (identifier)
-          arguments: (arguments))
-        (case
-          pattern: (constructor
-            (field
-              (identifier)
+          arguments: (arguments
+            (string)))
+        (match
+          (call_expression
+            function: (identifier)
+            arguments: (arguments))
+          (case
+            pattern: (constructor
+              (field
+                (identifier)
+                (identifier))
               (identifier))
-            (identifier))
-          expression: (if
-            (binary
-              (identifier)
-              (identifier))
-            (block
-              (call_expression
-                function: (identifier)
-                arguments: (arguments
-                  (string))))
-            (block
+            expressions: (expressions
+              (if
+                (binary
+                  (identifier)
+                  (operator_identifier)
+                  (identifier))
+                (block
+                  (call_expression
+                    function: (identifier)
+                    arguments: (arguments
+                      (string))))
+                (block
+                  (call_expression
+                    function: (identifier)
+                    arguments: (arguments
+                      (string)))
+                  (call_expression
+                    function: (identifier)
+                    arguments: (arguments
+                      (identifier)))))))
+          (case
+            pattern: (constructor
+              (field
+                (identifier)
+                (identifier)))
+            expressions: (expressions
               (call_expression
                 function: (identifier)
                 arguments: (arguments
@@ -393,21 +457,8 @@ def gameLoop(secret: Int32): Unit \ IO = {
               (call_expression
                 function: (identifier)
                 arguments: (arguments
-                  (identifier))))))
-        (case
-          pattern: (constructor
-            (field
-              (identifier)
-              (identifier)))
-          expression: (call_expression
-            function: (identifier)
-            arguments: (arguments
-              (string)))
-          expression: (call_expression
-            function: (identifier)
-            arguments: (arguments
-              (string))))))))
-      
+                  (string))))))))))
+
 =====
 match enum
 =====
@@ -417,35 +468,40 @@ def main(): Int32 = match a {
   case Shape.Rectangle(h, w) => false
 }
 ---
+
 (program
   (function_declaration
     (identifier)
     (parameters)
     (type_primitive)
-    (match
-      (identifier)
-      (case
-        (constructor
-          (field
+    (expressions
+      (match
+        (identifier)
+        (case
+          (constructor
+            (field
+              (identifier)
+              (identifier))
+            (identifier))
+          (expressions
+            (boolean)))
+        (case
+          (constructor
+            (field
+              (identifier)
+              (identifier))
+            (identifier))
+          (expressions
+            (boolean)))
+        (case
+          (constructor
+            (field
+              (identifier)
+              (identifier))
             (identifier)
             (identifier))
-          (identifier))
-        (boolean))
-      (case
-        (constructor
-          (field
-            (identifier)
-            (identifier))
-          (identifier))
-        (boolean))
-      (case
-        (constructor
-          (field
-            (identifier)
-            (identifier))
-          (identifier)
-          (identifier))
-        (boolean)))))
+          (expressions
+            (boolean)))))))
 
 =====
 match cons
@@ -455,20 +511,24 @@ def main(): Int32 = match a {
   case x :: xs => false
 }
 ---
+
 (program
   (function_declaration
     (identifier)
     (parameters)
     (type_primitive)
-    (match
-      (identifier)
-      (case
-        (nil)
-        (boolean))
-      (case
+    (expressions
+      (match
         (identifier)
-        (identifier)
-        (boolean)))))
+        (case
+          (nil)
+          (expressions
+            (boolean)))
+        (case
+          (identifier)
+          (identifier)
+          (expressions
+            (boolean)))))))
 
 =====
 match wildcard, tuple and name
@@ -479,23 +539,28 @@ def main(): Int32 = match a {
   case _ => true
 }
 ---
+
 (program
   (function_declaration
     (identifier)
     (parameters)
     (type_primitive)
-    (match
-      (identifier)
-      (case
+    (expressions
+      (match
         (identifier)
-        (boolean))
-      (case
-        (tuple
+        (case
           (identifier)
-          (identifier))
-        (boolean))
-      (case
-        (boolean)))))
+          (expressions
+            (boolean)))
+        (case
+          (tuple
+            (identifier)
+            (identifier))
+          (expressions
+            (boolean)))
+        (case
+          (expressions
+            (boolean)))))))
 
 =====
 match lambda
@@ -513,27 +578,31 @@ def main(): Listi[Int32] = List.map(match (x, y) -> x + y, (1, 1) :: (2, 2) :: N
       (identifier)
       (type_arguments
         (type_primitive)))
-    (call_expression
-      (field
-        (identifier)
-        (identifier))
-      (arguments
-        (match
-          (tuple
-            (identifier)
-            (identifier))
-          (binary
-            (identifier)
-            (identifier)))
-        (binary
-          (binary
+    (expressions
+      (call_expression
+        (field
+          (identifier)
+          (identifier))
+        (arguments
+          (match
             (tuple
-              (integer)
-              (integer))
-            (tuple
-              (integer)
-              (integer)))
-          (nil))))))
+              (identifier)
+              (identifier))
+            (binary
+              (identifier)
+              (operator_identifier)
+              (identifier)))
+          (binary
+            (binary
+              (tuple
+                (integer)
+                (integer))
+              (operator_identifier)
+              (tuple
+                (integer)
+                (integer)))
+            (operator_identifier)
+            (nil)))))))
 
 =====
 operator call expression
@@ -548,14 +617,15 @@ def main(): String = (foo >> bar)(1)
     (identifier)
     (parameters)
     (type_primitive)
-    (call_expression
-      (group
-        (binary
-          (identifier)
-          (user_operator)
-          (identifier)))
-      (arguments
-        (integer)))))
+    (expressions
+      (call_expression
+        (group
+          (binary
+            (identifier)
+            (user_operator)
+            (identifier)))
+        (arguments
+          (integer))))))
 
 =====
 return type none
@@ -580,7 +650,7 @@ def handleExc(f: a -> b \ ef): a -> Option[b] \ ef - Exc =
           (polymorphic_identifier)
           (polymorphic_identifier)
           (effects
-            (polymorphic_effect)))))
+            (polymorphic_identifier)))))
     (type_function
       (polymorphic_identifier)
       (type
@@ -588,29 +658,34 @@ def handleExc(f: a -> b \ ef): a -> Option[b] \ ef - Exc =
         (type_arguments
           (polymorphic_identifier))))
     (effects
-          (binary_effect
-            (polymorphic_effect)
-            (operator)
-            (effect)))
-    (lambda
-      (polymorphic_identifier)
-      (effect_block
-        (call_expression
-          (identifier)
-          (arguments
-            (call_expression
+      (binary_effect
+        (polymorphic_identifier)
+        (operator)
+        (identifier)))
+    (expressions
+      (lambda
+        (polymorphic_identifier)
+        (expressions
+          (effect_block
+            (block
+              (call_expression
+                (identifier)
+                (arguments
+                  (call_expression
+                    (identifier)
+                    (arguments
+                      (identifier))))))
+            (effect_handler
               (identifier)
-              (arguments
-                (identifier)))))
-        (effect_handler
-          (identifier)
-          (function_declaration
-            (identifier)
-            (parameters
-              (parameter)
-              (parameter))
-            (none)))))))
-            
+              (handler_body
+                (function_declaration
+                  (identifier)
+                  (parameters
+                    (parameter)
+                    (parameter))
+                  (expressions
+                    (none)))))))))))
+
 =====
 chained call expression
 =====
@@ -629,32 +704,33 @@ def main(): Unit \ IO = {
     (parameters)
     (type_primitive)
     (effects
-      (effect))
-    (block
-      (binary
-        (call_expression
+      (identifier))
+    (expressions
+      (block
+        (binary
           (call_expression
-            (identifier)
-            (arguments
-              (call_expression
-                (identifier)
-                (arguments
-                  (identifier)))))
-          (arguments))
-        (user_operator)
-        (identifier))
-      (binary
-        (call_expression
+            (call_expression
+              (identifier)
+              (arguments
+                (call_expression
+                  (identifier)
+                  (arguments
+                    (identifier)))))
+            (arguments))
+          (user_operator)
+          (identifier))
+        (binary
           (call_expression
-            (identifier)
-            (arguments
-              (call_expression
-                (identifier)
-                (arguments
-                  (identifier)))))
-          (arguments))
-        (user_operator)
-        (identifier)))))
+            (call_expression
+              (identifier)
+              (arguments
+                (call_expression
+                  (identifier)
+                  (arguments
+                    (identifier)))))
+            (arguments))
+          (user_operator)
+          (identifier))))))
 
 =====
 java object creation
@@ -673,16 +749,17 @@ def getSecretNumber(): Int32 \ {NonDet, IO} =
     parameters: (parameters)
     return_type: (type_primitive)
     effects: (effects
-      (group_effect
-        (effect)
-        (effect)))
-    body: (let
-      (identifier)
-      (object_constructor
-        class: (identifier)
-        arguments: (arguments)))
-    body: (call_expression
-      function: (field
+      (effect_group
         (identifier)
-        (identifier))
-      arguments: (arguments))))
+        (identifier)))
+    body: (expressions
+      (let
+        (identifier)
+        (object_constructor
+          type: (identifier)
+          arguments: (arguments)))
+      (call_expression
+        function: (field
+          (identifier)
+          (identifier))
+        arguments: (arguments)))))

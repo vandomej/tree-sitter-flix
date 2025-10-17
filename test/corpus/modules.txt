@@ -15,7 +15,8 @@ mod MyModule {
       (function_declaration
         (identifier)
         (parameters)
-        (boolean)))))
+        (expressions
+          (boolean))))))
 
 =====
 top level use
@@ -23,6 +24,7 @@ top level use
 use Math.sum;
 
 ---
+
 (program
   (use
     (use_path
@@ -35,6 +37,7 @@ top level use set
 use Math.{sum, add};
 
 ---
+
 (program
   (use
     (use_path
