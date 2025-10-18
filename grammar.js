@@ -149,9 +149,7 @@ module.exports = grammar({
     with_clause: ($) =>
       seq(
         "with",
-        one_or_more(
-          alias($.uppercase_name, $.trait),
-        ),
+        one_or_more($._type),
       ),
     constructors: ($) =>
       seq(
@@ -211,10 +209,23 @@ module.exports = grammar({
         ),
         optional(
           seq(
+            field("with_clause", $.with_clause),
+            field("where_clause", $.where_clause),
+          ),
+        ),
+        optional(
+          seq(
             "\\",
             field("effects", $.effects),
           ),
         ),
+      ),
+    where_clause: ($) =>
+      seq(
+        "where",
+        field("type", $._type),
+        "~",
+        field("constraint", $._type),
       ),
     parameters: ($) =>
       seq(
@@ -882,6 +893,7 @@ module.exports = grammar({
         $.type_function,
         $.type_record,
         $._type_identifier,
+        $.type_field,
       ),
     type_primitive: ($) =>
       seq(
@@ -912,6 +924,18 @@ module.exports = grammar({
           $.polymorphic_identifier,
         ),
         $.type,
+      ),
+    type_field: ($) =>
+      prec(
+        PREC.field,
+        seq(
+          choice(
+            $.type,
+            $.type_field
+          ),
+          ".",
+          $.type,
+        ),
       ),
     type: ($) =>
       seq(
@@ -955,6 +979,16 @@ module.exports = grammar({
         "=",
         $._type,
       ),
+    type_definition: ($) =>
+      seq(
+        "type",
+        $._type,
+        choice(
+          "=",
+          ":",
+        ),
+        $._type
+      ),
 
     /////// TRAITS //////////
     trait_definition: ($) =>
@@ -970,7 +1004,12 @@ module.exports = grammar({
     _trait_definition_body: ($) =>
       seq(
         "{",
-        repeat1($.function_definition),
+        repeat(
+          choice(
+            $.function_definition,
+            $.type_definition,
+          ),
+        ),
         "}",
       ),
     trait_implementation: ($) =>

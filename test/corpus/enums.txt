@@ -84,8 +84,10 @@ enum Shape with Eq, Order {
   (enum_definition
     (identifier)
     (with_clause
-      (trait)
-      (trait))
+      (type
+        (identifier))
+      (type
+        (identifier)))
     (constructors
       (constructor
         (identifier)

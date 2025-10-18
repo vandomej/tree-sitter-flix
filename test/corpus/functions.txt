@@ -237,3 +237,47 @@ def ->>(f: a -> b \ ef1, g: b -> c \ ef2): a -> c \ ((ef1 + ef2 + (ef1 + ef2))) 
                 (identifier)
                 (arguments
                   (identifier))))))))))
+
+=====
+type constraint
+=====
+
+def sum(c: t): Int32 with Collection[t] where Collection.Elm[t] ~ Int32 = 
+    Collection.toList(c) |> List.sum
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters
+      (parameter
+        name: (identifier)
+        type: (polymorphic_identifier)))
+    return_type: (type_primitive)
+    with_clause: (with_clause
+      (type
+        (identifier)
+        (type_arguments
+          (polymorphic_identifier))))
+    where_clause: (where_clause
+      type: (type_field
+        (type
+          (identifier))
+        (type
+          (identifier)
+          (type_arguments
+            (polymorphic_identifier))))
+      constraint: (type_primitive))
+    body: (expressions
+      (binary
+        (call_expression
+          function: (field
+            (identifier)
+            (identifier))
+          arguments: (arguments
+            (identifier)))
+        (user_operator)
+        (field
+          (identifier)
+          (identifier))))))

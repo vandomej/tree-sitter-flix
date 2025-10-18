@@ -470,6 +470,10 @@
           "named": true
         },
         {
+          "type": "type_field",
+          "named": true
+        },
+        {
           "type": "type_function",
           "named": true
         },
@@ -905,6 +909,10 @@
             "named": true
           },
           {
+            "type": "type_field",
+            "named": true
+          },
+          {
             "type": "type_function",
             "named": true
           },
@@ -928,6 +936,26 @@
         "types": [
           {
             "type": "type_parameters",
+            "named": true
+          }
+        ]
+      },
+      "where_clause": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "where_clause",
+            "named": true
+          }
+        ]
+      },
+      "with_clause": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "with_clause",
             "named": true
           }
         ]
@@ -995,6 +1023,10 @@
             "named": true
           },
           {
+            "type": "type_field",
+            "named": true
+          },
+          {
             "type": "type_function",
             "named": true
           },
@@ -1018,6 +1050,26 @@
         "types": [
           {
             "type": "type_parameters",
+            "named": true
+          }
+        ]
+      },
+      "where_clause": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "where_clause",
+            "named": true
+          }
+        ]
+      },
+      "with_clause": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "with_clause",
             "named": true
           }
         ]
@@ -1170,6 +1222,10 @@
         },
         {
           "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_field",
           "named": true
         },
         {
@@ -1373,6 +1429,10 @@
             "named": true
           },
           {
+            "type": "type_field",
+            "named": true
+          },
+          {
             "type": "type_function",
             "named": true
           },
@@ -1557,6 +1617,10 @@
         {
           "type": "function_definition",
           "named": true
+        },
+        {
+          "type": "type_definition",
+          "named": true
         }
       ]
     }
@@ -1688,6 +1752,10 @@
           "named": true
         },
         {
+          "type": "type_field",
+          "named": true
+        },
+        {
           "type": "type_function",
           "named": true
         },
@@ -1723,6 +1791,10 @@
           "named": true
         },
         {
+          "type": "type_field",
+          "named": true
+        },
+        {
           "type": "type_function",
           "named": true
         },
@@ -1736,6 +1808,64 @@
         },
         {
           "type": "type_tuple",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type_definition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "polymorphic_identifier",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_field",
+          "named": true
+        },
+        {
+          "type": "type_function",
+          "named": true
+        },
+        {
+          "type": "type_primitive",
+          "named": true
+        },
+        {
+          "type": "type_record",
+          "named": true
+        },
+        {
+          "type": "type_tuple",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type_field",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_field",
           "named": true
         }
       ]
@@ -1768,6 +1898,10 @@
             "named": true
           },
           {
+            "type": "type_field",
+            "named": true
+          },
+          {
             "type": "type_function",
             "named": true
           },
@@ -1795,6 +1929,10 @@
           },
           {
             "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_field",
             "named": true
           },
           {
@@ -1913,6 +2051,10 @@
           "named": true
         },
         {
+          "type": "type_field",
+          "named": true
+        },
+        {
           "type": "type_function",
           "named": true
         },
@@ -1945,6 +2087,10 @@
         },
         {
           "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_field",
           "named": true
         },
         {
@@ -2090,6 +2236,80 @@
     }
   },
   {
+    "type": "where_clause",
+    "named": true,
+    "fields": {
+      "constraint": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "polymorphic_identifier",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_field",
+            "named": true
+          },
+          {
+            "type": "type_function",
+            "named": true
+          },
+          {
+            "type": "type_primitive",
+            "named": true
+          },
+          {
+            "type": "type_record",
+            "named": true
+          },
+          {
+            "type": "type_tuple",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "polymorphic_identifier",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_field",
+            "named": true
+          },
+          {
+            "type": "type_function",
+            "named": true
+          },
+          {
+            "type": "type_primitive",
+            "named": true
+          },
+          {
+            "type": "type_record",
+            "named": true
+          },
+          {
+            "type": "type_tuple",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "with_clause",
     "named": true,
     "fields": {},
@@ -2098,7 +2318,31 @@
       "required": true,
       "types": [
         {
-          "type": "trait",
+          "type": "polymorphic_identifier",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_field",
+          "named": true
+        },
+        {
+          "type": "type_function",
+          "named": true
+        },
+        {
+          "type": "type_primitive",
+          "named": true
+        },
+        {
+          "type": "type_record",
+          "named": true
+        },
+        {
+          "type": "type_tuple",
           "named": true
         }
       ]
@@ -2441,11 +2685,11 @@
     "named": false
   },
   {
-    "type": "trait",
-    "named": true
+    "type": "true",
+    "named": false
   },
   {
-    "type": "true",
+    "type": "type",
     "named": false
   },
   {
@@ -2459,6 +2703,10 @@
   {
     "type": "user_operator",
     "named": true
+  },
+  {
+    "type": "where",
+    "named": false
   },
   {
     "type": "with",
