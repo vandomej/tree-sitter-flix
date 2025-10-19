@@ -291,6 +291,14 @@ module.exports = grammar({
         $.effect_group,
         $.binary_effect,
         $.unary_effect,
+        $.effect_field,
+      ),
+    effect_field: ($) =>
+      seq(
+        $._uppercase_name,
+        ".",
+        $._uppercase_name,
+        $.type_arguments,        
       ),
     unary_effect: ($) =>
       prec(PREC.unary, seq("~", $._effect)),
@@ -980,14 +988,27 @@ module.exports = grammar({
         $._type,
       ),
     type_definition: ($) =>
-      seq(
-        "type",
-        $._type,
-        choice(
-          "=",
-          ":",
+      prec(
+        1,
+        seq(
+          "type",
+          $._uppercase_name,
+          choice(
+            "=",
+            ":",
+          ),
+          choice(
+            $._uppercase_name,
+            $._type,
+            $.effect_list,
+          ),
         ),
-        $._type
+      ),
+    effect_list: ($) =>
+      seq(
+        "{",
+        $._effect,
+        "}",
       ),
 
     /////// TRAITS //////////
@@ -1016,8 +1037,12 @@ module.exports = grammar({
       seq(
         "instance",
         field("type", $.type),
-        "with",
-        field("trait", $.type),
+        optional(
+          seq(
+            "with",
+            field("trait", $.type),
+          ),
+        ),
         field(
           "body",
           alias($._trait_implementation_body, $.template_body),
@@ -1026,7 +1051,12 @@ module.exports = grammar({
     _trait_implementation_body: ($) =>
       seq(
         "{",
-        repeat1($.function_declaration),
+        repeat(
+          choice(
+            $.function_declaration,
+            $.type_definition,
+          ),
+        ),
         "}",
       ),
 

@@ -394,8 +394,7 @@ trait Addable[t] {
         (polymorphic_identifier)))
     body: (template_body
       (type_definition
-        (type
-          (identifier))
+        (identifier)
         (polymorphic_identifier))
       (comment
         (line_comment))
@@ -417,3 +416,85 @@ trait Addable[t] {
                 (type_arguments
                   (polymorphic_identifier))))))
         return_type: (polymorphic_identifier)))))
+
+=====
+associated effects
+=====
+
+trait Dividable[t] {
+    type Aef: Eff
+    pub def div(x: t, y: t): t \ Dividable.Aef[t]
+}
+
+---
+
+(program
+  (trait_definition
+    trait: (type
+      (identifier)
+      (type_arguments
+        (polymorphic_identifier)))
+    body: (template_body
+      (type_definition
+        (identifier)
+        (identifier))
+      (function_definition
+        (modifiers
+          (modifier))
+        name: (identifier)
+        parameters: (parameters
+          (parameter
+            name: (identifier)
+            type: (polymorphic_identifier))
+          (parameter
+            name: (identifier)
+            type: (polymorphic_identifier)))
+        return_type: (polymorphic_identifier)
+        effects: (effects
+          (effect_field
+            (identifier)
+            (identifier)
+            (type_arguments
+              (polymorphic_identifier))))))))
+
+=====
+associated effect instance
+=====
+
+instance Dividable[Float32] {
+    type Aef = { Pure } // No exception, div-by-zero yields NaN.
+    pub def div(x: Float32, y: Float32): Float32 = x / y
+}
+
+---
+
+(program
+  (trait_implementation
+    type: (type
+      (identifier)
+      (type_arguments
+        (type_primitive)))
+    body: (template_body
+      (type_definition
+        (identifier)
+        (effect_list
+          (identifier)))
+      (comment
+        (line_comment))
+      (function_declaration
+        (modifiers
+          (modifier))
+        name: (identifier)
+        parameters: (parameters
+          (parameter
+            name: (identifier)
+            type: (type_primitive))
+          (parameter
+            name: (identifier)
+            type: (type_primitive)))
+        return_type: (type_primitive)
+        body: (expressions
+          (binary
+            (identifier)
+            (operator_identifier)
+            (identifier)))))))

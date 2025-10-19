@@ -270,6 +270,10 @@
           "named": true
         },
         {
+          "type": "effect_field",
+          "named": true
+        },
+        {
           "type": "effect_group",
           "named": true
         },
@@ -583,6 +587,25 @@
     }
   },
   {
+    "type": "effect_field",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "type_arguments",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "effect_group",
     "named": true,
     "fields": {},
@@ -592,6 +615,10 @@
       "types": [
         {
           "type": "binary_effect",
+          "named": true
+        },
+        {
+          "type": "effect_field",
           "named": true
         },
         {
@@ -644,6 +671,41 @@
     }
   },
   {
+    "type": "effect_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "binary_effect",
+          "named": true
+        },
+        {
+          "type": "effect_field",
+          "named": true
+        },
+        {
+          "type": "effect_group",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "polymorphic_identifier",
+          "named": true
+        },
+        {
+          "type": "unary_effect",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "effects",
     "named": true,
     "fields": {},
@@ -653,6 +715,10 @@
       "types": [
         {
           "type": "binary_effect",
+          "named": true
+        },
+        {
+          "type": "effect_field",
           "named": true
         },
         {
@@ -1677,7 +1743,7 @@
       },
       "trait": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "type",
@@ -1821,6 +1887,14 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "effect_list",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
         {
           "type": "polymorphic_identifier",
           "named": true
@@ -2137,6 +2211,10 @@
       "types": [
         {
           "type": "binary_effect",
+          "named": true
+        },
+        {
+          "type": "effect_field",
           "named": true
         },
         {
