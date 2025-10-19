@@ -763,3 +763,248 @@ def getSecretNumber(): Int32 \ {NonDet, IO} =
           (identifier)
           (identifier))
         arguments: (arguments)))))
+
+=====
+spawn process
+=====
+
+def main(): Unit \ IO = region rc {
+    spawn println("Hello from thread") @ rc
+}
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type_primitive)
+    effects: (effects
+      (identifier))
+    body: (expressions
+      (region
+        name: (identifier)
+        body: (block
+          (spawn
+            (call_expression
+              function: (identifier)
+              arguments: (arguments
+                (string)))
+            (identifier)))))))
+
+=====
+select
+=====
+
+def main(): Unit \ {Chan, NonDet, IO} = region rc {
+    let (tx1, rx1) = Channel.buffered(1);
+    let (tx2, rx2) = Channel.buffered(1);
+    spawn meow(tx1) @ rc;
+    spawn woof(tx2) @ rc;
+    select {
+        case m <- recv(rx1) => m
+        case m <- recv(rx2) => m
+    } |> println
+}
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type_primitive)
+    effects: (effects
+      (effect_group
+        (identifier)
+        (identifier)
+        (identifier)))
+    body: (expressions
+      (region
+        name: (identifier)
+        body: (block
+          (let
+            (tuple
+              (identifier)
+              (identifier))
+            (call_expression
+              function: (field
+                (identifier)
+                (identifier))
+              arguments: (arguments
+                (integer))))
+          (let
+            (tuple
+              (identifier)
+              (identifier))
+            (call_expression
+              function: (field
+                (identifier)
+                (identifier))
+              arguments: (arguments
+                (integer))))
+          (spawn
+            (call_expression
+              function: (identifier)
+              arguments: (arguments
+                (identifier)))
+            (identifier))
+          (spawn
+            (call_expression
+              function: (identifier)
+              arguments: (arguments
+                (identifier)))
+            (identifier))
+          (binary
+            (select
+              (case
+                pattern: (gets
+                  (identifier)
+                  (call_expression
+                    function: (identifier)
+                    arguments: (arguments
+                      (identifier))))
+                expressions: (expressions
+                  (identifier)))
+              (case
+                pattern: (gets
+                  (identifier)
+                  (call_expression
+                    function: (identifier)
+                    arguments: (arguments
+                      (identifier))))
+                expressions: (expressions
+                  (identifier))))
+            (user_operator)
+            (identifier)))))))
+
+=====
+select default
+=====
+
+def main(): String \ {Chan, NonDet} = region rc {
+    let (_, rx1) = Channel.buffered(1);
+    let (_, rx2) = Channel.buffered(1);
+    select {
+        case _ <- recv(rx1) => "one"
+        case _ <- recv(rx2) => "two"
+        case _             => "default"
+    }
+}
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type_primitive)
+    effects: (effects
+      (effect_group
+        (identifier)
+        (identifier)))
+    body: (expressions
+      (region
+        name: (identifier)
+        body: (block
+          (let
+            (tuple
+              (identifier))
+            (call_expression
+              function: (field
+                (identifier)
+                (identifier))
+              arguments: (arguments
+                (integer))))
+          (let
+            (tuple
+              (identifier))
+            (call_expression
+              function: (field
+                (identifier)
+                (identifier))
+              arguments: (arguments
+                (integer))))
+          (select
+            (case
+              pattern: (gets
+                (call_expression
+                  function: (identifier)
+                  arguments: (arguments
+                    (identifier))))
+              expressions: (expressions
+                (string)))
+            (case
+              pattern: (gets
+                (call_expression
+                  function: (identifier)
+                  arguments: (arguments
+                    (identifier))))
+              expressions: (expressions
+                (string)))
+            (case
+              pattern: (default)
+              expressions: (expressions
+                (string)))))))))
+
+=====
+parallel
+=====
+
+def parMap(f: a -> b, l: List[a]): List[b] = match l {
+    case Nil     => Nil
+    case x :: xs =>
+        par (r <- f(x); rs <- parMap(f, xs))
+            yield r :: rs
+}
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters
+      (parameter
+        name: (identifier)
+        type: (type_function
+          parameters: (polymorphic_identifier)
+          return_type: (polymorphic_identifier)))
+      (parameter
+        name: (identifier)
+        type: (type
+          (identifier)
+          (type_arguments
+            (polymorphic_identifier)))))
+    return_type: (type
+      (identifier)
+      (type_arguments
+        (polymorphic_identifier)))
+    body: (expressions
+      (match
+        (identifier)
+        (case
+          pattern: (nil)
+          expressions: (expressions
+            (nil)))
+        (case
+          pattern: (identifier)
+          pattern: (identifier)
+          expressions: (expressions
+            (parallel
+              (gets
+                (identifier)
+                (call_expression
+                  function: (identifier)
+                  arguments: (arguments
+                    (identifier))))
+              (gets
+                (identifier)
+                (call_expression
+                  function: (identifier)
+                  arguments: (arguments
+                    (identifier)
+                    (identifier))))
+              (binary
+                (identifier)
+                (operator_identifier)
+                (identifier)))))))))

@@ -110,11 +110,23 @@
         "named": true
       },
       {
+        "type": "parallel",
+        "named": true
+      },
+      {
         "type": "ref",
         "named": true
       },
       {
         "type": "region",
+        "named": true
+      },
+      {
+        "type": "select",
+        "named": true
+      },
+      {
+        "type": "spawn",
         "named": true
       },
       {
@@ -386,6 +398,14 @@
           },
           {
             "type": "constructor",
+            "named": true
+          },
+          {
+            "type": "default",
+            "named": true
+          },
+          {
+            "type": "gets",
             "named": true
           },
           {
@@ -1469,6 +1489,25 @@
     }
   },
   {
+    "type": "parallel",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "_expression",
+          "named": true
+        },
+        {
+          "type": "gets",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "parameter",
     "named": true,
     "fields": {
@@ -1639,12 +1678,42 @@
     }
   },
   {
+    "type": "select",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "case",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "set",
     "named": true,
     "fields": {},
     "children": {
       "multiple": true,
       "required": false,
+      "types": [
+        {
+          "type": "_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "spawn",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
       "types": [
         {
           "type": "_expression",
@@ -2611,6 +2680,10 @@
     "named": false
   },
   {
+    "type": "default",
+    "named": true
+  },
+  {
     "type": "deref",
     "named": false
   },
@@ -2731,6 +2804,10 @@
     "named": false
   },
   {
+    "type": "par",
+    "named": false
+  },
+  {
     "type": "polymorphic_identifier",
     "named": true
   },
@@ -2756,6 +2833,14 @@
   },
   {
     "type": "sealed",
+    "named": false
+  },
+  {
+    "type": "select",
+    "named": false
+  },
+  {
+    "type": "spawn",
     "named": false
   },
   {

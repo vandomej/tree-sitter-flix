@@ -498,3 +498,59 @@ instance Dividable[Float32] {
             (identifier)
             (operator_identifier)
             (identifier)))))))
+
+=====
+unassigned type definition
+=====
+
+trait ForEach[t] {
+    type Elm
+    type Aef: Eff
+    pub def forEach(f: ForEach.Elm[t] -> Unit \ ef, x: t): Unit \ ef + ForEach.Aef[t]
+}
+
+---
+
+(program
+  (trait_definition
+    trait: (type
+      (identifier)
+      (type_arguments
+        (polymorphic_identifier)))
+    body: (template_body
+      (type_definition
+        (identifier))
+      (type_definition
+        (identifier)
+        (identifier))
+      (function_definition
+        (modifiers
+          (modifier))
+        name: (identifier)
+        parameters: (parameters
+          (parameter
+            name: (identifier)
+            type: (type_function
+              parameters: (type_field
+                (type
+                  (identifier))
+                (type
+                  (identifier)
+                  (type_arguments
+                    (polymorphic_identifier))))
+              return_type: (type_primitive)
+              effects: (effects
+                (polymorphic_identifier))))
+          (parameter
+            name: (identifier)
+            type: (polymorphic_identifier)))
+        return_type: (type_primitive)
+        effects: (effects
+          (binary_effect
+            (polymorphic_identifier)
+            (operator)
+            (effect_field
+              (identifier)
+              (identifier)
+              (type_arguments
+                (polymorphic_identifier)))))))))

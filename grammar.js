@@ -479,6 +479,225 @@ module.exports = grammar({
         $.tuple,
         $.effect_block,
         $.lambda,
+        $.spawn,
+        $.select,
+        $.parallel,
+      ),
+
+    ///////// CONTROL STRUCTURES /////////////
+    for_applicative: ($) =>
+      seq(
+        "forA",
+        "(",
+        zero_or_more_by(
+          choice($.gets, $.filter),
+          ";",
+        ),
+        ")",
+        "yield",
+        $._expression,
+      ),
+    for_monadic: ($) =>
+      seq(
+        "forM",
+        "(",
+        zero_or_more_by(
+          choice($.gets, $.filter),
+          ";",
+        ),
+        ")",
+        "yield",
+        $._expression,
+      ),
+    foreach: ($) =>
+      seq(
+        "foreach",
+        "(",
+        zero_or_more_by(
+          choice($.gets, $.filter),
+          ";",
+        ),
+        ")",
+        $._foreach_body,
+      ),
+    _foreach_body: ($) =>
+      choice(
+        seq("yield", $._expression),
+        $._expression,
+      ),
+    gets: ($) =>
+      seq(
+        choice(
+          "_",
+          $._lowercase_name,
+        ),
+        "<-",
+        $._expression,
+      ),
+    filter: ($) => seq("if", $._expression),
+    if: ($) =>
+      seq(
+        "if",
+        "(",
+        $._expression,
+        ")",
+        $._expression,
+        "else",
+        $._expression,
+      ),
+    match: ($) =>
+      seq(
+        "match",
+        $._expression,
+        choice(
+          $._match_block,
+          $._match_lambda,
+        ),
+      ),
+    _match_lambda: ($) =>
+      seq("->", $._expression),
+    _match_block: ($) =>
+      seq(
+        "{",
+        repeat(alias($.match_case, $.case)),
+        "}",
+      ),
+    match_case: ($) =>
+      seq(
+        "case",
+        field("pattern", $._pattern_cons),
+        "=>",
+        field("expressions", $.expressions),
+      ),
+    _pattern_cons: ($) =>
+      seq(
+        $._pattern,
+        optional(seq("::", $._pattern)),
+      ),
+    _pattern: ($) =>
+      choice(
+        "_",
+        $._literal,
+        $._lowercase_name,
+        $._uppercase_name,
+        alias(
+          $.pattern_constructor,
+          $.constructor,
+        ),
+        alias($._pattern_tuple, $.tuple),
+      ),
+    pattern_constructor: ($) =>
+      prec(
+        PREC.pattern_constructor,
+        seq(
+          choice(
+            $._lowercase_name,
+            $._uppercase_name,
+            $.field,
+          ),
+          optional($._pattern_tuple),
+        ),
+      ),
+    _pattern_tuple: ($) =>
+      seq(
+        "(",
+        zero_or_more($._pattern),
+        ")",
+      ),
+    select: ($) =>
+      seq(
+        "select",
+        "{",
+        repeat(alias($._select_case, $.case)),
+        "}",
+      ),
+    _select_case: ($) =>
+      seq(
+        "case",
+        field(
+          "pattern",
+          choice(
+            $.gets,
+            alias("_", $.default),
+          ),
+        ),
+        "=>",
+        field("expressions", $.expressions),
+      ),
+    parallel: ($) =>
+      seq(
+        "par",
+        "(",
+        zero_or_more_by(
+          $.gets,
+          ";",
+        ),
+        ")",
+        "yield",
+        $._expression,
+      ),
+
+    ///////////// 'SIMPLE' EXPRESSIONS ////////////
+    tuple: ($) =>
+      seq(
+        "(",
+        one_or_more($._expression),
+        ")",
+      ),
+    field: ($) =>
+      prec(
+        PREC.field,
+        seq(
+          choice(
+            $._lowercase_name,
+            $._uppercase_name,
+            $.field,
+          ),
+          ".",
+          $._name,
+        ),
+      ),
+    ref: ($) =>
+      seq(
+        "ref",
+        $._expression,
+        "@",
+        $._lowercase_name,
+      ),
+    spawn: ($) =>
+      seq(
+        "spawn",
+        $._expression,
+        "@",
+        $._lowercase_name,
+      ),
+    deref: ($) =>
+      prec(
+        PREC.deref,
+        seq("deref", $._expression),
+      ),
+    assign: ($) =>
+      prec.left(
+        PREC.assign,
+        seq(
+          $._expression,
+          ":=",
+          $._expression,
+        ),
+      ),
+    region: ($) =>
+      seq(
+        "region",
+        field("name", $._lowercase_name),
+        field("body", $.block),
+      ),
+    let: ($) =>
+      seq(
+        "let",
+        $._pattern,
+        optional(seq(":", $._type)),
+        "=",
+        $._expression,
       ),
     call_expression: ($) =>
       prec(
@@ -529,180 +748,7 @@ module.exports = grammar({
         ),
       ),
 
-    ///////// CONTROL STRUCTURES /////////////
-    for_applicative: ($) =>
-      seq(
-        "forA",
-        "(",
-        zero_or_more_by(
-          choice($.gets, $.filter),
-          ";",
-        ),
-        ")",
-        "yield",
-        $._expression,
-      ),
-    for_monadic: ($) =>
-      seq(
-        "forM",
-        "(",
-        zero_or_more_by(
-          choice($.gets, $.filter),
-          ";",
-        ),
-        ")",
-        "yield",
-        $._expression,
-      ),
-    foreach: ($) =>
-      seq(
-        "foreach",
-        "(",
-        zero_or_more_by(
-          choice($.gets, $.filter),
-          ";",
-        ),
-        ")",
-        $._foreach_body,
-      ),
-    _foreach_body: ($) =>
-      choice(
-        seq("yield", $._expression),
-        $._expression,
-      ),
-    gets: ($) =>
-      seq(
-        $._lowercase_name,
-        "<-",
-        $._expression,
-      ),
-    filter: ($) => seq("if", $._expression),
-    if: ($) =>
-      seq(
-        "if",
-        "(",
-        $._expression,
-        ")",
-        $._expression,
-        "else",
-        $._expression,
-      ),
-    match: ($) =>
-      seq(
-        "match",
-        $._expression,
-        choice(
-          $._match_scoped,
-          $._match_lambda,
-        ),
-      ),
-    _match_lambda: ($) =>
-      seq("->", $._expression),
-    _match_scoped: ($) =>
-      seq(
-        "{",
-        repeat(alias($.match_case, $.case)),
-        "}",
-      ),
-    match_case: ($) =>
-      seq(
-        "case",
-        field("pattern", $._pattern_cons),
-        "=>",
-        field("expressions", $.expressions),
-      ),
-    _pattern_cons: ($) =>
-      seq(
-        $._pattern,
-        optional(seq("::", $._pattern)),
-      ),
-    _pattern: ($) =>
-      choice(
-        "_",
-        $._literal,
-        $._lowercase_name,
-        $._uppercase_name,
-        alias(
-          $.pattern_constructor,
-          $.constructor,
-        ),
-        alias($._pattern_tuple, $.tuple),
-      ),
-    pattern_constructor: ($) =>
-      prec(
-        PREC.pattern_constructor,
-        seq(
-          choice(
-            $._lowercase_name,
-            $._uppercase_name,
-            $.field,
-          ),
-          optional($._pattern_tuple),
-        ),
-      ),
-    _pattern_tuple: ($) =>
-      seq(
-        "(",
-        zero_or_more($._pattern),
-        ")",
-      ),
-
-    ///////////// 'SIMPLE' EXPRESSIONS ////////////
-    tuple: ($) =>
-      seq(
-        "(",
-        one_or_more($._expression),
-        ")",
-      ),
-    field: ($) =>
-      prec(
-        PREC.field,
-        seq(
-          choice(
-            $._lowercase_name,
-            $._uppercase_name,
-            $.field,
-          ),
-          ".",
-          $._name,
-        ),
-      ),
-    ref: ($) =>
-      seq(
-        "ref",
-        $._expression,
-        "@",
-        $._lowercase_name,
-      ),
-    deref: ($) =>
-      prec(
-        PREC.deref,
-        seq("deref", $._expression),
-      ),
-    assign: ($) =>
-      prec.left(
-        PREC.assign,
-        seq(
-          $._expression,
-          ":=",
-          $._expression,
-        ),
-      ),
-    region: ($) =>
-      seq(
-        "region",
-        field("name", $._lowercase_name),
-        field("body", $.block),
-      ),
-    let: ($) =>
-      seq(
-        "let",
-        $._pattern,
-        optional(seq(":", $._type)),
-        "=",
-        $._expression,
-      ),
-
+  
     /////////// OPERATORS /////////////
     unary: ($) =>
       prec(
@@ -993,14 +1039,18 @@ module.exports = grammar({
         seq(
           "type",
           $._uppercase_name,
-          choice(
-            "=",
-            ":",
-          ),
-          choice(
-            $._uppercase_name,
-            $._type,
-            $.effect_list,
+          optional(
+            seq(
+              choice(
+                "=",
+                ":",
+              ),
+              choice(
+                $._uppercase_name,
+                $._type,
+                $.effect_list,
+              ),
+            ),
           ),
         ),
       ),
