@@ -1579,6 +1579,31 @@
         "name": "_stmt"
       }
     },
+    "_expression_list": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_expression"
+              },
+              {
+                "type": "STRING",
+                "value": ","
+              }
+            ]
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_expression"
+        }
+      ]
+    },
     "_expression": {
       "type": "CHOICE",
       "members": [
@@ -1681,6 +1706,18 @@
         {
           "type": "SYMBOL",
           "name": "parallel"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "constraints"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "inject"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "query"
         }
       ]
     },
@@ -4480,6 +4517,331 @@
           }
         ]
       }
+    },
+    "constraints": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "#{"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "fact"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "rule"
+              }
+            ]
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "facts": {
+      "type": "PREC_LEFT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_fact_inner"
+                  },
+                  "named": true,
+                  "value": "fact"
+                },
+                {
+                  "type": "STRING",
+                  "value": ","
+                }
+              ]
+            }
+          },
+          {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_fact_inner"
+            },
+            "named": true,
+            "value": "fact"
+          }
+        ]
+      }
+    },
+    "fact": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_fact_inner"
+        },
+        {
+          "type": "STRING",
+          "value": "."
+        }
+      ]
+    },
+    "_fact_inner": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "uppercase_name"
+          },
+          "named": true,
+          "value": "table"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "term_list"
+        }
+      ]
+    },
+    "term_list": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "ALIAS",
+                        "content": {
+                          "type": "SYMBOL",
+                          "name": "lowercase_name"
+                        },
+                        "named": true,
+                        "value": "term"
+                      },
+                      {
+                        "type": "STRING",
+                        "value": ","
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "lowercase_name"
+                  },
+                  "named": true,
+                  "value": "term"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "rule": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "head",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_fact_inner"
+            },
+            "named": true,
+            "value": "fact"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ":-"
+        },
+        {
+          "type": "FIELD",
+          "name": "body",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "facts"
+            },
+            "named": true,
+            "value": "rule_body"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "."
+        }
+      ]
+    },
+    "inject": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "inject"
+        },
+        {
+          "type": "FIELD",
+          "name": "data",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_expression_list"
+            },
+            "named": true,
+            "value": "data_list"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "into"
+        },
+        {
+          "type": "FIELD",
+          "name": "tables",
+          "content": {
+            "type": "SYMBOL",
+            "name": "tables"
+          }
+        }
+      ]
+    },
+    "tables": {
+      "type": "PREC_LEFT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "table"
+                },
+                {
+                  "type": "STRING",
+                  "value": ","
+                }
+              ]
+            }
+          },
+          {
+            "type": "SYMBOL",
+            "name": "table"
+          }
+        ]
+      }
+    },
+    "table": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_uppercase_name"
+        },
+        {
+          "type": "STRING",
+          "value": "/"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "integer"
+          },
+          "named": true,
+          "value": "arity"
+        }
+      ]
+    },
+    "query": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "query"
+        },
+        {
+          "type": "FIELD",
+          "name": "source",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_expression_list"
+            },
+            "named": true,
+            "value": "source_list"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "select"
+        },
+        {
+          "type": "FIELD",
+          "name": "select",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_expression"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "from"
+        },
+        {
+          "type": "FIELD",
+          "name": "facts",
+          "content": {
+            "type": "SYMBOL",
+            "name": "facts"
+          }
+        }
+      ]
     },
     "_string_fragment": {
       "type": "IMMEDIATE_TOKEN",

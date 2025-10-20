@@ -58,6 +58,10 @@
         "named": true
       },
       {
+        "type": "constraints",
+        "named": true
+      },
+      {
         "type": "deref",
         "named": true
       },
@@ -94,6 +98,10 @@
         "named": true
       },
       {
+        "type": "inject",
+        "named": true
+      },
+      {
         "type": "lambda",
         "named": true
       },
@@ -111,6 +119,10 @@
       },
       {
         "type": "parallel",
+        "named": true
+      },
+      {
+        "type": "query",
         "named": true
       },
       {
@@ -436,6 +448,25 @@
     }
   },
   {
+    "type": "constraints",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "fact",
+          "named": true
+        },
+        {
+          "type": "rule",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "constructor",
     "named": true,
     "fields": {
@@ -526,6 +557,21 @@
       "types": [
         {
           "type": "constructor",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "data_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "_expression",
           "named": true
         }
       ]
@@ -830,6 +876,40 @@
       "types": [
         {
           "type": "_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "fact",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "table",
+          "named": true
+        },
+        {
+          "type": "term_list",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "facts",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "fact",
           "named": true
         }
       ]
@@ -1252,6 +1332,32 @@
     }
   },
   {
+    "type": "inject",
+    "named": true,
+    "fields": {
+      "data": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "data_list",
+            "named": true
+          }
+        ]
+      },
+      "tables": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "tables",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "kind",
     "named": true,
     "fields": {}
@@ -1603,6 +1709,42 @@
     }
   },
   {
+    "type": "query",
+    "named": true,
+    "fields": {
+      "facts": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "facts",
+            "named": true
+          }
+        ]
+      },
+      "select": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_expression",
+            "named": true
+          }
+        ]
+      },
+      "source": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "source_list",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "record",
     "named": true,
     "fields": {},
@@ -1678,6 +1820,47 @@
     }
   },
   {
+    "type": "rule",
+    "named": true,
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "rule_body",
+            "named": true
+          }
+        ]
+      },
+      "head": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "fact",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "rule_body",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "fact",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "select",
     "named": true,
     "fields": {},
@@ -1699,6 +1882,21 @@
     "children": {
       "multiple": true,
       "required": false,
+      "types": [
+        {
+          "type": "_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "source_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
       "types": [
         {
           "type": "_expression",
@@ -1738,6 +1936,40 @@
     }
   },
   {
+    "type": "table",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "arity",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "tables",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "table",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "template_body",
     "named": true,
     "fields": {},
@@ -1755,6 +1987,21 @@
         },
         {
           "type": "type_definition",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "term_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "term",
           "named": true
         }
       ]
@@ -2500,6 +2747,10 @@
     "named": false
   },
   {
+    "type": "#{",
+    "named": false
+  },
+  {
     "type": "(",
     "named": false
   },
@@ -2528,7 +2779,15 @@
     "named": false
   },
   {
+    "type": "/",
+    "named": false
+  },
+  {
     "type": ":",
+    "named": false
+  },
+  {
+    "type": ":-",
     "named": false
   },
   {
@@ -2668,6 +2927,10 @@
     "named": true
   },
   {
+    "type": "arity",
+    "named": true
+  },
+  {
     "type": "case",
     "named": false
   },
@@ -2724,6 +2987,10 @@
     "named": false
   },
   {
+    "type": "from",
+    "named": false
+  },
+  {
     "type": "handler",
     "named": false
   },
@@ -2740,6 +3007,10 @@
     "named": false
   },
   {
+    "type": "inject",
+    "named": false
+  },
+  {
     "type": "inline",
     "named": false
   },
@@ -2750,6 +3021,10 @@
   {
     "type": "integer",
     "named": true
+  },
+  {
+    "type": "into",
+    "named": false
   },
   {
     "type": "lawful",
@@ -2816,6 +3091,10 @@
     "named": false
   },
   {
+    "type": "query",
+    "named": false
+  },
+  {
     "type": "ref",
     "named": false
   },
@@ -2842,6 +3121,10 @@
   {
     "type": "spawn",
     "named": false
+  },
+  {
+    "type": "term",
+    "named": true
   },
   {
     "type": "trait",

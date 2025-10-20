@@ -1008,3 +1008,193 @@ def parMap(f: a -> b, l: List[a]): List[b] = match l {
                 (identifier)
                 (operator_identifier)
                 (identifier)))))))))
+
+=====
+constraint
+=====
+
+def main(): Unit =
+  let rules = #{
+    Path(x, y) :- Edge(x, y).
+    Path(x, z) :- Path(x, y), Edge(y, z).
+  }
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type_primitive)
+    body: (expressions
+      (let
+        (identifier)
+        (constraints
+          (rule
+            head: (fact
+              (table)
+              (term_list
+                (term)
+                (term)))
+            body: (rule_body
+              (fact
+                (table)
+                (term_list
+                  (term)
+                  (term)))))
+          (rule
+            head: (fact
+              (table)
+              (term_list
+                (term)
+                (term)))
+            body: (rule_body
+              (fact
+                (table)
+                (term_list
+                  (term)
+                  (term)))
+              (fact
+                (table)
+                (term_list
+                  (term)
+                  (term))))))))))
+
+=====
+inject
+=====
+
+def main(): Unit =
+  let s = Set#{(1, 2), (2, 3), (3, 4), (4, 5)};
+  let edges = inject s into Edge/2
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type_primitive)
+    body: (expressions
+      (let
+        (identifier)
+        (set
+          (tuple
+            (integer)
+            (integer))
+          (tuple
+            (integer)
+            (integer))
+          (tuple
+            (integer)
+            (integer))
+          (tuple
+            (integer)
+            (integer))))
+      (let
+        (identifier)
+        (inject
+          data: (data_list
+            (identifier))
+          tables: (tables
+            (table
+              (identifier)
+              (arity))))))))
+
+=====
+query
+=====
+
+def isConnected(s: Set[(Int32, Int32)], src: Int32, dst: Int32): Bool =
+    let rules = #{
+        Path(x, y) :- Edge(x, y).
+        Path(x, z) :- Path(x, y), Edge(y, z).
+    };
+    let edges = inject s into Edge/2;
+    let paths = query edges, rules select true from Path(src, dst);
+    not (paths |> Vector.isEmpty)
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters
+      (parameter
+        name: (identifier)
+        type: (type
+          (identifier)
+          (type_arguments
+            (type_tuple
+              (type_primitive)
+              (type_primitive)))))
+      (parameter
+        name: (identifier)
+        type: (type_primitive))
+      (parameter
+        name: (identifier)
+        type: (type_primitive)))
+    return_type: (type_primitive)
+    body: (expressions
+      (let
+        (identifier)
+        (constraints
+          (rule
+            head: (fact
+              (table)
+              (term_list
+                (term)
+                (term)))
+            body: (rule_body
+              (fact
+                (table)
+                (term_list
+                  (term)
+                  (term)))))
+          (rule
+            head: (fact
+              (table)
+              (term_list
+                (term)
+                (term)))
+            body: (rule_body
+              (fact
+                (table)
+                (term_list
+                  (term)
+                  (term)))
+              (fact
+                (table)
+                (term_list
+                  (term)
+                  (term)))))))
+      (let
+        (identifier)
+        (inject
+          data: (data_list
+            (identifier))
+          tables: (tables
+            (table
+              (identifier)
+              (arity)))))
+      (let
+        (identifier)
+        (query
+          source: (source_list
+            (identifier)
+            (identifier))
+          select: (boolean)
+          facts: (facts
+            (fact
+              (table)
+              (term_list
+                (term)
+                (term))))))
+      (unary
+        (group
+          (binary
+            (identifier)
+            (user_operator)
+            (field
+              (identifier)
+              (identifier))))))))

@@ -147,10 +147,7 @@ module.exports = grammar({
         ),
       ),
     with_clause: ($) =>
-      seq(
-        "with",
-        one_or_more($._type),
-      ),
+      seq("with", one_or_more($._type)),
     constructors: ($) =>
       seq(
         "{",
@@ -209,8 +206,14 @@ module.exports = grammar({
         ),
         optional(
           seq(
-            field("with_clause", $.with_clause),
-            field("where_clause", $.where_clause),
+            field(
+              "with_clause",
+              $.with_clause,
+            ),
+            field(
+              "where_clause",
+              $.where_clause,
+            ),
           ),
         ),
         optional(
@@ -246,31 +249,25 @@ module.exports = grammar({
       ),
     _typeless_parameters_inner: ($) =>
       seq(
-          "(",
-          zero_or_more($._typeless_parameter),
-          ")",
-        ),
+        "(",
+        zero_or_more($._typeless_parameter),
+        ")",
+      ),
     _typeless_parameter: ($) =>
       alias(
         $._typeless_parameter_inner,
         $.parameter,
       ),
     _typeless_parameter_inner: ($) =>
-      choice(
-        $._name,
-        "_"
-      ),
+      choice($._name, "_"),
     arguments: ($) =>
-        seq(
-          "(",
-          zero_or_more(
-            choice(
-              $._expression,
-              "_"
-            ),
-          ),
-          ")",
+      seq(
+        "(",
+        zero_or_more(
+          choice($._expression, "_"),
         ),
+        ")",
+      ),
 
     /////// EFFECTS ///////
     effects: ($) =>
@@ -298,7 +295,7 @@ module.exports = grammar({
         $._uppercase_name,
         ".",
         $._uppercase_name,
-        $.type_arguments,        
+        $.type_arguments,
       ),
     unary_effect: ($) =>
       prec(PREC.unary, seq("~", $._effect)),
@@ -455,6 +452,8 @@ module.exports = grammar({
       ),
     block: ($) => seq("{", $._stmt, "}"),
     expressions: ($) => prec(1, $._stmt),
+    _expression_list: ($) =>
+      one_or_more($._expression),
     _expression: ($) =>
       choice(
         $._literal,
@@ -482,6 +481,9 @@ module.exports = grammar({
         $.spawn,
         $.select,
         $.parallel,
+        $.constraints,
+        $.inject,
+        $.query,
       ),
 
     ///////// CONTROL STRUCTURES /////////////
@@ -527,10 +529,7 @@ module.exports = grammar({
       ),
     gets: ($) =>
       seq(
-        choice(
-          "_",
-          $._lowercase_name,
-        ),
+        choice("_", $._lowercase_name),
         "<-",
         $._expression,
       ),
@@ -608,7 +607,9 @@ module.exports = grammar({
       seq(
         "select",
         "{",
-        repeat(alias($._select_case, $.case)),
+        repeat(
+          alias($._select_case, $.case),
+        ),
         "}",
       ),
     _select_case: ($) =>
@@ -628,10 +629,7 @@ module.exports = grammar({
       seq(
         "par",
         "(",
-        zero_or_more_by(
-          $.gets,
-          ";",
-        ),
+        zero_or_more_by($.gets, ";"),
         ")",
         "yield",
         $._expression,
@@ -748,7 +746,6 @@ module.exports = grammar({
         ),
       ),
 
-  
     /////////// OPERATORS /////////////
     unary: ($) =>
       prec(
@@ -983,10 +980,7 @@ module.exports = grammar({
       prec(
         PREC.field,
         seq(
-          choice(
-            $.type,
-            $.type_field
-          ),
+          choice($.type, $.type_field),
           ".",
           $.type,
         ),
@@ -1041,10 +1035,7 @@ module.exports = grammar({
           $._uppercase_name,
           optional(
             seq(
-              choice(
-                "=",
-                ":",
-              ),
+              choice("=", ":"),
               choice(
                 $._uppercase_name,
                 $._type,
@@ -1055,11 +1046,7 @@ module.exports = grammar({
         ),
       ),
     effect_list: ($) =>
-      seq(
-        "{",
-        $._effect,
-        "}",
-      ),
+      seq("{", $._effect, "}"),
 
     /////// TRAITS //////////
     trait_definition: ($) =>
@@ -1069,7 +1056,10 @@ module.exports = grammar({
         field("trait", $.type),
         field(
           "body",
-          alias($._trait_definition_body, $.template_body),
+          alias(
+            $._trait_definition_body,
+            $.template_body,
+          ),
         ),
       ),
     _trait_definition_body: ($) =>
@@ -1095,7 +1085,10 @@ module.exports = grammar({
         ),
         field(
           "body",
-          alias($._trait_implementation_body, $.template_body),
+          alias(
+            $._trait_implementation_body,
+            $.template_body,
+          ),
         ),
       ),
     _trait_implementation_body: ($) =>
@@ -1218,6 +1211,83 @@ module.exports = grammar({
             $._expression,
           ),
         ),
+      ),
+
+    /////// FIXPOINTS ///////
+    constraints: ($) =>
+      seq(
+        "#{",
+        repeat(choice($.fact, $.rule)),
+        "}",
+      ),
+    facts: ($) =>
+      prec.left(
+        one_or_more(
+          alias($._fact_inner, $.fact),
+        ),
+      ),
+    fact: ($) => seq($._fact_inner, "."),
+    _fact_inner: ($) =>
+      seq(
+        alias($.uppercase_name, $.table),
+        $.term_list,
+      ),
+    term_list: ($) =>
+      seq(
+        "(",
+        zero_or_more(
+          alias($.lowercase_name, $.term),
+        ),
+        ")",
+      ),
+    rule: ($) =>
+      seq(
+        field(
+          "head",
+          alias($._fact_inner, $.fact),
+        ),
+        ":-",
+        field(
+          "body",
+          alias($.facts, $.rule_body),
+        ),
+        ".",
+      ),
+    inject: ($) =>
+      seq(
+        "inject",
+        field(
+          "data",
+          alias(
+            $._expression_list,
+            $.data_list,
+          ),
+        ),
+        "into",
+        field("tables", $.tables),
+      ),
+    tables: ($) =>
+      prec.left(one_or_more($.table)),
+    table: ($) =>
+      seq(
+        $._uppercase_name,
+        "/",
+        alias($.integer, $.arity),
+      ),
+    query: ($) =>
+      seq(
+        "query",
+        field(
+          "source",
+          alias(
+            $._expression_list,
+            $.source_list,
+          ),
+        ),
+        "select",
+        field("select", $._expression),
+        "from",
+        field("facts", $.facts),
       ),
 
     // Workaround to https://github.com/tree-sitter/tree-sitter/issues/1156
