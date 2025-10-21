@@ -24,7 +24,7 @@ Note that this is not an LSP, so it wont provide features like go-to-definition,
 - [x] List, Set, Map, Chain, Vector and Array litterals
 - [x] Record literals and types
 - [x] match lambdas
-- [ ] Datalog constraints
+- [x] Datalog constraints
 - [ ] keywords from [this](https://doc.flix.dev/identifiers.html)
 - [ ] string interpolation
 - [ ] greek names
