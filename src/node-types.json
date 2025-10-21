@@ -936,11 +936,21 @@
         "required": true,
         "types": [
           {
-            "type": "term_list",
+            "type": "terms",
             "named": true
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "unary",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -1410,7 +1420,7 @@
         "required": true,
         "types": [
           {
-            "type": "tables",
+            "type": "table_list",
             "named": true
           }
         ]
@@ -2088,7 +2098,7 @@
     }
   },
   {
-    "type": "tables",
+    "type": "table_list",
     "named": true,
     "fields": {},
     "children": {
@@ -2126,7 +2136,7 @@
     }
   },
   {
-    "type": "term_list",
+    "type": "terms",
     "named": true,
     "fields": {},
     "children": {
@@ -2140,18 +2150,7 @@
         {
           "type": "ignored",
           "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "terms",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
+        },
         {
           "type": "polymorphic_identifier",
           "named": true
@@ -2396,7 +2395,7 @@
         "required": true,
         "types": [
           {
-            "type": "tables",
+            "type": "table_list",
             "named": true
           }
         ]
@@ -2750,7 +2749,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "_expression",

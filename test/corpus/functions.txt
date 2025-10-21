@@ -299,7 +299,7 @@ def withAncestors(): #{ ParentOf(String, String),
     name: (identifier)
     parameters: (parameters)
     return_type: (type_constraint
-      tables: (tables
+      tables: (table_list
         (table
           (identifier)
           (terms
@@ -316,30 +316,30 @@ def withAncestors(): #{ ParentOf(String, String),
         (rule
           head: (fact
             table: (identifier)
-            terms: (term_list
+            terms: (terms
               (identifier)
               (identifier)))
           body: (rule_body
             (fact
               table: (identifier)
-              terms: (term_list
+              terms: (terms
                 (identifier)
                 (identifier)))))
         (rule
           head: (fact
             table: (identifier)
-            terms: (term_list
+            terms: (terms
               (identifier)
               (identifier)))
           body: (rule_body
             (fact
               table: (identifier)
-              terms: (term_list
+              terms: (terms
                 (identifier)
                 (identifier)))
             (fact
               table: (identifier)
-              terms: (term_list
+              terms: (terms
                 (identifier)
                 (identifier)))))))))
 
@@ -360,7 +360,7 @@ def closure(): #{ LabelledEdge(String, l, String),
     name: (identifier)
     parameters: (parameters)
     return_type: (type_constraint
-      tables: (tables
+      tables: (table_list
         (table
           (identifier)
           (terms
@@ -383,34 +383,34 @@ def closure(): #{ LabelledEdge(String, l, String),
         (rule
           head: (fact
             table: (identifier)
-            terms: (term_list
+            terms: (terms
               (identifier)
               (identifier)
               (identifier)))
           body: (rule_body
             (fact
               table: (identifier)
-              terms: (term_list
+              terms: (terms
                 (identifier)
                 (identifier)
                 (identifier)))))
         (rule
           head: (fact
             table: (identifier)
-            terms: (term_list
+            terms: (terms
               (identifier)
               (identifier)
               (identifier)))
           body: (rule_body
             (fact
               table: (identifier)
-              terms: (term_list
+              terms: (terms
                 (identifier)
                 (identifier)
                 (identifier)))
             (fact
               table: (identifier)
-              terms: (term_list
+              terms: (terms
                 (identifier)
                 (identifier)
                 (identifier)))))))))

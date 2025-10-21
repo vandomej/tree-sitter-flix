@@ -1051,7 +1051,7 @@ module.exports = grammar({
         "#{",
         field(
           "tables",
-          alias($._type_tables, $.tables),
+          alias($._type_tables, $.table_list),
         ),
         optional(
           seq(
@@ -1076,7 +1076,7 @@ module.exports = grammar({
     _type_terms: ($) =>
       seq(
         "(",
-        one_or_more($._type),
+        zero_or_more_by($._type, /[;,]/),
         ")",
       ),
 
@@ -1261,17 +1261,19 @@ module.exports = grammar({
     fact: ($) => seq($._fact_inner, "."),
     _fact_inner: ($) =>
       seq(
+        optional(alias("not", $.unary)),
         field("table", $._uppercase_name),
-        field("terms", $.term_list),
+        field("terms", $.terms),
       ),
-    term_list: ($) =>
+    terms: ($) =>
       seq(
         "(",
-        zero_or_more(
+        zero_or_more_by(
           choice(
             $._expression,
             $.ignored,
           ),
+          /[;,]/
         ),
         ")",
       ),
@@ -1299,9 +1301,9 @@ module.exports = grammar({
           ),
         ),
         "into",
-        field("tables", $.tables),
+        field("tables", $.table_list),
       ),
-    tables: ($) =>
+    table_list: ($) =>
       prec.left(one_or_more($.table)),
     table: ($) =>
       seq(

@@ -1040,30 +1040,30 @@ def main(): Unit =
           (rule
             head: (fact
               table: (identifier)
-              terms: (term_list
+              terms: (terms
                 (identifier)
                 (identifier)))
             body: (rule_body
               (fact
                 table: (identifier)
-                terms: (term_list
+                terms: (terms
                   (identifier)
                   (identifier)))))
           (rule
             head: (fact
               table: (identifier)
-              terms: (term_list
+              terms: (terms
                 (identifier)
                 (identifier)))
             body: (rule_body
               (fact
                 table: (identifier)
-                terms: (term_list
+                terms: (terms
                   (identifier)
                   (identifier)))
               (fact
                 table: (identifier)
-                terms: (term_list
+                terms: (terms
                   (identifier)
                   (identifier))))))))))
 
@@ -1103,7 +1103,7 @@ def main(): Unit =
         (inject
           data: (data_list
             (identifier))
-          tables: (tables
+          tables: (table_list
             (table
               (identifier)
               (arity))))))))
@@ -1149,30 +1149,30 @@ def isConnected(s: Set[(Int32, Int32)], src: Int32, dst: Int32): Bool =
           (rule
             head: (fact
               table: (identifier)
-              terms: (term_list
+              terms: (terms
                 (identifier)
                 (identifier)))
             body: (rule_body
               (fact
                 table: (identifier)
-                terms: (term_list
+                terms: (terms
                   (identifier)
                   (identifier)))))
           (rule
             head: (fact
               table: (identifier)
-              terms: (term_list
+              terms: (terms
                 (identifier)
                 (identifier)))
             body: (rule_body
               (fact
                 table: (identifier)
-                terms: (term_list
+                terms: (terms
                   (identifier)
                   (identifier)))
               (fact
                 table: (identifier)
-                terms: (term_list
+                terms: (terms
                   (identifier)
                   (identifier)))))))
       (let
@@ -1180,7 +1180,7 @@ def isConnected(s: Set[(Int32, Int32)], src: Int32, dst: Int32): Bool =
         (inject
           data: (data_list
             (identifier))
-          tables: (tables
+          tables: (table_list
             (table
               (identifier)
               (arity)))))
@@ -1194,7 +1194,7 @@ def isConnected(s: Set[(Int32, Int32)], src: Int32, dst: Int32): Bool =
           facts: (facts
             (fact
               table: (identifier)
-              terms: (term_list
+              terms: (terms
                 (identifier)
                 (identifier))))))
       (unary
@@ -1236,19 +1236,19 @@ def main(): Unit =
         (constraints
           (fact
             table: (identifier)
-            terms: (term_list
+            terms: (terms
               (integer)
               (string)
               (integer)))
           (fact
             table: (identifier)
-            terms: (term_list
+            terms: (terms
               (integer)
               (string)
               (integer)))
           (fact
             table: (identifier)
-            terms: (term_list
+            terms: (terms
               (integer)
               (string)
               (integer)))))
@@ -1258,34 +1258,34 @@ def main(): Unit =
           (rule
             head: (fact
               table: (identifier)
-              terms: (term_list
+              terms: (terms
                 (identifier)
                 (identifier)
                 (identifier)))
             body: (rule_body
               (fact
                 table: (identifier)
-                terms: (term_list
+                terms: (terms
                   (identifier)
                   (identifier)
                   (identifier)))))
           (rule
             head: (fact
               table: (identifier)
-              terms: (term_list
+              terms: (terms
                 (identifier)
                 (identifier)
                 (identifier)))
             body: (rule_body
               (fact
                 table: (identifier)
-                terms: (term_list
+                terms: (terms
                   (identifier)
                   (identifier)
                   (identifier)))
               (fact
                 table: (identifier)
-                terms: (term_list
+                terms: (terms
                   (identifier)
                   (identifier)
                   (identifier)))))))
@@ -1298,3 +1298,229 @@ def main(): Unit =
           tables: (project_list
             (identifier))))
       (unit))))
+
+=====
+fixpoint unary rule
+=====
+
+def main(): Unit =
+    let rule = #{
+        MovieWithoutDirector(title) :-
+            Movie(title),
+            DirectedBy(title, name),
+            not StarringIn(title, name).
+    };
+    ()
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type_primitive)
+    body: (expressions
+      (let
+        (identifier)
+        (constraints
+          (rule
+            head: (fact
+              table: (identifier)
+              terms: (terms
+                (identifier)))
+            body: (rule_body
+              (fact
+                table: (identifier)
+                terms: (terms
+                  (identifier)))
+              (fact
+                table: (identifier)
+                terms: (terms
+                  (identifier)
+                  (identifier)))
+              (fact
+                (unary)
+                table: (identifier)
+                terms: (terms
+                  (identifier)
+                  (identifier)))))))
+      (unit))))
+
+=====
+termless table
+=====
+
+def cyclic(): #{Edge(Int32, Int32), Path(Int32, Int32), Cyclic()} = #{
+    Path(x, y) :- Edge(x, y).
+    Path(x, z) :- Path(x, y), Edge(y, z).
+    Cyclic() :- Path(x, x).
+}
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type_constraint
+      tables: (table_list
+        (table
+          (identifier)
+          (terms
+            (type_primitive)
+            (type_primitive)))
+        (table
+          (identifier)
+          (terms
+            (type_primitive)
+            (type_primitive)))
+        (table
+          (identifier)
+          (terms))))
+    body: (expressions
+      (constraints
+        (rule
+          head: (fact
+            table: (identifier)
+            terms: (terms
+              (identifier)
+              (identifier)))
+          body: (rule_body
+            (fact
+              table: (identifier)
+              terms: (terms
+                (identifier)
+                (identifier)))))
+        (rule
+          head: (fact
+            table: (identifier)
+            terms: (terms
+              (identifier)
+              (identifier)))
+          body: (rule_body
+            (fact
+              table: (identifier)
+              terms: (terms
+                (identifier)
+                (identifier)))
+            (fact
+              table: (identifier)
+              terms: (terms
+                (identifier)
+                (identifier)))))
+        (rule
+          head: (fact
+            table: (identifier)
+            terms: (terms))
+          body: (rule_body
+            (fact
+              table: (identifier)
+              terms: (terms
+                (identifier)
+                (identifier)))))))))
+
+=====
+constraints with functional dependencies
+=====
+
+def shortestPath(g: Set[(t, Int32, t)], o: t): Map[t, D] with Order[t] =
+    let db = inject g into Edge/3;
+    let pr = #{
+        Dist(o; D(0)).
+        Dist(y; add(d1 , D(d2))) :- Dist(x; d1), Edge(x, d2, y).
+    };
+    query db, pr select (x , d) from Dist(x; d) |> Vector.toMap
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters
+      (parameter
+        name: (identifier)
+        type: (type
+          (identifier)
+          (type_arguments
+            (type_tuple
+              (polymorphic_identifier)
+              (type_primitive)
+              (polymorphic_identifier)))))
+      (parameter
+        name: (identifier)
+        type: (polymorphic_identifier)))
+    return_type: (type
+      (identifier)
+      (type_arguments
+        (polymorphic_identifier)
+        (type
+          (identifier))))
+    with_clause: (with_clause
+      (type
+        (identifier)
+        (type_arguments
+          (polymorphic_identifier))))
+    body: (expressions
+      (let
+        (identifier)
+        (inject
+          data: (data_list
+            (identifier))
+          tables: (table_list
+            (table
+              (identifier)
+              (arity)))))
+      (let
+        (identifier)
+        (constraints
+          (fact
+            table: (identifier)
+            terms: (terms
+              (identifier)
+              (call_expression
+                function: (identifier)
+                arguments: (arguments
+                  (integer)))))
+          (rule
+            head: (fact
+              table: (identifier)
+              terms: (terms
+                (identifier)
+                (call_expression
+                  function: (identifier)
+                  arguments: (arguments
+                    (identifier)
+                    (call_expression
+                      function: (identifier)
+                      arguments: (arguments
+                        (identifier)))))))
+            body: (rule_body
+              (fact
+                table: (identifier)
+                terms: (terms
+                  (identifier)
+                  (identifier)))
+              (fact
+                table: (identifier)
+                terms: (terms
+                  (identifier)
+                  (identifier)
+                  (identifier)))))))
+      (binary
+        (query
+          source: (source_list
+            (identifier)
+            (identifier))
+          select: (tuple
+            (identifier)
+            (identifier))
+          facts: (facts
+            (fact
+              table: (identifier)
+              terms: (terms
+                (identifier)
+                (identifier)))))
+        (user_operator)
+        (field
+          (identifier)
+          (identifier))))))

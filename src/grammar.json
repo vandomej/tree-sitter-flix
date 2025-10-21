@@ -3837,7 +3837,7 @@
               "name": "_type_tables"
             },
             "named": true,
-            "value": "tables"
+            "value": "table_list"
           }
         },
         {
@@ -3932,27 +3932,35 @@
           "value": "("
         },
         {
-          "type": "SEQ",
+          "type": "CHOICE",
           "members": [
             {
-              "type": "REPEAT",
-              "content": {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "_type"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": ","
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "_type"
+                      },
+                      {
+                        "type": "PATTERN",
+                        "value": "[;,]"
+                      }
+                    ]
                   }
-                ]
-              }
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_type"
+                }
+              ]
             },
             {
-              "type": "SYMBOL",
-              "name": "_type"
+              "type": "BLANK"
             }
           ]
         },
@@ -4751,6 +4759,23 @@
       "type": "SEQ",
       "members": [
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "STRING",
+                "value": "not"
+              },
+              "named": true,
+              "value": "unary"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "FIELD",
           "name": "table",
           "content": {
@@ -4763,12 +4788,12 @@
           "name": "terms",
           "content": {
             "type": "SYMBOL",
-            "name": "term_list"
+            "name": "terms"
           }
         }
       ]
     },
-    "term_list": {
+    "terms": {
       "type": "SEQ",
       "members": [
         {
@@ -4800,8 +4825,8 @@
                         ]
                       },
                       {
-                        "type": "STRING",
-                        "value": ","
+                        "type": "PATTERN",
+                        "value": "[;,]"
                       }
                     ]
                   }
@@ -4900,12 +4925,12 @@
           "name": "tables",
           "content": {
             "type": "SYMBOL",
-            "name": "tables"
+            "name": "table_list"
           }
         }
       ]
     },
-    "tables": {
+    "table_list": {
       "type": "PREC_LEFT",
       "value": 0,
       "content": {

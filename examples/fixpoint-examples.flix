@@ -96,21 +96,21 @@
 //
 //
 //
-def main(): Unit \ IO =
-    let f1 = #{
-        ColorEdge(1, "blue", 2).
-        ColorEdge(2, "blue", 3).
-        ColorEdge(3, "red", 4).
-    };
-    let r1 = #{
-        ColorPath(x, c, y) :- ColorEdge(x, c, y).
-        ColorPath(x, c, z) :- ColorPath(x, c, y), ColorEdge(y, c, z).
-    };
-    let r2 = #{
-        ColorlessPath(x, y) :- ColorPath(x, _, y).
-    };
-    let m = solve f1, r1 project ColorPath;
-    query m, r2 select (x, y) from ColorlessPath(x, y) |> println
+//def main(): Unit \ IO =
+//    let f1 = #{
+//        ColorEdge(1, "blue", 2).
+//        ColorEdge(2, "blue", 3).
+//        ColorEdge(3, "red", 4).
+//    };
+//    let r1 = #{
+//        ColorPath(x, c, y) :- ColorEdge(x, c, y).
+//        ColorPath(x, c, z) :- ColorPath(x, c, y), ColorEdge(y, c, z).
+//    };
+//    let r2 = #{
+//        ColorlessPath(x, y) :- ColorPath(x, _, y).
+//    };
+//    let m = solve f1, r1 project ColorPath;
+//    query m, r2 select (x, y) from ColorlessPath(x, y) |> println
 //
 //
 //
@@ -140,11 +140,10 @@ def main(): Unit \ IO =
 //    };
 //    query movies, actors, directors, rule
 //        select title from MovieWithoutDirector(title) |> println
-//
-//
-//
-//
-//
+
+
+
+
 //def cyclic(): #{Edge(Int32, Int32), Path(Int32, Int32), Cyclic()} = #{
 //    Path(x, y) :- Edge(x, y).
 //    Path(x, z) :- Path(x, y), Edge(y, z).
@@ -158,8 +157,8 @@ def main(): Unit \ IO =
 //        Edge(3, 1).
 //    };
 //    query db, cyclic() select true from Cyclic() |> println
-//
-//
+
+
 //
 //
 //
@@ -171,60 +170,60 @@ def main(): Unit \ IO =
 //
 //
 //
-//use D.D;
-//
-//pub enum D with Eq, Order, ToString {
-//    case D(Int32)
-//}
-//
-//instance PartialOrder[D] {
-//    pub def lessEqual(x: D, y: D): Bool =
-//        let D(n1) = x;
-//        let D(n2) = y;
-//        n1 >= n2        // Note: Order reversed.
-//}
-//
-//instance LowerBound[D] {
-//    // Note: Because the order is reversed, the largest value is the smallest.
-//    pub def minValue(): D = D(Int32.maxValue())
-//}
-//
-//instance UpperBound[D] {
-//    // Note: Because the order is reversed, the smallest value is the largest.
-//    pub def maxValue(): D = D(Int32.minValue())
-//}
-//
-//instance JoinLattice[D] {
-//    pub def leastUpperBound(x: D, y: D): D =
-//        let D(n1) = x;
-//        let D(n2) = y;
-//        D(Int32.min(n1, n2))        // Note: Order reversed.
-//}
-//
-//instance MeetLattice[D] {
-//    pub def greatestLowerBound(x: D, y: D): D =
-//        let D(n1) = x;
-//        let D(n2) = y;
-//        D(Int32.max(n1, n2))        // Note: Order reversed.
-//}
-//
-//def shortestPath(g: Set[(t, Int32, t)], o: t): Map[t, D] with Order[t] =
-//    let db = inject g into Edge/3;
-//    let pr = #{
-//        Dist(o; D(0)).
-//        Dist(y; add(d1 , D(d2))) :- Dist(x; d1), Edge(x, d2, y).
-//    };
-//    query db, pr select (x , d) from Dist(x; d) |> Vector.toMap
-//
-//def add(x: D, y: D): D =
-//    let D(n1) = x;
-//    let D(n2) = y;
-//    D(n1 + n2)
-//
-//def main(): Unit \ IO =
-//    let g = Set#{
-//        ("Aarhus", 200, "Flensburg"),
-//        ("Flensburg", 150, "Hamburg")
-//    };
-//    println(shortestPath(g, "Aarhus"))
-//
+use D.D;
+
+pub enum D with Eq, Order, ToString {
+    case D(Int32)
+}
+
+instance PartialOrder[D] {
+    pub def lessEqual(x: D, y: D): Bool =
+        let D(n1) = x;
+        let D(n2) = y;
+        n1 >= n2        // Note: Order reversed.
+}
+
+instance LowerBound[D] {
+    // Note: Because the order is reversed, the largest value is the smallest.
+    pub def minValue(): D = D(Int32.maxValue())
+}
+
+instance UpperBound[D] {
+    // Note: Because the order is reversed, the smallest value is the largest.
+    pub def maxValue(): D = D(Int32.minValue())
+}
+
+instance JoinLattice[D] {
+    pub def leastUpperBound(x: D, y: D): D =
+        let D(n1) = x;
+        let D(n2) = y;
+        D(Int32.min(n1, n2))        // Note: Order reversed.
+}
+
+instance MeetLattice[D] {
+    pub def greatestLowerBound(x: D, y: D): D =
+        let D(n1) = x;
+        let D(n2) = y;
+        D(Int32.max(n1, n2))        // Note: Order reversed.
+}
+
+def shortestPath(g: Set[(t, Int32, t)], o: t): Map[t, D] with Order[t] =
+    let db = inject g into Edge/3;
+    let pr = #{
+        Dist(o; D(0)).
+        Dist(y; add(d1 , D(d2))) :- Dist(x; d1), Edge(x, d2, y).
+    };
+    query db, pr select (x , d) from Dist(x; d) |> Vector.toMap
+
+def add(x: D, y: D): D =
+    let D(n1) = x;
+    let D(n2) = y;
+    D(n1 + n2)
+
+def main(): Unit \ IO =
+    let g = Set#{
+        ("Aarhus", 200, "Flensburg"),
+        ("Flensburg", 150, "Hamburg")
+    };
+    println(shortestPath(g, "Aarhus"))
+
