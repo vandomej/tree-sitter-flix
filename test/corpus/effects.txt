@@ -64,8 +64,7 @@ def main(): Unit \ IO =
             (function_declaration
               (identifier)
               (parameters
-                (parameter
-                  (identifier)))
+                (identifier))
               (expressions
                 (call_expression
                   (identifier)
@@ -106,8 +105,8 @@ def main(): Unit \ IO =
             (function_declaration
               (identifier)
               (parameters
-                (parameter)
-                (parameter))
+                (ignored)
+                (resume))
               (expressions
                 (call_expression
                   (identifier)
@@ -119,9 +118,8 @@ def main(): Unit \ IO =
             (function_declaration
               (identifier)
               (parameters
-                (parameter
-                  (identifier))
-                (parameter))
+                (identifier)
+                (resume))
               (expressions
                 (block
                   (call_expression

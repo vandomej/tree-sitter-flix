@@ -343,6 +343,7 @@ instance Equatable[Option[t]] with Equatable[t] {
                     (identifier)
                     (identifier)))))
             (case
+              (ignored)
               (expressions
                 (boolean)))))))))
 

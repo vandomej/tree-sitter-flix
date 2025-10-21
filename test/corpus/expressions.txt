@@ -373,6 +373,7 @@ def main(): Int32 = match a {
           (expressions
             (boolean)))
         (case
+          (ignored)
           (expressions
             (boolean)))))))
 
@@ -448,7 +449,8 @@ def gameLoop(secret: Int32): Unit \ IO = {
             pattern: (constructor
               (field
                 (identifier)
-                (identifier)))
+                (identifier))
+              (ignored))
             expressions: (expressions
               (call_expression
                 function: (identifier)
@@ -559,6 +561,7 @@ def main(): Int32 = match a {
           (expressions
             (boolean)))
         (case
+          (ignored)
           (expressions
             (boolean)))))))
 
@@ -681,8 +684,8 @@ def handleExc(f: a -> b \ ef): a -> Option[b] \ ef - Exc =
                 (function_declaration
                   (identifier)
                   (parameters
-                    (parameter)
-                    (parameter))
+                    (ignored)
+                    (ignored))
                   (expressions
                     (none)))))))))))
 
@@ -909,6 +912,7 @@ def main(): String \ {Chan, NonDet} = region rc {
         body: (block
           (let
             (tuple
+              (ignored)
               (identifier))
             (call_expression
               function: (field
@@ -918,6 +922,7 @@ def main(): String \ {Chan, NonDet} = region rc {
                 (integer))))
           (let
             (tuple
+              (ignored)
               (identifier))
             (call_expression
               function: (field
@@ -928,6 +933,7 @@ def main(): String \ {Chan, NonDet} = region rc {
           (select
             (case
               pattern: (gets
+                (ignored)
                 (call_expression
                   function: (identifier)
                   arguments: (arguments
@@ -936,6 +942,7 @@ def main(): String \ {Chan, NonDet} = region rc {
                 (string)))
             (case
               pattern: (gets
+                (ignored)
                 (call_expression
                   function: (identifier)
                   arguments: (arguments
@@ -1198,3 +1205,96 @@ def isConnected(s: Set[(Int32, Int32)], src: Int32, dst: Int32): Bool =
             (field
               (identifier)
               (identifier))))))))
+
+=====
+solve
+=====
+
+def main(): Unit =
+    let f1 = #{
+        ColorEdge(1, "blue", 2).
+        ColorEdge(2, "blue", 3).
+        ColorEdge(3, "red", 4).
+    };
+    let r1 = #{
+        ColorPath(x, c, y) :- ColorEdge(x, c, y).
+        ColorPath(x, c, z) :- ColorPath(x, c, y), ColorEdge(y, c, z).
+    };
+    let m = solve f1, r1 project ColorPath;
+    ()
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type_primitive)
+    body: (expressions
+      (let
+        (identifier)
+        (constraints
+          (fact
+            table: (identifier)
+            terms: (term_list
+              (integer)
+              (string)
+              (integer)))
+          (fact
+            table: (identifier)
+            terms: (term_list
+              (integer)
+              (string)
+              (integer)))
+          (fact
+            table: (identifier)
+            terms: (term_list
+              (integer)
+              (string)
+              (integer)))))
+      (let
+        (identifier)
+        (constraints
+          (rule
+            head: (fact
+              table: (identifier)
+              terms: (term_list
+                (identifier)
+                (identifier)
+                (identifier)))
+            body: (rule_body
+              (fact
+                table: (identifier)
+                terms: (term_list
+                  (identifier)
+                  (identifier)
+                  (identifier)))))
+          (rule
+            head: (fact
+              table: (identifier)
+              terms: (term_list
+                (identifier)
+                (identifier)
+                (identifier)))
+            body: (rule_body
+              (fact
+                table: (identifier)
+                terms: (term_list
+                  (identifier)
+                  (identifier)
+                  (identifier)))
+              (fact
+                table: (identifier)
+                terms: (term_list
+                  (identifier)
+                  (identifier)
+                  (identifier)))))))
+      (let
+        (identifier)
+        (solve
+          constraints: (constraint_list
+            (identifier)
+            (identifier))
+          tables: (project_list
+            (identifier))))
+      (unit))))

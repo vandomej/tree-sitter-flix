@@ -138,6 +138,10 @@
         "named": true
       },
       {
+        "type": "solve",
+        "named": true
+      },
+      {
         "type": "spawn",
         "named": true
       },
@@ -234,6 +238,10 @@
       "types": [
         {
           "type": "_expression",
+          "named": true
+        },
+        {
+          "type": "ignored",
           "named": true
         }
       ]
@@ -401,10 +409,6 @@
             "named": false
           },
           {
-            "type": "_",
-            "named": false
-          },
-          {
             "type": "_literal",
             "named": true
           },
@@ -425,6 +429,10 @@
             "named": true
           },
           {
+            "type": "ignored",
+            "named": true
+          },
+          {
             "type": "tuple",
             "named": true
           }
@@ -442,6 +450,21 @@
       "types": [
         {
           "type": "line_comment",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "constraint_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "_expression",
           "named": true
         }
       ]
@@ -499,6 +522,10 @@
         },
         {
           "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "ignored",
           "named": true
         },
         {
@@ -595,6 +622,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "default",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "deref",
@@ -1286,6 +1318,10 @@
         {
           "type": "_expression",
           "named": true
+        },
+        {
+          "type": "ignored",
+          "named": true
         }
       ]
     }
@@ -1334,6 +1370,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "ignored",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "infix_function",
@@ -1425,6 +1466,10 @@
         },
         {
           "type": "constructor",
+          "named": true
+        },
+        {
+          "type": "ignored",
           "named": true
         },
         {
@@ -1696,6 +1741,10 @@
         {
           "type": "identifier",
           "named": true
+        },
+        {
+          "type": "ignored",
+          "named": true
         }
       ]
     }
@@ -1709,7 +1758,19 @@
       "required": false,
       "types": [
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "ignored",
+          "named": true
+        },
+        {
           "type": "parameter",
+          "named": true
+        },
+        {
+          "type": "resume",
           "named": true
         }
       ]
@@ -1730,6 +1791,21 @@
         },
         {
           "type": "use",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "project_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
           "named": true
         }
       ]
@@ -1918,6 +1994,32 @@
     }
   },
   {
+    "type": "solve",
+    "named": true,
+    "fields": {
+      "constraints": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "constraint_list",
+            "named": true
+          }
+        ]
+      },
+      "tables": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "project_list",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "source_list",
     "named": true,
     "fields": {},
@@ -2033,6 +2135,10 @@
       "types": [
         {
           "type": "_expression",
+          "named": true
+        },
+        {
+          "type": "ignored",
           "named": true
         }
       ]
@@ -2167,6 +2273,10 @@
         },
         {
           "type": "constructor",
+          "named": true
+        },
+        {
+          "type": "ignored",
           "named": true
         }
       ]
@@ -3087,10 +3197,6 @@
     "named": false
   },
   {
-    "type": "default",
-    "named": true
-  },
-  {
     "type": "deref",
     "named": false
   },
@@ -3231,6 +3337,10 @@
     "named": true
   },
   {
+    "type": "project",
+    "named": false
+  },
+  {
     "type": "pub",
     "named": false
   },
@@ -3248,7 +3358,7 @@
   },
   {
     "type": "resume",
-    "named": false
+    "named": true
   },
   {
     "type": "run",
@@ -3260,6 +3370,10 @@
   },
   {
     "type": "select",
+    "named": false
+  },
+  {
+    "type": "solve",
     "named": false
   },
   {

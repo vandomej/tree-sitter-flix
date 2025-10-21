@@ -259,12 +259,12 @@ module.exports = grammar({
         $.parameter,
       ),
     _typeless_parameter_inner: ($) =>
-      choice($._name, "_"),
+      choice($._name, $.ignored),
     arguments: ($) =>
       seq(
         "(",
         zero_or_more(
-          choice($._expression, "_"),
+          choice($._expression, $.ignored),
         ),
         ")",
       ),
@@ -403,18 +403,15 @@ module.exports = grammar({
       seq(
         "(",
         zero_or_more(
-          alias(
-            $._handler_parameter,
-            $.parameter,
-          ),
+          $._handler_parameter,
         ),
         ")",
       ),
     _handler_parameter: ($) =>
       choice(
         $._lowercase_name,
-        seq(optional("_"), "resume"),
-        "_",
+        alias(seq(optional("_"), "resume"), $.resume),
+        $.ignored,
       ),
 
     /////// TYPE PARAMETERS ///////
@@ -484,6 +481,7 @@ module.exports = grammar({
         $.constraints,
         $.inject,
         $.query,
+        $.solve,
       ),
 
     ///////// CONTROL STRUCTURES /////////////
@@ -529,7 +527,7 @@ module.exports = grammar({
       ),
     gets: ($) =>
       seq(
-        choice("_", $._lowercase_name),
+        choice($.ignored, $._lowercase_name),
         "<-",
         $._expression,
       ),
@@ -575,7 +573,7 @@ module.exports = grammar({
       ),
     _pattern: ($) =>
       choice(
-        "_",
+        $.ignored,
         $._literal,
         $._lowercase_name,
         $._uppercase_name,
@@ -619,7 +617,7 @@ module.exports = grammar({
           "pattern",
           choice(
             $.gets,
-            alias("_", $.default),
+            alias($.ignored, $.default),
           ),
         ),
         "=>",
@@ -1269,7 +1267,12 @@ module.exports = grammar({
     term_list: ($) =>
       seq(
         "(",
-        zero_or_more($._expression),
+        zero_or_more(
+          choice(
+            $._expression,
+            $.ignored,
+          ),
+        ),
         ")",
       ),
     rule: ($) =>
@@ -1321,6 +1324,15 @@ module.exports = grammar({
         "from",
         field("facts", $.facts),
       ),
+    solve: ($) =>
+      seq(
+        "solve",
+        field("constraints", $.constraint_list),
+        "project",
+        field("tables", $.project_list),
+      ),
+    constraint_list: ($) => one_or_more($._expression),
+    project_list: ($) => prec.left(one_or_more($._uppercase_name)),
 
     // Workaround to https://github.com/tree-sitter/tree-sitter/issues/1156
     // We give names to the token_ constructs containing a regexp
@@ -1361,6 +1373,9 @@ module.exports = grammar({
         "override",
         "sealed",
       ),
+
+    ignored: ($) => "_",
+    
 
     /////// NAMES ////////
     uppercase_name: ($) =>

@@ -59,58 +59,58 @@
 
 
 
-def edgesWithNumbers(): #{ LabelledEdge(String, Int32 , String) | r } = #{
-    LabelledEdge("a", 1, "b").
-    LabelledEdge("b", 1, "c").
-    LabelledEdge("c", 2, "d").
-}
-
-def edgesWithColor(): #{ LabelledEdge(String, String, String) | r } = #{
-    LabelledEdge("a", "red", "b").
-    LabelledEdge("b", "red", "c").
-    LabelledEdge("c", "blu", "d").
-}
-
-def closure(): #{ LabelledEdge(String, l, String),
-                  LabelledPath(String, l, String) } with Order[l] = #{
-    LabelledPath(x, l, y) :- LabelledEdge(x, l, y).
-    LabelledPath(x, l, z) :- LabelledPath(x, l, y), LabelledPath(y, l, z).
-}
-
-def main(): Unit \ IO =
-    query edgesWithNumbers(), closure()
-        select (x, l, z) from LabelledPath(x, l, z) |> println;
-    query edgesWithColor(), closure()
-        select (x, l, z) from LabelledPath(x, l, z) |> println
+//def edgesWithNumbers(): #{ LabelledEdge(String, Int32 , String) | r } = #{
+//    LabelledEdge("a", 1, "b").
+//    LabelledEdge("b", 1, "c").
+//    LabelledEdge("c", 2, "d").
+//}
+//
+//def edgesWithColor(): #{ LabelledEdge(String, String, String) | r } = #{
+//    LabelledEdge("a", "red", "b").
+//    LabelledEdge("b", "red", "c").
+//    LabelledEdge("c", "blu", "d").
+//}
+//
+//def closure(): #{ LabelledEdge(String, l, String),
+//                  LabelledPath(String, l, String) } with Order[l] = #{
+//    LabelledPath(x, l, y) :- LabelledEdge(x, l, y).
+//    LabelledPath(x, l, z) :- LabelledPath(x, l, y), LabelledPath(y, l, z).
+//}
+//
+//def main(): Unit \ IO =
+//    query edgesWithNumbers(), closure()
+//        select (x, l, z) from LabelledPath(x, l, z) |> println;
+//    query edgesWithColor(), closure()
+//        select (x, l, z) from LabelledPath(x, l, z) |> println
 
 //
 //
-//
-//
+
+
 //def main(): Unit \ IO =
 //	let names = "Lucky Luke" :: "Luke Skywalker" :: Nil;
 //	let jedis = "Luke Skywalker" :: Nil;
 //	let p = inject names, jedis into Name/1, Jedi/1
+
+
 //
 //
 //
-//
-//
-//def main(): Unit \ IO =
-//    let f1 = #{
-//        ColorEdge(1, "blue", 2).
-//        ColorEdge(2, "blue", 3).
-//        ColorEdge(3, "red", 4).
-//    };
-//    let r1 = #{
-//        ColorPath(x, c, y) :- ColorEdge(x, c, y).
-//        ColorPath(x, c, z) :- ColorPath(x, c, y), ColorEdge(y, c, z).
-//    };
-//    let r2 = #{
-//        ColorlessPath(x, y) :- ColorPath(x, _, y).
-//    };
-//    let m = solve f1, r1 project ColorPath;
-//    query m, r2 select (x, y) from ColorlessPath(x, y) |> println
+def main(): Unit \ IO =
+    let f1 = #{
+        ColorEdge(1, "blue", 2).
+        ColorEdge(2, "blue", 3).
+        ColorEdge(3, "red", 4).
+    };
+    let r1 = #{
+        ColorPath(x, c, y) :- ColorEdge(x, c, y).
+        ColorPath(x, c, z) :- ColorPath(x, c, y), ColorEdge(y, c, z).
+    };
+    let r2 = #{
+        ColorlessPath(x, y) :- ColorPath(x, _, y).
+    };
+    let m = solve f1, r1 project ColorPath;
+    query m, r2 select (x, y) from ColorlessPath(x, y) |> println
 //
 //
 //
