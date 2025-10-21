@@ -525,6 +525,10 @@
           "named": true
         },
         {
+          "type": "type_constraint",
+          "named": true
+        },
+        {
           "type": "type_field",
           "named": true
         },
@@ -884,20 +888,27 @@
   {
     "type": "fact",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "table",
-          "named": true
-        },
-        {
-          "type": "term_list",
-          "named": true
-        }
-      ]
+    "fields": {
+      "table": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "terms": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "term_list",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1075,6 +1086,10 @@
             "named": true
           },
           {
+            "type": "type_constraint",
+            "named": true
+          },
+          {
             "type": "type_field",
             "named": true
           },
@@ -1186,6 +1201,10 @@
           },
           {
             "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_constraint",
             "named": true
           },
           {
@@ -1417,6 +1436,10 @@
           "named": true
         },
         {
+          "type": "type_constraint",
+          "named": true
+        },
+        {
           "type": "type_field",
           "named": true
         },
@@ -1637,6 +1660,10 @@
           },
           {
             "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_constraint",
             "named": true
           },
           {
@@ -1941,7 +1968,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "arity",
@@ -1949,6 +1976,10 @@
         },
         {
           "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "terms",
           "named": true
         }
       ]
@@ -2001,7 +2032,50 @@
       "required": false,
       "types": [
         {
-          "type": "term",
+          "type": "_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "terms",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "polymorphic_identifier",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_constraint",
+          "named": true
+        },
+        {
+          "type": "type_field",
+          "named": true
+        },
+        {
+          "type": "type_function",
+          "named": true
+        },
+        {
+          "type": "type_primitive",
+          "named": true
+        },
+        {
+          "type": "type_record",
+          "named": true
+        },
+        {
+          "type": "type_tuple",
           "named": true
         }
       ]
@@ -2134,6 +2208,10 @@
           "named": true
         },
         {
+          "type": "type_constraint",
+          "named": true
+        },
+        {
           "type": "type_field",
           "named": true
         },
@@ -2173,6 +2251,10 @@
           "named": true
         },
         {
+          "type": "type_constraint",
+          "named": true
+        },
+        {
           "type": "type_field",
           "named": true
         },
@@ -2193,6 +2275,36 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "type_constraint",
+    "named": true,
+    "fields": {
+      "tables": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "tables",
+            "named": true
+          }
+        ]
+      },
+      "variable": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "polymorphic_identifier",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -2217,6 +2329,10 @@
         },
         {
           "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_constraint",
           "named": true
         },
         {
@@ -2288,6 +2404,10 @@
             "named": true
           },
           {
+            "type": "type_constraint",
+            "named": true
+          },
+          {
             "type": "type_field",
             "named": true
           },
@@ -2319,6 +2439,10 @@
           },
           {
             "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_constraint",
             "named": true
           },
           {
@@ -2441,6 +2565,10 @@
           "named": true
         },
         {
+          "type": "type_constraint",
+          "named": true
+        },
+        {
           "type": "type_field",
           "named": true
         },
@@ -2477,6 +2605,10 @@
         },
         {
           "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_constraint",
           "named": true
         },
         {
@@ -2646,6 +2778,10 @@
             "named": true
           },
           {
+            "type": "type_constraint",
+            "named": true
+          },
+          {
             "type": "type_field",
             "named": true
           },
@@ -2677,6 +2813,10 @@
           },
           {
             "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_constraint",
             "named": true
           },
           {
@@ -2717,6 +2857,10 @@
         },
         {
           "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_constraint",
           "named": true
         },
         {
@@ -3121,10 +3265,6 @@
   {
     "type": "spawn",
     "named": false
-  },
-  {
-    "type": "term",
-    "named": true
   },
   {
     "type": "trait",

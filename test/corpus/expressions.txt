@@ -1032,33 +1032,33 @@ def main(): Unit =
         (constraints
           (rule
             head: (fact
-              (table)
-              (term_list
-                (term)
-                (term)))
+              table: (identifier)
+              terms: (term_list
+                (identifier)
+                (identifier)))
             body: (rule_body
               (fact
-                (table)
-                (term_list
-                  (term)
-                  (term)))))
+                table: (identifier)
+                terms: (term_list
+                  (identifier)
+                  (identifier)))))
           (rule
             head: (fact
-              (table)
-              (term_list
-                (term)
-                (term)))
+              table: (identifier)
+              terms: (term_list
+                (identifier)
+                (identifier)))
             body: (rule_body
               (fact
-                (table)
-                (term_list
-                  (term)
-                  (term)))
+                table: (identifier)
+                terms: (term_list
+                  (identifier)
+                  (identifier)))
               (fact
-                (table)
-                (term_list
-                  (term)
-                  (term))))))))))
+                table: (identifier)
+                terms: (term_list
+                  (identifier)
+                  (identifier))))))))))
 
 =====
 inject
@@ -1141,33 +1141,33 @@ def isConnected(s: Set[(Int32, Int32)], src: Int32, dst: Int32): Bool =
         (constraints
           (rule
             head: (fact
-              (table)
-              (term_list
-                (term)
-                (term)))
+              table: (identifier)
+              terms: (term_list
+                (identifier)
+                (identifier)))
             body: (rule_body
               (fact
-                (table)
-                (term_list
-                  (term)
-                  (term)))))
+                table: (identifier)
+                terms: (term_list
+                  (identifier)
+                  (identifier)))))
           (rule
             head: (fact
-              (table)
-              (term_list
-                (term)
-                (term)))
+              table: (identifier)
+              terms: (term_list
+                (identifier)
+                (identifier)))
             body: (rule_body
               (fact
-                (table)
-                (term_list
-                  (term)
-                  (term)))
+                table: (identifier)
+                terms: (term_list
+                  (identifier)
+                  (identifier)))
               (fact
-                (table)
-                (term_list
-                  (term)
-                  (term)))))))
+                table: (identifier)
+                terms: (term_list
+                  (identifier)
+                  (identifier)))))))
       (let
         (identifier)
         (inject
@@ -1186,10 +1186,10 @@ def isConnected(s: Set[(Int32, Int32)], src: Int32, dst: Int32): Bool =
           select: (boolean)
           facts: (facts
             (fact
-              (table)
-              (term_list
-                (term)
-                (term))))))
+              table: (identifier)
+              terms: (term_list
+                (identifier)
+                (identifier))))))
       (unary
         (group
           (binary

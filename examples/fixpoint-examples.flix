@@ -1,23 +1,23 @@
 
-def isConnected(s: Set[(Int32, Int32)], src: Int32, dst: Int32): Bool =
-    let rules = #{
-        Path(x, y) :- Edge(x, y).
-        Path(x, z) :- Path(x, y), Edge(y, z).
-    };
-    let edges = inject s into Edge/2;
-    let paths = query edges, rules select true from Path(src, dst);
-    not (paths |> Vector.isEmpty)
-
-def main(): Unit \ IO =
-    let s = Set#{(1, 2), (2, 3), (3, 4), (4, 5)};
-    let src = 1;
-    let dst = 5;
-    if (isConnected(s, src, dst)) {
-        println("Found a path between ${src} and ${dst}!")
-    } else {
-        println("Did not find a path between ${src} and ${dst}!")
-    }
-
+//def isConnected(s: Set[(Int32, Int32)], src: Int32, dst: Int32): Bool =
+//    let rules = #{
+//        Path(x, y) :- Edge(x, y).
+//        Path(x, z) :- Path(x, y), Edge(y, z).
+//    };
+//    let edges = inject s into Edge/2;
+//    let paths = query edges, rules select true from Path(src, dst);
+//    not (paths |> Vector.isEmpty)
+//
+//def main(): Unit \ IO =
+//    let s = Set#{(1, 2), (2, 3), (3, 4), (4, 5)};
+//    let src = 1;
+//    let dst = 5;
+//    if (isConnected(s, src, dst)) {
+//        println("Found a path between ${src} and ${dst}!")
+//    } else {
+//        println("Did not find a path between ${src} and ${dst}!")
+//    }
+//
 
 
 
@@ -56,33 +56,33 @@ def main(): Unit \ IO =
 //    }
 //
 //
-//
-//
-//
-//def edgesWithNumbers(): #{ LabelledEdge(String, Int32 , String) | r } = #{
-//    LabelledEdge("a", 1, "b").
-//    LabelledEdge("b", 1, "c").
-//    LabelledEdge("c", 2, "d").
-//}
-//
-//def edgesWithColor(): #{ LabelledEdge(String, String, String) | r } = #{
-//    LabelledEdge("a", "red", "b").
-//    LabelledEdge("b", "red", "c").
-//    LabelledEdge("c", "blu", "d").
-//}
-//
-//def closure(): #{ LabelledEdge(String, l, String),
-//                  LabelledPath(String, l, String) } with Order[l] = #{
-//    LabelledPath(x, l, y) :- LabelledEdge(x, l, y).
-//    LabelledPath(x, l, z) :- LabelledPath(x, l, y), LabelledPath(y, l, z).
-//}
-//
-//def main(): Unit \ IO =
-//    query edgesWithNumbers(), closure()
-//        select (x, l, z) from LabelledPath(x, l, z) |> println;
-//    query edgesWithColor(), closure()
-//        select (x, l, z) from LabelledPath(x, l, z) |> println
-//
+
+
+
+def edgesWithNumbers(): #{ LabelledEdge(String, Int32 , String) | r } = #{
+    LabelledEdge("a", 1, "b").
+    LabelledEdge("b", 1, "c").
+    LabelledEdge("c", 2, "d").
+}
+
+def edgesWithColor(): #{ LabelledEdge(String, String, String) | r } = #{
+    LabelledEdge("a", "red", "b").
+    LabelledEdge("b", "red", "c").
+    LabelledEdge("c", "blu", "d").
+}
+
+def closure(): #{ LabelledEdge(String, l, String),
+                  LabelledPath(String, l, String) } with Order[l] = #{
+    LabelledPath(x, l, y) :- LabelledEdge(x, l, y).
+    LabelledPath(x, l, z) :- LabelledPath(x, l, y), LabelledPath(y, l, z).
+}
+
+def main(): Unit \ IO =
+    query edgesWithNumbers(), closure()
+        select (x, l, z) from LabelledPath(x, l, z) |> println;
+    query edgesWithColor(), closure()
+        select (x, l, z) from LabelledPath(x, l, z) |> println
+
 //
 //
 //

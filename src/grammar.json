@@ -613,25 +613,28 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "FIELD",
-                  "name": "with_clause",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "with_clause"
-                  }
-                },
-                {
-                  "type": "FIELD",
-                  "name": "where_clause",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "where_clause"
-                  }
-                }
-              ]
+              "type": "FIELD",
+              "name": "with_clause",
+              "content": {
+                "type": "SYMBOL",
+                "name": "with_clause"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "where_clause",
+              "content": {
+                "type": "SYMBOL",
+                "name": "where_clause"
+              }
             },
             {
               "type": "BLANK"
@@ -3345,6 +3348,10 @@
         {
           "type": "SYMBOL",
           "name": "type_field"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "type_constraint"
         }
       ]
     },
@@ -3811,6 +3818,148 @@
         {
           "type": "STRING",
           "value": "}"
+        }
+      ]
+    },
+    "type_constraint": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "#{"
+        },
+        {
+          "type": "FIELD",
+          "name": "tables",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_type_tables"
+            },
+            "named": true,
+            "value": "tables"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "|"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "variable",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_type_identifier"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "_type_tables": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_type_table"
+                },
+                "named": true,
+                "value": "table"
+              },
+              {
+                "type": "STRING",
+                "value": ","
+              }
+            ]
+          }
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_type_table"
+          },
+          "named": true,
+          "value": "table"
+        }
+      ]
+    },
+    "_type_table": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_uppercase_name"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_type_terms"
+          },
+          "named": true,
+          "value": "terms"
+        }
+      ]
+    },
+    "_type_terms": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_type"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": ","
+                  }
+                ]
+              }
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_type"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": ")"
         }
       ]
     },
@@ -4603,17 +4752,20 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "ALIAS",
+          "type": "FIELD",
+          "name": "table",
           "content": {
             "type": "SYMBOL",
-            "name": "uppercase_name"
-          },
-          "named": true,
-          "value": "table"
+            "name": "_uppercase_name"
+          }
         },
         {
-          "type": "SYMBOL",
-          "name": "term_list"
+          "type": "FIELD",
+          "name": "terms",
+          "content": {
+            "type": "SYMBOL",
+            "name": "term_list"
+          }
         }
       ]
     },
@@ -4636,13 +4788,8 @@
                     "type": "SEQ",
                     "members": [
                       {
-                        "type": "ALIAS",
-                        "content": {
-                          "type": "SYMBOL",
-                          "name": "lowercase_name"
-                        },
-                        "named": true,
-                        "value": "term"
+                        "type": "SYMBOL",
+                        "name": "_expression"
                       },
                       {
                         "type": "STRING",
@@ -4652,13 +4799,8 @@
                   }
                 },
                 {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "lowercase_name"
-                  },
-                  "named": true,
-                  "value": "term"
+                  "type": "SYMBOL",
+                  "name": "_expression"
                 }
               ]
             },

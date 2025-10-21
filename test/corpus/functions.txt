@@ -281,3 +281,136 @@ def sum(c: t): Int32 with Collection[t] where Collection.Elm[t] ~ Int32 =
         (field
           (identifier)
           (identifier))))))
+
+=====
+constraint return type
+=====
+
+def withAncestors(): #{ ParentOf(String, String),
+                        AncestorOf(String, String) | r } = #{
+        AncestorOf(x, y) :- ParentOf(x, y).
+        AncestorOf(x, z) :- AncestorOf(x, y), AncestorOf(y, z).
+}
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type_constraint
+      tables: (tables
+        (table
+          (identifier)
+          (terms
+            (type_primitive)
+            (type_primitive)))
+        (table
+          (identifier)
+          (terms
+            (type_primitive)
+            (type_primitive))))
+      variable: (polymorphic_identifier))
+    body: (expressions
+      (constraints
+        (rule
+          head: (fact
+            table: (identifier)
+            terms: (term_list
+              (identifier)
+              (identifier)))
+          body: (rule_body
+            (fact
+              table: (identifier)
+              terms: (term_list
+                (identifier)
+                (identifier)))))
+        (rule
+          head: (fact
+            table: (identifier)
+            terms: (term_list
+              (identifier)
+              (identifier)))
+          body: (rule_body
+            (fact
+              table: (identifier)
+              terms: (term_list
+                (identifier)
+                (identifier)))
+            (fact
+              table: (identifier)
+              terms: (term_list
+                (identifier)
+                (identifier)))))))))
+
+=====
+polymorphic constraints
+=====
+
+def closure(): #{ LabelledEdge(String, l, String),
+                  LabelledPath(String, l, String) } with Order[l] = #{
+    LabelledPath(x, l, y) :- LabelledEdge(x, l, y).
+    LabelledPath(x, l, z) :- LabelledPath(x, l, y), LabelledPath(y, l, z).
+}
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type_constraint
+      tables: (tables
+        (table
+          (identifier)
+          (terms
+            (type_primitive)
+            (polymorphic_identifier)
+            (type_primitive)))
+        (table
+          (identifier)
+          (terms
+            (type_primitive)
+            (polymorphic_identifier)
+            (type_primitive)))))
+    with_clause: (with_clause
+      (type
+        (identifier)
+        (type_arguments
+          (polymorphic_identifier))))
+    body: (expressions
+      (constraints
+        (rule
+          head: (fact
+            table: (identifier)
+            terms: (term_list
+              (identifier)
+              (identifier)
+              (identifier)))
+          body: (rule_body
+            (fact
+              table: (identifier)
+              terms: (term_list
+                (identifier)
+                (identifier)
+                (identifier)))))
+        (rule
+          head: (fact
+            table: (identifier)
+            terms: (term_list
+              (identifier)
+              (identifier)
+              (identifier)))
+          body: (rule_body
+            (fact
+              table: (identifier)
+              terms: (term_list
+                (identifier)
+                (identifier)
+                (identifier)))
+            (fact
+              table: (identifier)
+              terms: (term_list
+                (identifier)
+                (identifier)
+                (identifier)))))))))

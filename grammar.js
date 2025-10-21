@@ -205,15 +205,15 @@ module.exports = grammar({
           ),
         ),
         optional(
-          seq(
-            field(
-              "with_clause",
-              $.with_clause,
-            ),
-            field(
-              "where_clause",
-              $.where_clause,
-            ),
+          field(
+            "with_clause",
+            $.with_clause,
+          ),
+        ),
+        optional(
+          field(
+            "where_clause",
+            $.where_clause,
           ),
         ),
         optional(
@@ -945,6 +945,7 @@ module.exports = grammar({
         $.type_record,
         $._type_identifier,
         $.type_field,
+        $.type_constraint,
       ),
     type_primitive: ($) =>
       seq(
@@ -1047,6 +1048,39 @@ module.exports = grammar({
       ),
     effect_list: ($) =>
       seq("{", $._effect, "}"),
+    type_constraint: ($) =>
+      seq(
+        "#{",
+        field(
+          "tables",
+          alias($._type_tables, $.tables),
+        ),
+        optional(
+          seq(
+            "|",
+            field(
+              "variable",
+              $._type_identifier,
+            ),
+          ),
+        ),
+        "}",
+      ),
+    _type_tables: ($) =>
+      one_or_more(
+        alias($._type_table, $.table),
+      ),
+    _type_table: ($) =>
+      seq(
+        $._uppercase_name,
+        alias($._type_terms, $.terms),
+      ),
+    _type_terms: ($) =>
+      seq(
+        "(",
+        one_or_more($._type),
+        ")",
+      ),
 
     /////// TRAITS //////////
     trait_definition: ($) =>
@@ -1229,15 +1263,13 @@ module.exports = grammar({
     fact: ($) => seq($._fact_inner, "."),
     _fact_inner: ($) =>
       seq(
-        alias($.uppercase_name, $.table),
-        $.term_list,
+        field("table", $._uppercase_name),
+        field("terms", $.term_list),
       ),
     term_list: ($) =>
       seq(
         "(",
-        zero_or_more(
-          alias($.lowercase_name, $.term),
-        ),
+        zero_or_more($._expression),
         ")",
       ),
     rule: ($) =>
