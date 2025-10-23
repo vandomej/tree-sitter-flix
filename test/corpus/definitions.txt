@@ -184,61 +184,6 @@ def my_function[t: Type](v: t) = ()
       (unit))))
 
 =====
-user defined operator function
-=====
-
-def ->>(f: a -> b \ ef1, g: b -> c \ ef2): a -> c \ ((ef1 + ef2 + (ef1 + ef2))) = x -> g(f(x))
-
----
-
-(program
-  (function_declaration
-    (identifier)
-    (parameters
-      (parameter
-        (identifier)
-        (type_function
-          (polymorphic_identifier)
-          (polymorphic_identifier)
-          (effects
-            (polymorphic_identifier))))
-      (parameter
-        (identifier)
-        (type_function
-          (polymorphic_identifier)
-          (polymorphic_identifier)
-          (effects
-            (polymorphic_identifier)))))
-    (type_function
-      (polymorphic_identifier)
-      (polymorphic_identifier))
-    (effects
-      (effect_group
-        (effect_group
-          (binary_effect
-            (binary_effect
-              (polymorphic_identifier)
-              (operator)
-              (polymorphic_identifier))
-            (operator)
-            (effect_group
-              (binary_effect
-                (polymorphic_identifier)
-                (operator)
-                (polymorphic_identifier)))))))
-    (expressions
-      (lambda
-        (polymorphic_identifier)
-        (expressions
-          (call_expression
-            (identifier)
-            (arguments
-              (call_expression
-                (identifier)
-                (arguments
-                  (identifier))))))))))
-
-=====
 type constraint
 =====
 
@@ -414,3 +359,55 @@ def closure(): #{ LabelledEdge(String, l, String),
                 (identifier)
                 (identifier)
                 (identifier)))))))))
+
+=====
+type alias with annotation and modifier
+=====
+
+type alias M[k, v] = Map[k, Result[String, v]]
+
+---
+
+(program
+  (type_alias_declaration
+    (type
+      (identifier)
+      (type_arguments
+        (polymorphic_identifier)
+        (polymorphic_identifier)))
+    (type
+      (identifier)
+      (type_arguments
+        (polymorphic_identifier)
+        (type
+          (identifier)
+          (type_arguments
+            (type_primitive)
+            (polymorphic_identifier)))))))
+
+=====
+enum definition with annotation and modfier
+=====
+
+@test
+pub enum Bar {
+	case Lorem,
+	case Ipsum
+}
+
+
+---
+
+(program
+  (enum_definition
+    (annotations
+      (annotation))
+    (modifiers
+      (modifier))
+    name: (identifier)
+    constructors: (constructors
+      (constructor
+        (identifier))
+      (constructor
+        (identifier)))))
+
