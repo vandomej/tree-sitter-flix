@@ -402,15 +402,16 @@ module.exports = grammar({
     _handler_parameters: ($) =>
       seq(
         "(",
-        zero_or_more(
-          $._handler_parameter,
-        ),
+        zero_or_more($._handler_parameter),
         ")",
       ),
     _handler_parameter: ($) =>
       choice(
         $._lowercase_name,
-        alias(seq(optional("_"), "resume"), $.resume),
+        alias(
+          seq(optional("_"), "resume"),
+          $.resume,
+        ),
         $.ignored,
       ),
 
@@ -1051,7 +1052,10 @@ module.exports = grammar({
         "#{",
         field(
           "tables",
-          alias($._type_tables, $.table_list),
+          alias(
+            $._type_tables,
+            $.table_list,
+          ),
         ),
         optional(
           seq(
@@ -1152,7 +1156,7 @@ module.exports = grammar({
         $.float,
         $.boolean,
         $.char,
-        $.string,
+        $._string,
         $.list,
         $.vector,
         $.set,
@@ -1167,6 +1171,11 @@ module.exports = grammar({
     float: ($) => /\d+\.\d+(f32|f64|ff)?/,
     boolean: ($) => choice("true", "false"),
     char: ($) => /'[a-zA-Z]'/,
+    _string: ($) =>
+      choice(
+        $.string,
+        $.regex,
+      ),
     string: ($) =>
       seq(
         '"',
@@ -1174,6 +1183,7 @@ module.exports = grammar({
           choice(
             $._string_fragment,
             $._escape_sequence,
+            $._interpolation,
           ),
         ),
         '"',
@@ -1269,11 +1279,8 @@ module.exports = grammar({
       seq(
         "(",
         zero_or_more_by(
-          choice(
-            $._expression,
-            $.ignored,
-          ),
-          /[;,]/
+          choice($._expression, $.ignored),
+          /[;,]/,
         ),
         ")",
       ),
@@ -1329,18 +1336,25 @@ module.exports = grammar({
     solve: ($) =>
       seq(
         "solve",
-        field("constraints", $.constraint_list),
+        field(
+          "constraints",
+          $.constraint_list,
+        ),
         "project",
         field("tables", $.project_list),
       ),
-    constraint_list: ($) => one_or_more($._expression),
-    project_list: ($) => prec.left(one_or_more($._uppercase_name)),
+    constraint_list: ($) =>
+      one_or_more($._expression),
+    project_list: ($) =>
+      prec.left(
+        one_or_more($._uppercase_name),
+      ),
 
     // Workaround to https://github.com/tree-sitter/tree-sitter/issues/1156
     // We give names to the token_ constructs containing a regexp
     // so as to obtain a node in the CST.
-    _string_fragment: (_) =>
-      token.immediate(prec(1, /[^"\\]+/)),
+    _string_fragment: ($) =>
+      token.immediate(prec(1, /[^"\\$]+/)),
     _escape_sequence: ($) =>
       choice(
         prec(
@@ -1351,7 +1365,7 @@ module.exports = grammar({
         ),
         prec(1, $.escape_sequence),
       ),
-    escape_sequence: (_) =>
+    escape_sequence: ($) =>
       token.immediate(
         seq(
           "\\",
@@ -1364,7 +1378,23 @@ module.exports = grammar({
           ),
         ),
       ),
-
+    _interpolation: ($) =>
+      choice(
+        prec(2, $.interpolation),
+        prec(1, token.immediate("$")),
+      ),
+    interpolation: ($) =>
+      seq(
+        token.immediate("${"),
+        $._stmt,
+        "}",
+      ),
+    regex: ($) =>
+      seq(
+        "regex",
+        $.string,
+      ),
+      
     modifiers: ($) => repeat1($.modifier),
     modifier: ($) =>
       choice(
@@ -1377,7 +1407,6 @@ module.exports = grammar({
       ),
 
     ignored: ($) => "_",
-    
 
     /////// NAMES ////////
     uppercase_name: ($) =>

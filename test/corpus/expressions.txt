@@ -459,7 +459,9 @@ def gameLoop(secret: Int32): Unit \ IO = {
               (call_expression
                 function: (identifier)
                 arguments: (arguments
-                  (string))))))))))
+                  (string
+                    (interpolation
+                      (identifier))))))))))))
 
 =====
 match enum
@@ -1524,3 +1526,4 @@ def shortestPath(g: Set[(t, Int32, t)], o: t): Map[t, D] with Order[t] =
         (field
           (identifier)
           (identifier))))))
+

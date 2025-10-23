@@ -4178,7 +4178,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "string"
+          "name": "_string"
         },
         {
           "type": "SYMBOL",
@@ -4252,6 +4252,19 @@
       "type": "PATTERN",
       "value": "'[a-zA-Z]'"
     },
+    "_string": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "string"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "regex"
+        }
+      ]
+    },
     "string": {
       "type": "SEQ",
       "members": [
@@ -4271,6 +4284,10 @@
               {
                 "type": "SYMBOL",
                 "name": "_escape_sequence"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_interpolation"
               }
             ]
           }
@@ -5117,7 +5134,7 @@
         "value": 1,
         "content": {
           "type": "PATTERN",
-          "value": "[^\"\\\\]+"
+          "value": "[^\"\\\\$]+"
         }
       }
     },
@@ -5190,6 +5207,63 @@
           }
         ]
       }
+    },
+    "_interpolation": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PREC",
+          "value": 2,
+          "content": {
+            "type": "SYMBOL",
+            "name": "interpolation"
+          }
+        },
+        {
+          "type": "PREC",
+          "value": 1,
+          "content": {
+            "type": "IMMEDIATE_TOKEN",
+            "content": {
+              "type": "STRING",
+              "value": "$"
+            }
+          }
+        }
+      ]
+    },
+    "interpolation": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "STRING",
+            "value": "${"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_stmt"
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "regex": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "regex"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "string"
+        }
+      ]
     },
     "modifiers": {
       "type": "REPEAT1",

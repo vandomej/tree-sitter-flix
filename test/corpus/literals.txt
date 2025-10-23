@@ -263,3 +263,88 @@ def main(): Unit = { -a | r}
         (record_item
           (identifier))
         (identifier)))))
+
+=====
+interpolated strings
+=====
+
+def main(): Unit =
+    let x = 4;
+    let dollar = "$";
+    let dollars = "$$$$";
+    let interpolation = "$ {wrong}${x}";
+    let multiple_interpolation = "Multiple: ${x} Interpolations: ${4*11.5}";
+    let dollar_pre_interpolation = "$${x}";
+    let interpolation_with_space = "$${ x }";
+    let multi_expression_interpolation = "${let y = x + 2; y + 3}";
+    let escaped_quote = "\"";
+    let escaped_backslash = "\\";
+    let string_with_comment = "Hello /* weird */ World"
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type_primitive)
+    body: (expressions
+      (let
+        (identifier)
+        (integer))
+      (let
+        (identifier)
+        (string))
+      (let
+        (identifier)
+        (string))
+      (let
+        (identifier)
+        (string
+          (interpolation
+            (identifier))))
+      (let
+        (identifier)
+        (string
+          (interpolation
+            (identifier))
+          (interpolation
+            (binary
+              (integer)
+              (operator_identifier)
+              (float)))))
+      (let
+        (identifier)
+        (string
+          (interpolation
+            (identifier))))
+      (let
+        (identifier)
+        (string
+          (interpolation
+            (identifier))))
+      (let
+        (identifier)
+        (string
+          (interpolation
+            (let
+              (identifier)
+              (binary
+                (identifier)
+                (operator_identifier)
+                (integer)))
+            (binary
+              (identifier)
+              (operator_identifier)
+              (integer)))))
+      (let
+        (identifier)
+        (string
+          (escape_sequence)))
+      (let
+        (identifier)
+        (string
+          (escape_sequence)))
+      (let
+        (identifier)
+        (string)))))

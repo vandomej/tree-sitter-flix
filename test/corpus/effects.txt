@@ -322,7 +322,9 @@ def main(): Unit \ IO =
           (call_expression
             function: (identifier)
             arguments: (arguments
-              (string))))
+              (string
+                (interpolation
+                  (identifier))))))
         (effect_handler
           effect: (field
             (identifier)
@@ -360,6 +362,8 @@ def main(): Unit \ IO =
           (call_expression
             function: (identifier)
             arguments: (arguments
-              (string))))
+              (string
+                (interpolation
+                  (identifier))))))
         (effect_handler
           effect: (identifier))))))
