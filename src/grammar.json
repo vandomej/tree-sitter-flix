@@ -5294,11 +5294,68 @@
       "members": [
         {
           "type": "STRING",
-          "value": "regex"
+          "value": "regex\""
         },
         {
-          "type": "SYMBOL",
-          "name": "string"
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "regex_escape_sequence"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_string_fragment"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_escape_sequence"
+              },
+              {
+                "type": "STRING",
+                "value": "$"
+              }
+            ]
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "\""
+        }
+      ]
+    },
+    "regex_escape_sequence": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "PATTERN",
+            "value": "\\\\{2}[aAbBdDeEfGhnpPQrsStwWvzZ.*+?\\{\\}\\[\\]\\(\\)\\|\\^\\$\\-0-9]"
+          }
+        },
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "PATTERN",
+            "value": "\\\\{4}"
+          }
+        },
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "PATTERN",
+            "value": "\\\\{2}x[0-9a-fA-F]{2}"
+          }
+        },
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "PATTERN",
+            "value": "\\\\{2}u[0-9a-fA-F]{4}"
+          }
         }
       ]
     },

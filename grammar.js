@@ -1182,10 +1182,7 @@ module.exports = grammar({
     boolean: ($) => choice("true", "false"),
     char: ($) => /'[a-zA-Z]'/,
     _string: ($) =>
-      choice(
-        $.string,
-        $.regex,
-      ),
+      choice($.string, $.regex),
     string: ($) =>
       seq(
         '"',
@@ -1401,8 +1398,32 @@ module.exports = grammar({
       ),
     regex: ($) =>
       seq(
-        "regex",
-        $.string,
+        'regex"',
+        repeat(
+          choice(
+            $.regex_escape_sequence,
+            $._string_fragment,
+            $._escape_sequence,
+            "$",
+          ),
+        ),
+        '"',
+      ),
+    regex_escape_sequence: ($) =>
+      choice(
+        // Single character escapes
+        token.immediate(
+          /\\{2}[aAbBdDeEfGhnpPQrsStwWvzZ.*+?\{\}\[\]\(\)\|\^\$\-0-9]/,
+        ),
+        // Two character escapes
+        token.immediate(/\\{4}/),
+        // Unicode options
+        token.immediate(
+          /\\{2}x[0-9a-fA-F]{2}/,
+        ),
+        token.immediate(
+          /\\{2}u[0-9a-fA-F]{4}/,
+        ),
       ),
       
     modifiers: ($) => repeat1($.modifier),

@@ -370,3 +370,60 @@ def main(): Unit =
       (let
         (identifier)
         (string)))))
+
+=====
+regex strings
+=====
+
+def main(): Unit = 
+  let regex1 = regex"hello";
+  let regex2 = regex"\\$";
+  let regex3 = regex"\t+\n";
+  let regex4 = regex"\\t\\n\\w+";
+  let regex5 = regex"\"";
+  let regex6 = regex"\\\\";
+  let regex7 = regex"\\x47";
+  let regex8 = regex"\\u00A9"
+  
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type_primitive)
+    body: (expressions
+      (let
+        (identifier)
+        (regex))
+      (let
+        (identifier)
+        (regex
+          (regex_escape_sequence)))
+      (let
+        (identifier)
+        (regex
+          (escape_sequence)
+          (escape_sequence)))
+      (let
+        (identifier)
+        (regex
+          (regex_escape_sequence)
+          (regex_escape_sequence)
+          (regex_escape_sequence)))
+      (let
+        (identifier)
+        (regex
+          (escape_sequence)))
+      (let
+        (identifier)
+        (regex
+          (regex_escape_sequence)))
+      (let
+        (identifier)
+        (regex
+          (regex_escape_sequence)))
+      (let
+        (identifier)
+        (regex
+          (regex_escape_sequence))))))

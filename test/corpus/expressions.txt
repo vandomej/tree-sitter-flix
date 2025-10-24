@@ -1527,3 +1527,28 @@ def shortestPath(g: Set[(t, Int32, t)], o: t): Map[t, D] with Order[t] =
           (identifier)
           (identifier))))))
 
+=====
+keyword variables
+=====
+
+def main(): Unit \ IO =
+    let regex = regex"hello";
+    println(regex)
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type_primitive)
+    effects: (effects
+      (identifier))
+    body: (expressions
+      (let
+        (identifier)
+        (regex))
+      (call_expression
+        function: (identifier)
+        arguments: (arguments
+          (identifier))))))

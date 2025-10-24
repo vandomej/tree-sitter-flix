@@ -1920,15 +1920,24 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": true,
+      "multiple": true,
+      "required": false,
       "types": [
         {
-          "type": "string",
+          "type": "escape_sequence",
+          "named": true
+        },
+        {
+          "type": "regex_escape_sequence",
           "named": true
         }
       ]
     }
+  },
+  {
+    "type": "regex_escape_sequence",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "region",
@@ -3401,7 +3410,7 @@
     "named": false
   },
   {
-    "type": "regex",
+    "type": "regex\"",
     "named": false
   },
   {

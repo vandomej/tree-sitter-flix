@@ -26,6 +26,6 @@ Note that this is not an LSP, so it wont provide features like go-to-definition,
 - [x] match lambdas
 - [x] Datalog constraints
 - [ ] keywords from [this](https://doc.flix.dev/identifiers.html)
-- [ ] string interpolation
+- [x] string interpolation
 - [ ] greek names
-- [ ] block comments
+- [x] block comments
