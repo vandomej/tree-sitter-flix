@@ -25,7 +25,7 @@ Note that this is not an LSP, so it wont provide features like go-to-definition,
 - [x] Record literals and types
 - [x] match lambdas
 - [x] Datalog constraints
-- [ ] keywords from [this](https://doc.flix.dev/identifiers.html)
+- [x] keywords from [this](https://doc.flix.dev/identifiers.html)
 - [x] string interpolation
 - [x] greek names
 - [x] block comments

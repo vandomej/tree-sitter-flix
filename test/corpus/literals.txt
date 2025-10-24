@@ -448,3 +448,25 @@ def αίρετε(): Int32 =
         (identifier)
         (integer))
       (identifier))))
+
+=====
+math names
+=====
+
+def ⋿⋮∀≅(): INT32 =
+  let ⋰⋱⋬⋙ = 4;
+  ⋰⋱⋬⋙
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type
+      (identifier))
+    body: (expressions
+      (let
+        (identifier)
+        (integer))
+      (identifier))))

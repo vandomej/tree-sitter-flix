@@ -2490,6 +2490,10 @@
               },
               {
                 "type": "SYMBOL",
+                "name": "_math_name"
+              },
+              {
+                "type": "SYMBOL",
                 "name": "_operator_name"
               }
             ]
@@ -5423,6 +5427,10 @@
       "type": "PATTERN",
       "value": "[\\u0370-\\u03FF]+"
     },
+    "math_name": {
+      "type": "PATTERN",
+      "value": "[\\u2190-\\u22FF]+"
+    },
     "_uppercase_name": {
       "type": "ALIAS",
       "content": {
@@ -5459,6 +5467,15 @@
       "named": true,
       "value": "identifier"
     },
+    "_math_name": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "math_name"
+      },
+      "named": true,
+      "value": "identifier"
+    },
     "_operator_name": {
       "type": "ALIAS",
       "content": {
@@ -5481,6 +5498,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "_math_name"
+        },
+        {
+          "type": "SYMBOL",
           "name": "_greek_name"
         }
       ]
@@ -5495,6 +5516,10 @@
         {
           "type": "SYMBOL",
           "name": "_operator_name"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_math_name"
         },
         {
           "type": "SYMBOL",

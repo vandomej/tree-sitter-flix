@@ -653,6 +653,7 @@ module.exports = grammar({
             $._uppercase_name,
             $._lowercase_name,
             $._greek_name,
+            $._math_name,
             $._operator_name,
           ),
         ),
@@ -1445,6 +1446,7 @@ module.exports = grammar({
       /_?[a-z][a-zA-Z0-9_]*/,
     name: ($) => /[a-zA-Z][a-zA-Z0-9_]*/,
     greek_name: ($) => /[\u0370-\u03FF]+/,
+    math_name: ($) => /[\u2190-\u22FF]+/,
     _uppercase_name: ($) =>
       alias($.uppercase_name, $.identifier),
     _lowercase_name: ($) =>
@@ -1453,6 +1455,8 @@ module.exports = grammar({
       alias($.name, $.identifier),
     _greek_name: ($) =>
       alias($.greek_name, $.identifier),
+    _math_name: ($) =>
+      alias($.math_name, $.identifier),
     _operator_name: ($) =>
       alias($.operator_name, $.identifier),
     operator_name: ($) =>
@@ -1460,12 +1464,14 @@ module.exports = grammar({
     _variable_name: ($) =>
       choice(
         $._lowercase_name,
+        $._math_name,
         $._greek_name,
       ),
     _function_name: ($) =>
       choice(
         $._lowercase_name,
         $._operator_name,
+        $._math_name,
         $._greek_name,
       ),
   },
