@@ -2670,15 +2670,7 @@
                 },
                 {
                   "type": "SYMBOL",
-                  "name": "field"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "group"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "call_expression"
+                  "name": "_expression"
                 }
               ]
             }
@@ -5507,25 +5499,29 @@
       ]
     },
     "_function_name": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_lowercase_name"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_operator_name"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_math_name"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_greek_name"
-        }
-      ]
+      "type": "PREC",
+      "value": 1,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "_lowercase_name"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_operator_name"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_math_name"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_greek_name"
+          }
+        ]
+      }
     }
   },
   "extras": [

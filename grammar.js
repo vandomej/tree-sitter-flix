@@ -709,9 +709,7 @@ module.exports = grammar({
             choice(
               $._function_name,
               $._uppercase_name,
-              $.field,
-              $.group,
-              $.call_expression,
+              $._expression,
             ),
           ),
           field("arguments", $.arguments),
@@ -1468,11 +1466,14 @@ module.exports = grammar({
         $._greek_name,
       ),
     _function_name: ($) =>
-      choice(
-        $._lowercase_name,
-        $._operator_name,
-        $._math_name,
-        $._greek_name,
+      prec(
+        1,
+        choice(
+          $._lowercase_name,
+          $._operator_name,
+          $._math_name,
+          $._greek_name,
+        ),
       ),
   },
 });
