@@ -27,5 +27,5 @@ Note that this is not an LSP, so it wont provide features like go-to-definition,
 - [x] Datalog constraints
 - [ ] keywords from [this](https://doc.flix.dev/identifiers.html)
 - [x] string interpolation
-- [ ] greek names
+- [x] greek names
 - [x] block comments

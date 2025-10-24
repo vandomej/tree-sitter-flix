@@ -188,13 +188,7 @@ module.exports = grammar({
         optional($.annotations),
         optional($.modifiers),
         "def",
-        field(
-          "name",
-          choice(
-            $._lowercase_name,
-            $._operator_name,
-          ),
-        ),
+        field("name", $._function_name),
         optional(
           field(
             "type_parameters",
@@ -459,7 +453,7 @@ module.exports = grammar({
     _expression: ($) =>
       choice(
         $._literal,
-        $._lowercase_name,
+        $._variable_name,
         $.block,
         $.if,
         $.match,
@@ -532,7 +526,7 @@ module.exports = grammar({
       ),
     gets: ($) =>
       seq(
-        choice($.ignored, $._lowercase_name),
+        choice($.ignored, $._variable_name),
         "<-",
         $._expression,
       ),
@@ -580,7 +574,7 @@ module.exports = grammar({
       choice(
         $.ignored,
         $._literal,
-        $._lowercase_name,
+        $._variable_name,
         $._uppercase_name,
         alias(
           $.pattern_constructor,
@@ -655,7 +649,12 @@ module.exports = grammar({
             $.field,
           ),
           ".",
-          $._name,
+          choice(
+            $._uppercase_name,
+            $._lowercase_name,
+            $._greek_name,
+            $._operator_name,
+          ),
         ),
       ),
     ref: ($) =>
@@ -707,7 +706,7 @@ module.exports = grammar({
           field(
             "function",
             choice(
-              $._lowercase_name,
+              $._function_name,
               $._uppercase_name,
               $.field,
               $.group,
@@ -1425,7 +1424,7 @@ module.exports = grammar({
           /\\{2}u[0-9a-fA-F]{4}/,
         ),
       ),
-      
+
     modifiers: ($) => repeat1($.modifier),
     modifier: ($) =>
       choice(
@@ -1445,16 +1444,29 @@ module.exports = grammar({
     lowercase_name: ($) =>
       /_?[a-z][a-zA-Z0-9_]*/,
     name: ($) => /[a-zA-Z][a-zA-Z0-9_]*/,
+    greek_name: ($) => /[\u0370-\u03FF]+/,
     _uppercase_name: ($) =>
       alias($.uppercase_name, $.identifier),
     _lowercase_name: ($) =>
       alias($.lowercase_name, $.identifier),
     _name: ($) =>
       alias($.name, $.identifier),
+    _greek_name: ($) =>
+      alias($.greek_name, $.identifier),
     _operator_name: ($) =>
       alias($.operator_name, $.identifier),
     operator_name: ($) =>
       /[\+\-\*<>=!&|\^\$][\+\-\*<>=!&|\^\$]+/,
-    // TODO: Not sure how to support greek and math names
+    _variable_name: ($) =>
+      choice(
+        $._lowercase_name,
+        $._greek_name,
+      ),
+    _function_name: ($) =>
+      choice(
+        $._lowercase_name,
+        $._operator_name,
+        $._greek_name,
+      ),
   },
 });

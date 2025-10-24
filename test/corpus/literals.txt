@@ -427,3 +427,24 @@ def main(): Unit =
         (identifier)
         (regex
           (regex_escape_sequence))))))
+
+=====
+greek names
+=====
+
+def αίρετε(): Int32 =
+  let ωριστι = 5;
+  ωριστι
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type_primitive)
+    body: (expressions
+      (let
+        (identifier)
+        (integer))
+      (identifier))))
