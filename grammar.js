@@ -63,7 +63,11 @@ const zero_or_more_optionally = (item) =>
 module.exports = grammar({
   name: "flix",
 
-  extras: ($) => [/\s/, $.comment],
+  extras: ($) => [
+    /\s/,
+    $.comment,
+    $.block_comment,
+  ],
 
   supertypes: ($) => [
     $._expression,
@@ -1141,9 +1145,15 @@ module.exports = grammar({
 
     /////// COMMENTS ////////////
     // TODO: Doc and block comments
-    comment: ($) => $.line_comment,
-    line_comment: ($) =>
-      token(seq("//", /.*/)),
+    comment: ($) => token(seq("//", /.*/)),
+    block_comment: ($) =>
+      seq(
+        token("/*"),
+        repeat(
+          choice(token(/./), token("//")),
+        ),
+        token("*/"),
+      ),
 
     /////// LITERALS //////////
     // TODO: interpreted strings

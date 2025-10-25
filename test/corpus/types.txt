@@ -397,8 +397,7 @@ trait Addable[t] {
       (type_definition
         (identifier)
         (polymorphic_identifier))
-      (comment
-        (line_comment))
+      (comment)
       (function_definition
         (modifiers
           (modifier))
@@ -480,8 +479,7 @@ instance Dividable[Float32] {
         (identifier)
         (effect_list
           (identifier)))
-      (comment
-        (line_comment))
+      (comment)
       (function_declaration
         (modifiers
           (modifier))

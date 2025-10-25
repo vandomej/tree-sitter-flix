@@ -277,6 +277,11 @@ def main(): Unit =
     let dollar_pre_interpolation = "$${x}";
     let interpolation_with_space = "$${ x }";
     let multi_expression_interpolation = "${let y = x + 2; y + 3}";
+    let multi_line_string = "Multi-line: /*\n\t" +
+    "\t\tSecond-line" + /*
+    "Third-line" +
+    */
+    "\t*/ ${"End-Line"}";
     let escaped_quote = "\"";
     let escaped_backslash = "\\";
     let string_with_comment = "Hello /* weird */ World"
@@ -337,6 +342,23 @@ def main(): Unit =
               (identifier)
               (operator_identifier)
               (integer)))))
+      (let
+        (identifier)
+        (binary
+          (binary
+            (string
+              (escape_sequence)
+              (escape_sequence))
+            (operator_identifier)
+            (string
+              (escape_sequence)
+              (escape_sequence)))
+          (operator_identifier)
+          (block_comment)
+          (string
+            (escape_sequence)
+            (interpolation
+              (string)))))
       (let
         (identifier)
         (string
