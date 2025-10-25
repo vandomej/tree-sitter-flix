@@ -553,3 +553,52 @@ trait ForEach[t] {
               (identifier)
               (type_arguments
                 (polymorphic_identifier)))))))))
+
+=====
+kind ascription
+=====
+
+enum A[t: Type] {
+    case A(t, t)
+}
+
+def fst1[a: Type, b: Type](p: (a, b)): a = let (x, _) = p; x
+
+---
+
+(program
+  (enum_definition
+    name: (identifier)
+    type_parameters: (type_parameters
+      (type_parameter
+        name: (identifier)
+        kind: (kind)))
+    constructors: (constructors
+      (constructor
+        (identifier)
+        parameters: (constructor_parameters
+          (polymorphic_identifier)
+          (polymorphic_identifier)))))
+  (function_declaration
+    name: (identifier)
+    type_parameters: (type_parameters
+      (type_parameter
+        name: (identifier)
+        kind: (kind))
+      (type_parameter
+        name: (identifier)
+        kind: (kind)))
+    parameters: (parameters
+      (parameter
+        name: (identifier)
+        type: (type_tuple
+          (polymorphic_identifier)
+          (polymorphic_identifier))))
+    return_type: (polymorphic_identifier)
+    body: (expressions
+      (let
+        (tuple
+          (identifier)
+          (ignored))
+        (identifier))
+      (identifier))))

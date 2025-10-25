@@ -150,6 +150,10 @@
         "named": true
       },
       {
+        "type": "type_ascription",
+        "named": true
+      },
+      {
         "type": "unary",
         "named": true
       }
@@ -1048,6 +1052,10 @@
         },
         {
           "type": "gets",
+          "named": true
+        },
+        {
+          "type": "variable_mapping",
           "named": true
         }
       ]
@@ -2412,6 +2420,53 @@
     }
   },
   {
+    "type": "type_ascription",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "_expression",
+          "named": true
+        },
+        {
+          "type": "polymorphic_identifier",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_constraint",
+          "named": true
+        },
+        {
+          "type": "type_field",
+          "named": true
+        },
+        {
+          "type": "type_function",
+          "named": true
+        },
+        {
+          "type": "type_primitive",
+          "named": true
+        },
+        {
+          "type": "type_record",
+          "named": true
+        },
+        {
+          "type": "type_tuple",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "type_constraint",
     "named": true,
     "fields": {
@@ -2875,6 +2930,21 @@
         },
         {
           "type": "module_rename",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "variable_mapping",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "_expression",
           "named": true
         }
       ]

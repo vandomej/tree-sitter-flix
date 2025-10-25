@@ -1552,3 +1552,44 @@ def main(): Unit \ IO =
         function: (identifier)
         arguments: (arguments
           (identifier))))))
+
+=====
+type ascription
+=====
+
+def foo(): List[String] =
+  let list = ("Hello" :: "World" :: Nil) : List[String];
+  (list: List[String])
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type
+      (identifier)
+      (type_arguments
+        (type_primitive)))
+    body: (expressions
+      (let
+        (identifier)
+        (type_ascription
+          (group
+            (binary
+              (binary
+                (string)
+                (operator_identifier)
+                (string))
+              (operator_identifier)
+              (nil)))
+          (type
+            (identifier)
+            (type_arguments
+              (type_primitive)))))
+      (type_ascription
+        (identifier)
+        (type
+          (identifier)
+          (type_arguments
+            (type_primitive)))))))

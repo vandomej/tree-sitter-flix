@@ -3,6 +3,7 @@ const PREC = {
   type_function: 2,
   type_identifier: 1,
 
+  type_ascription: 22,
   call: 21,
   field: 20,
   deref: 19,
@@ -481,6 +482,7 @@ module.exports = grammar({
         $.inject,
         $.query,
         $.solve,
+        $.type_ascription,
       ),
 
     ///////// CONTROL STRUCTURES /////////////
@@ -513,7 +515,11 @@ module.exports = grammar({
         "foreach",
         "(",
         zero_or_more_by(
-          choice($.gets, $.filter),
+          choice(
+            $.gets,
+            $.filter,
+            $.variable_mapping,
+          ),
           ";",
         ),
         ")",
@@ -522,6 +528,12 @@ module.exports = grammar({
     _foreach_body: ($) =>
       choice(
         seq("yield", $._expression),
+        $._expression,
+      ),
+    variable_mapping: ($) =>
+      seq(
+        $._variable_name,
+        "=",
         $._expression,
       ),
     gets: ($) =>
@@ -698,7 +710,13 @@ module.exports = grammar({
         $._pattern,
         optional(seq(":", $._type)),
         "=",
-        $._expression,
+        choice(
+          $._expression,
+          alias(
+            $._type_ascription,
+            $.type_ascription,
+          ),
+        ),
       ),
     call_expression: ($) =>
       prec(
@@ -745,6 +763,13 @@ module.exports = grammar({
           "->",
           field("body", $.expressions),
         ),
+      ),
+    type_ascription: ($) =>
+      seq("(", $._type_ascription, ")"),
+    _type_ascription: ($) =>
+      prec(
+        PREC.type_ascription,
+        seq($._expression, ":", $._type),
       ),
 
     /////////// OPERATORS /////////////
