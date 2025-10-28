@@ -669,7 +669,7 @@ def handleExc(f: a -> b \ ef): a -> Option[b] \ ef - Exc =
         (identifier)))
     (expressions
       (lambda
-        (polymorphic_identifier)
+        (identifier)
         (expressions
           (effect_block
             (block
@@ -1593,3 +1593,77 @@ def foo(): List[String] =
           (identifier)
           (type_arguments
             (type_primitive)))))))
+
+=====
+match lambda with ignored pattern
+=====
+
+def statFilter(stat: Stat): Stat = Map.filter(match (adds, _) -> adds > 0ii, stat)
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters
+      (parameter
+        name: (identifier)
+        type: (type
+          (identifier))))
+    return_type: (type
+      (identifier))
+    body: (expressions
+      (call_expression
+        function: (field
+          (identifier)
+          (identifier))
+        arguments: (arguments
+          (match
+            (tuple
+              (identifier)
+              (ignored))
+            (binary
+              (identifier)
+              (operator_identifier)
+              (integer)))
+          (identifier))))))
+
+=====
+case statement with guard
+=====
+
+def main(): Bool =
+	match (Some(20)) {
+		case Some(x) if x > 10 => true
+		case _ => false
+	}
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type_primitive)
+    body: (expressions
+      (match
+        (group
+          (call_expression
+            function: (identifier)
+            arguments: (arguments
+              (integer))))
+        (case
+          pattern: (constructor
+            (identifier)
+            (identifier))
+          guard: (match_guard
+            (binary
+              (identifier)
+              (operator_identifier)
+              (integer)))
+          expressions: (expressions
+            (boolean)))
+        (case
+          pattern: (ignored)
+          expressions: (expressions
+            (boolean)))))))

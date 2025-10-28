@@ -478,3 +478,57 @@ def getKey(key: String, map: Map[String, JsonElement]): a \ AnalysisFailure with
                 (identifier))
               arguments: (arguments
                 (identifier)))))))))
+=====
+user defined operator function
+=====
+
+def ->>(f: a -> b \ ef1, g: b -> c \ ef2): a -> c \ ((ef1 + ef2 + (ef1 + ef2))) = x -> g(f(x))
+
+---
+
+(program
+  (function_declaration
+    (identifier)
+    (parameters
+      (parameter
+        (identifier)
+        (type_function
+          (polymorphic_identifier)
+          (polymorphic_identifier)
+          (effects
+            (polymorphic_identifier))))
+      (parameter
+        (identifier)
+        (type_function
+          (polymorphic_identifier)
+          (polymorphic_identifier)
+          (effects
+            (polymorphic_identifier)))))
+    (type_function
+      (polymorphic_identifier)
+      (polymorphic_identifier))
+    (effects
+      (effect_group
+        (effect_group
+          (binary_effect
+            (binary_effect
+              (polymorphic_identifier)
+              (operator)
+              (polymorphic_identifier))
+            (operator)
+            (effect_group
+              (binary_effect
+                (polymorphic_identifier)
+                (operator)
+                (polymorphic_identifier)))))))
+    (expressions
+      (lambda
+        (identifier)
+        (expressions
+          (call_expression
+            (identifier)
+            (arguments
+              (call_expression
+                (identifier)
+                (arguments
+                  (identifier))))))))))

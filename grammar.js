@@ -76,6 +76,10 @@ module.exports = grammar({
     $._declaration,
   ],
 
+  conflicts: ($) => [
+    [$._expression, $._pattern],
+  ],
+
   word: ($) => $.name,
 
   rules: {
@@ -260,12 +264,13 @@ module.exports = grammar({
     _typeless_parameter_inner: ($) =>
       choice($._name, $.ignored),
     arguments: ($) =>
-      seq(
-        "(",
-        zero_or_more(
-          choice($._expression, $.ignored),
+      prec(
+        1,
+        seq(
+          "(",
+          zero_or_more($._expression),
+          ")",
         ),
-        ")",
       ),
 
     /////// EFFECTS ///////
@@ -555,29 +560,45 @@ module.exports = grammar({
         $._expression,
       ),
     match: ($) =>
-      seq(
-        "match",
-        $._expression,
-        choice(
-          $._match_block,
-          $._match_lambda,
-        ),
+      choice(
+        $._match_block,
+        $._match_lambda,
       ),
     _match_lambda: ($) =>
-      seq("->", $._expression),
+      prec.left(
+        1,
+        seq(
+          "match",
+          $._pattern,
+          "->",
+          $._expression,
+        ),
+      ),
     _match_block: ($) =>
-      seq(
-        "{",
-        repeat(alias($.match_case, $.case)),
-        "}",
+      prec(
+        1,
+        seq(
+          "match",
+          $._expression,
+          "{",
+          repeat(
+            alias($.match_case, $.case),
+          ),
+          "}",
+        ),
       ),
     match_case: ($) =>
       seq(
         "case",
         field("pattern", $._pattern_cons),
+        optional(
+          field("guard", $.match_guard),
+        ),
         "=>",
         field("expressions", $.expressions),
       ),
+    match_guard: ($) =>
+      seq("if", $._expression),
     _pattern_cons: ($) =>
       seq(
         $._pattern,
@@ -754,11 +775,8 @@ module.exports = grammar({
           field(
             "parameters",
             choice(
-              $._typeless_parameters,
-              alias(
-                $.lowercase_name,
-                $.polymorphic_identifier,
-              ),
+              $._pattern,
+              $._lowercase_name,
             ),
           ),
           "->",
