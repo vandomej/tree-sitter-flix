@@ -1132,6 +1132,7 @@ module.exports = grammar({
     /////// TRAITS //////////
     trait_definition: ($) =>
       seq(
+        optional($.annotations),
         optional($.modifiers),
         "trait",
         field("trait", $.type),

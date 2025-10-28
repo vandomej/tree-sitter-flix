@@ -532,3 +532,36 @@ def ->>(f: a -> b \ ef1, g: b -> c \ ef2): a -> c \ ((ef1 + ef2 + (ef1 + ef2))) 
                 (identifier)
                 (arguments
                   (identifier))))))))))
+=====
+trait definition with annotation and modifier
+=====
+
+@test
+pub sealed trait Foo[a] {
+	pub def bar(x: a): Int32
+}
+
+---
+
+(program
+  (trait_definition
+    (annotations
+      (annotation))
+    (modifiers
+      (modifier)
+      (modifier))
+    trait: (type
+      (identifier)
+      (type_arguments
+        (polymorphic_identifier)))
+    body: (template_body
+      (function_definition
+        (modifiers
+          (modifier))
+        name: (identifier)
+        parameters: (parameters
+          (parameter
+            name: (identifier)
+            type: (polymorphic_identifier)))
+        return_type: (type_primitive)))))
+

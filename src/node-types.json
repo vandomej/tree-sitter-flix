@@ -2318,9 +2318,13 @@
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "annotations",
+          "named": true
+        },
         {
           "type": "modifiers",
           "named": true
