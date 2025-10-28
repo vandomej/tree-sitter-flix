@@ -448,6 +448,11 @@
     }
   },
   {
+    "type": "char",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "constraint_list",
     "named": true,
     "fields": {},
@@ -3184,6 +3189,10 @@
     "named": false
   },
   {
+    "type": "'",
+    "named": false
+  },
+  {
     "type": "(",
     "named": false
   },
@@ -3378,10 +3387,6 @@
   {
     "type": "case",
     "named": false
-  },
-  {
-    "type": "char",
-    "named": true
   },
   {
     "type": "comment",

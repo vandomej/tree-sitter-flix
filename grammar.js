@@ -1222,7 +1222,27 @@ module.exports = grammar({
       /\d+(i8|i16|i32|i64|ii)?/,
     float: ($) => /\d+\.\d+(f32|f64|ff)?/,
     boolean: ($) => choice("true", "false"),
-    char: ($) => /'[a-zA-Z]'/,
+    char: ($) =>
+      seq(
+        "'",
+        choice(
+          $._char_content,
+          $._escape_char,
+          $._unicode_char,
+        ),
+        "'",
+      ),
+    _char_content: (_) => /[^'\\\n\r]/,
+    _escape_char: (_) =>
+      seq(
+        "\\",
+        choice(
+          /[abfnrtv'"\\]/, // Common escape sequences
+          /x[0-9a-fA-F]{2}/, // Hex escapes
+        ),
+      ),
+    _unicode_char: (_) =>
+      /\\u[0-9a-fA-F]{4}/, // \uXXXX
     _string: ($) =>
       choice($.string, $.regex),
     string: ($) =>

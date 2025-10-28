@@ -95,6 +95,35 @@ def main(): Char = 'a'
       (char))))
 
 =====
+special chars
+=====
+
+def main(): List[Char] =
+  List#{'\\', '\n', '\r', '\t', '+', '%', '字', '\u5B57', '\''}
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    return_type: (type
+      (identifier)
+      (type_arguments
+        (type_primitive)))
+    body: (expressions
+      (list
+        (char)
+        (char)
+        (char)
+        (char)
+        (char)
+        (char)
+        (char)
+        (char)
+        (char)))))
+
+=====
 list
 =====
 
