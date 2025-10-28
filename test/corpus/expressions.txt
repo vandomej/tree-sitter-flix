@@ -185,9 +185,10 @@ def main() = foreach(item <- items) item
     (parameters)
     (expressions
       (foreach
-        (gets
-          (identifier)
-          (identifier))
+        (control_expressions
+          (gets
+            (identifier)
+            (identifier)))
         (identifier)))))
 
 =====
@@ -202,9 +203,10 @@ def main() = foreach(item <- items) {item}
     (parameters)
     (expressions
       (foreach
-        (gets
-          (identifier)
-          (identifier))
+        (control_expressions
+          (gets
+            (identifier)
+            (identifier)))
         (block
           (identifier))))))
 
@@ -220,12 +222,13 @@ def main() = foreach(item <- items; other <- others) item
     (parameters)
     (expressions
       (foreach
-        (gets
-          (identifier)
-          (identifier))
-        (gets
-          (identifier)
-          (identifier))
+        (control_expressions
+          (gets
+            (identifier)
+            (identifier))
+          (gets
+            (identifier)
+            (identifier)))
         (identifier)))))
 
 =====
@@ -240,17 +243,18 @@ def main() = foreach(item <- items; if item > 10; other <- others) item
     (parameters)
     (expressions
       (foreach
-        (gets
-          (identifier)
-          (identifier))
-        (filter
-          (binary
+        (control_expressions
+          (gets
             (identifier)
-            (operator_identifier)
-            (integer)))
-        (gets
-          (identifier)
-          (identifier))
+            (identifier))
+          (filter
+            (binary
+              (identifier)
+              (operator_identifier)
+              (integer)))
+          (gets
+            (identifier)
+            (identifier)))
         (identifier)))))
 
 =====
@@ -265,17 +269,18 @@ def main() = foreach(item <- items; if item > 10; other <- others) yield (item, 
     (parameters)
     (expressions
       (foreach
-        (gets
-          (identifier)
-          (identifier))
-        (filter
-          (binary
+        (control_expressions
+          (gets
             (identifier)
-            (operator_identifier)
-            (integer)))
-        (gets
-          (identifier)
-          (identifier))
+            (identifier))
+          (filter
+            (binary
+              (identifier)
+              (operator_identifier)
+              (integer)))
+          (gets
+            (identifier)
+            (identifier)))
         (tuple
           (identifier)
           (identifier))))))
@@ -292,18 +297,61 @@ def main() = forM(item <- items; if item > 10; other <- others) yield (item, oth
     (parameters)
     (expressions
       (for_monadic
-        (gets
-          (identifier)
-          (identifier))
-        (filter
-          (binary
+        (control_expressions
+          (gets
             (identifier)
-            (operator_identifier)
-            (integer)))
-        (gets
-          (identifier)
-          (identifier))
+            (identifier))
+          (filter
+            (binary
+              (identifier)
+              (operator_identifier)
+              (integer)))
+          (gets
+            (identifier)
+            (identifier)))
         (tuple
+          (identifier)
+          (identifier))))))
+
+=====
+for monadic with variable mapping
+=====
+
+def main() =
+  forM(
+    item <- items;
+    processed_item = foo(item);
+    if processed_item > 10;
+    other <- others
+  ) yield (processed_item, other)
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    body: (expressions
+      (for_monadic
+        control_expressions: (control_expressions
+          (gets
+            (identifier)
+            (identifier))
+          (variable_mapping
+            (identifier)
+            (call_expression
+              function: (identifier)
+              arguments: (arguments
+                (identifier))))
+          (filter
+            (binary
+              (identifier)
+              (operator_identifier)
+              (integer)))
+          (gets
+            (identifier)
+            (identifier)))
+        yields: (tuple
           (identifier)
           (identifier))))))
 
@@ -319,18 +367,61 @@ def main() = forA(item <- items; if item > 10; other <- others) yield (item, oth
     (parameters)
     (expressions
       (for_applicative
-        (gets
-          (identifier)
-          (identifier))
-        (filter
-          (binary
+        (control_expressions
+          (gets
             (identifier)
-            (operator_identifier)
-            (integer)))
-        (gets
-          (identifier)
-          (identifier))
+            (identifier))
+          (filter
+            (binary
+              (identifier)
+              (operator_identifier)
+              (integer)))
+          (gets
+            (identifier)
+            (identifier)))
         (tuple
+          (identifier)
+          (identifier))))))
+
+=====
+for applicative variable mapping
+=====
+
+def main() =
+  forA(
+    item <- items;
+    processed_item = foo(item);
+    if processed_item > 10;
+    other <- others
+  ) yield (processed_item, other)
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters)
+    body: (expressions
+      (for_applicative
+        control_expressions: (control_expressions
+          (gets
+            (identifier)
+            (identifier))
+          (variable_mapping
+            (identifier)
+            (call_expression
+              function: (identifier)
+              arguments: (arguments
+                (identifier))))
+          (filter
+            (binary
+              (identifier)
+              (operator_identifier)
+              (integer)))
+          (gets
+            (identifier)
+            (identifier)))
+        yields: (tuple
           (identifier)
           (identifier))))))
 
@@ -1554,6 +1645,68 @@ def main(): Unit \ IO =
           (identifier))))))
 
 =====
+gets tuple
+=====
+
+def analyseByRepo(commits: Map[String, List[String]]): Stats = 
+    let allStats : List[(String, Stat)] = foreach (
+        (repo, shas) <- commits;
+        sha <- shas
+    ) yield commitToAddsDels(repo, sha);
+    mergeStats(allStats) |> resume
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters
+      (parameter
+        name: (identifier)
+        type: (type
+          (identifier)
+          (type_arguments
+            (type_primitive)
+            (type
+              (identifier)
+              (type_arguments
+                (type_primitive)))))))
+    return_type: (type
+      (identifier))
+    body: (expressions
+      (let
+        (identifier)
+        (type
+          (identifier)
+          (type_arguments
+            (type_tuple
+              (type_primitive)
+              (type
+                (identifier)))))
+        (foreach
+          control_expressions: (control_expressions
+            (gets
+              (tuple
+                (identifier)
+                (identifier))
+              (identifier))
+            (gets
+              (identifier)
+              (identifier)))
+          body: (call_expression
+            function: (identifier)
+            arguments: (arguments
+              (identifier)
+              (identifier)))))
+      (binary
+        (call_expression
+          function: (identifier)
+          arguments: (arguments
+            (identifier)))
+        (user_operator)
+        (identifier)))))
+
+=====
 type ascription
 =====
 
@@ -1593,6 +1746,90 @@ def foo(): List[String] =
           (identifier)
           (type_arguments
             (type_primitive)))))))
+
+=====
+foreach equals expression
+=====
+
+def analyseByByte(repos: List[String]): Map[String, BigInt] = {
+    let allStats: List[(String, BigInt)] = foreach (
+        repo <- repos;
+        languageStat = Github.getLanguages(repo);
+        languageStatMap = Util.fromJson(languageStat);
+        (lang, size) <- (languageStatMap: Map[String, BigInt])
+    ) yield (lang, size);
+    mergeStatsByByte(allStats) |> resume
+}
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters
+      (parameter
+        name: (identifier)
+        type: (type
+          (identifier)
+          (type_arguments
+            (type_primitive)))))
+    return_type: (type
+      (identifier)
+      (type_arguments
+        (type_primitive)
+        (type_primitive)))
+    body: (expressions
+      (block
+        (let
+          (identifier)
+          (type
+            (identifier)
+            (type_arguments
+              (type_tuple
+                (type_primitive)
+                (type_primitive))))
+          (foreach
+            control_expressions: (control_expressions
+              (gets
+                (identifier)
+                (identifier))
+              (variable_mapping
+                (identifier)
+                (call_expression
+                  function: (field
+                    (identifier)
+                    (identifier))
+                  arguments: (arguments
+                    (identifier))))
+              (variable_mapping
+                (identifier)
+                (call_expression
+                  function: (field
+                    (identifier)
+                    (identifier))
+                  arguments: (arguments
+                    (identifier))))
+              (gets
+                (tuple
+                  (identifier)
+                  (identifier))
+                (type_ascription
+                  (identifier)
+                  (type
+                    (identifier)
+                    (type_arguments
+                      (type_primitive)
+                      (type_primitive))))))
+            body: (tuple
+              (identifier)
+              (identifier))))
+        (binary
+          (call_expression
+            function: (identifier)
+            arguments: (arguments
+              (identifier)))
+          (user_operator)
+          (identifier))))))
 
 =====
 match lambda with ignored pattern

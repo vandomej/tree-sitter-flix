@@ -586,6 +586,29 @@
     }
   },
   {
+    "type": "control_expressions",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "filter",
+          "named": true
+        },
+        {
+          "type": "gets",
+          "named": true
+        },
+        {
+          "type": "variable_mapping",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "data_list",
     "named": true,
     "fields": {},
@@ -1007,74 +1030,83 @@
   {
     "type": "for_applicative",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "_expression",
-          "named": true
-        },
-        {
-          "type": "filter",
-          "named": true
-        },
-        {
-          "type": "gets",
-          "named": true
-        }
-      ]
+    "fields": {
+      "control_expressions": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "control_expressions",
+            "named": true
+          }
+        ]
+      },
+      "yields": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_expression",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
     "type": "for_monadic",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "_expression",
-          "named": true
-        },
-        {
-          "type": "filter",
-          "named": true
-        },
-        {
-          "type": "gets",
-          "named": true
-        }
-      ]
+    "fields": {
+      "control_expressions": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "control_expressions",
+            "named": true
+          }
+        ]
+      },
+      "yields": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_expression",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
     "type": "foreach",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "_expression",
-          "named": true
-        },
-        {
-          "type": "filter",
-          "named": true
-        },
-        {
-          "type": "gets",
-          "named": true
-        },
-        {
-          "type": "variable_mapping",
-          "named": true
-        }
-      ]
+    "fields": {
+      "body": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "_expression",
+            "named": true
+          },
+          {
+            "type": "yield",
+            "named": false
+          }
+        ]
+      },
+      "control_expressions": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "control_expressions",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1333,6 +1365,10 @@
       "types": [
         {
           "type": "_expression",
+          "named": true
+        },
+        {
+          "type": "constructor",
           "named": true
         },
         {

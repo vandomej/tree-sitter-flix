@@ -495,30 +495,34 @@ module.exports = grammar({
     for_applicative: ($) =>
       seq(
         "forA",
-        "(",
-        zero_or_more_by(
-          choice($.gets, $.filter),
-          ";",
+        field(
+          "control_expressions",
+          $.control_expressions,
         ),
-        ")",
         "yield",
-        $._expression,
+        field("yields", $._expression),
       ),
     for_monadic: ($) =>
       seq(
         "forM",
-        "(",
-        zero_or_more_by(
-          choice($.gets, $.filter),
-          ";",
+        field(
+          "control_expressions",
+          $.control_expressions,
         ),
-        ")",
         "yield",
-        $._expression,
+        field("yields", $._expression),
       ),
     foreach: ($) =>
       seq(
         "foreach",
+        field(
+          "control_expressions",
+          $.control_expressions,
+        ),
+        field("body", $._foreach_body),
+      ),
+    control_expressions: ($) =>
+      seq(
         "(",
         zero_or_more_by(
           choice(
@@ -529,7 +533,6 @@ module.exports = grammar({
           ";",
         ),
         ")",
-        $._foreach_body,
       ),
     _foreach_body: ($) =>
       choice(
@@ -543,11 +546,7 @@ module.exports = grammar({
         $._expression,
       ),
     gets: ($) =>
-      seq(
-        choice($.ignored, $._variable_name),
-        "<-",
-        $._expression,
-      ),
+      seq($._pattern, "<-", $._expression),
     filter: ($) => seq("if", $._expression),
     if: ($) =>
       seq(
