@@ -204,6 +204,12 @@ module.exports = grammar({
           ),
         ),
         optional(
+          seq(
+            "\\",
+            field("effects", $.effects),
+          ),
+        ),
+        optional(
           field(
             "with_clause",
             $.with_clause,
@@ -213,12 +219,6 @@ module.exports = grammar({
           field(
             "where_clause",
             $.where_clause,
-          ),
-        ),
-        optional(
-          seq(
-            "\\",
-            field("effects", $.effects),
           ),
         ),
       ),
@@ -320,6 +320,7 @@ module.exports = grammar({
       ),
     effect_definition: ($) =>
       seq(
+        optional($.modifiers),
         "eff",
         field("effect", $._uppercase_name),
         field(

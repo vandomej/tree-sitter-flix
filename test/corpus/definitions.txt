@@ -411,3 +411,70 @@ pub enum Bar {
       (constructor
         (identifier)))))
 
+=====
+with clause after effect
+=====
+
+def getKey(key: String, map: Map[String, JsonElement]): a \ AnalysisFailure with Json.FromJson[a] = 
+    match Json.getAtKey(Path.Root, key, map) {
+        case Ok(res) => res
+        case Err(err) => AnalysisFailure.raiseJsonError(err)
+    }
+
+---
+
+(program
+  (function_declaration
+    name: (identifier)
+    parameters: (parameters
+      (parameter
+        name: (identifier)
+        type: (type_primitive))
+      (parameter
+        name: (identifier)
+        type: (type
+          (identifier)
+          (type_arguments
+            (type_primitive)
+            (type
+              (identifier))))))
+    return_type: (polymorphic_identifier)
+    effects: (effects
+      (identifier))
+    with_clause: (with_clause
+      (type_field
+        (type
+          (identifier))
+        (type
+          (identifier)
+          (type_arguments
+            (polymorphic_identifier)))))
+    body: (expressions
+      (match
+        (call_expression
+          function: (field
+            (identifier)
+            (identifier))
+          arguments: (arguments
+            (field
+              (identifier)
+              (identifier))
+            (identifier)
+            (identifier)))
+        (case
+          pattern: (constructor
+            (identifier)
+            (identifier))
+          expressions: (expressions
+            (identifier)))
+        (case
+          pattern: (constructor
+            (identifier)
+            (identifier))
+          expressions: (expressions
+            (call_expression
+              function: (field
+                (identifier)
+                (identifier))
+              arguments: (arguments
+                (identifier)))))))))

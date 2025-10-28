@@ -604,6 +604,31 @@
           "type": "CHOICE",
           "members": [
             {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "\\"
+                },
+                {
+                  "type": "FIELD",
+                  "name": "effects",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "effects"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
               "type": "FIELD",
               "name": "with_clause",
               "content": {
@@ -626,31 +651,6 @@
                 "type": "SYMBOL",
                 "name": "where_clause"
               }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "\\"
-                },
-                {
-                  "type": "FIELD",
-                  "name": "effects",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "effects"
-                  }
-                }
-              ]
             },
             {
               "type": "BLANK"
@@ -1108,6 +1108,18 @@
     "effect_definition": {
       "type": "SEQ",
       "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "modifiers"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
         {
           "type": "STRING",
           "value": "eff"
