@@ -108,7 +108,14 @@ module.exports = grammar({
         field("body", $.declarations),
       ),
     declarations: ($) =>
-      seq("{", repeat($._declaration), "}"),
+      seq(
+        "{",
+        seq(
+          repeat(seq($.use, optional(";"))),
+          repeat($._declaration),
+        ),
+        "}",
+      ),
     use: ($) =>
       seq(
         choice("use", "import"),

@@ -110,3 +110,51 @@ use A.B.Color.{Red => R, Green, Blue => B}
         (module_rename
           (identifier)
           (identifier))))))
+
+=====
+module usings
+=====
+
+mod MyModule {
+  use Math.add;
+  use Math.subtract;
+
+  def mathFunction(i: Int32, j: Int32): Int32 = i.add(j.substract(i))
+}
+
+---
+
+(program
+  (module_declaration
+    name: (identifier)
+    body: (declarations
+      (use
+        (use_path
+          (identifier)
+          (identifier)))
+      (use
+        (use_path
+          (identifier)
+          (identifier)))
+      (function_declaration
+        name: (identifier)
+        parameters: (parameters
+          (parameter
+            name: (identifier)
+            type: (type_primitive))
+          (parameter
+            name: (identifier)
+            type: (type_primitive)))
+        return_type: (type_primitive)
+        body: (expressions
+          (call_expression
+            function: (field
+              (identifier)
+              (identifier))
+            arguments: (arguments
+              (call_expression
+                function: (field
+                  (identifier)
+                  (identifier))
+                arguments: (arguments
+                  (identifier))))))))))

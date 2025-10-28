@@ -639,6 +639,10 @@
         {
           "type": "_declaration",
           "named": true
+        },
+        {
+          "type": "use",
+          "named": true
         }
       ]
     }
