@@ -1074,6 +1074,8 @@ module.exports = grammar({
       seq($._lowercase_name, "=", $._type),
     type_alias_declaration: ($) =>
       seq(
+        optional($.annotations),
+        optional($.modifiers),
         token("type alias"),
         $._type,
         "=",

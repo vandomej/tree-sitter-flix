@@ -2428,6 +2428,14 @@
       "required": true,
       "types": [
         {
+          "type": "annotations",
+          "named": true
+        },
+        {
+          "type": "modifiers",
+          "named": true
+        },
+        {
           "type": "polymorphic_identifier",
           "named": true
         },
